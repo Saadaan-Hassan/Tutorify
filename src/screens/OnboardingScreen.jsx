@@ -23,7 +23,7 @@ export default function OnboardingScreen() {
 	}, []);
 
 	const handleDone = () => {
-		navigation.navigate("Home");
+		navigation.navigate("TabNavigator");
 	};
 
 	const dotButtons = ({ selected }) => (

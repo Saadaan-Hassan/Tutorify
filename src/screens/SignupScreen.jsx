@@ -1,17 +1,20 @@
+import { useState } from "react";
 import { SafeAreaView, Text, View, StyleSheet } from "react-native";
 import CustomButton from "../components/CustomButton";
 import CustomLink from "../components/CustomLink";
 import CustomInput from "../components/CustomInput";
-import { useNavigation } from "@react-navigation/native";
+import { Checkbox } from "react-native-paper";
 
-export default function LoginScreen({ navigation }) {
+export default function SignupScreen({ navigation }) {
+	const [checked, setChecked] = useState(false);
+
 	return (
 		<SafeAreaView style={styles.container}>
 			<View>
-				<Text style={styles.title}>Welcome back</Text>
+				<Text style={styles.title}>Create an account</Text>
 				<Text style={styles.subtitle}>
-					Enter the required to access your account and find the right tutor for
-					you
+					Enter the required details to create an account and find the right
+					tutor for you
 				</Text>
 			</View>
 
@@ -21,16 +24,43 @@ export default function LoginScreen({ navigation }) {
 				placeholder='Enter your password'
 				type='password'
 			/>
+			<CustomInput
+				label='Confirm Password'
+				placeholder='Confirm your password'
+				type='password'
+			/>
 
 			<View style={styles.section}>
-				<CustomLink
-					text='Forgot password?'
-					style={{ textAlign: "right" }}
-					onPress={() => console.log("Forgot password pressed")}
-				/>
+				<View
+					style={{
+						flexDirection: "row",
+						alignItems: "center",
+						width: 300,
+						marginBottom: 20,
+					}}>
+					<Checkbox
+						status={checked ? "checked" : "unchecked"}
+						onPress={() => {
+							setChecked(!checked);
+						}}
+						color='#0A6847'
+					/>
+					<Text
+						style={{
+							color: "#0A6847",
+							fontSize: 16,
+							width: "90%",
+							paddingLeft: 10,
+						}}>
+						By signing up,I understand and agree to{" "}
+						<Text style={{ color: "#0A6847", fontWeight: "bold" }}>
+							Terms of Service
+						</Text>
+					</Text>
+				</View>
 
 				<CustomButton
-					title='Login'
+					title='Create an account'
 					textColor='#F6E9B2'
 					mode='contained-tonal'
 					onPress={() => console.log("Login button pressed")}
@@ -40,9 +70,9 @@ export default function LoginScreen({ navigation }) {
 
 				<CustomButton
 					title={"Continue with Google"}
-					icon='google'
 					textColor='#0A6847'
 					mode='outlined'
+					icon='google'
 					onPress={() => {
 						console.log("Continue with Google pressed");
 					}}
@@ -50,7 +80,7 @@ export default function LoginScreen({ navigation }) {
 
 				<View style={{ position: "relative", marginTop: 20 }}>
 					<CustomLink
-						text="I don't have an account"
+						text='I already have an account'
 						style={{
 							textAlign: "center",
 							fontSize: 18,
@@ -59,8 +89,8 @@ export default function LoginScreen({ navigation }) {
 							left: "25%",
 						}}
 						onPress={() => {
-							navigation.navigate("Signup");
-							console.log("I don't have an account pressed");
+							navigation.navigate("Login");
+							console.log("I already have an account pressed");
 						}}
 					/>
 				</View>

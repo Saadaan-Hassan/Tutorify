@@ -7,6 +7,7 @@ import AwesomeIcon from "react-native-vector-icons/FontAwesome";
 import HomeScreen from "./src/screens/HomeScreen";
 import LoginScreen from "./src/screens/LoginScreen";
 import OnboardingScreen from "./src/screens/OnboardingScreen";
+import SignupScreen from "./src/screens/SignupScreen";
 
 const Stack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
@@ -53,6 +54,7 @@ export default function App() {
 				screenOptions={{ headerShown: false }}>
 				<Stack.Screen name='Onboarding' component={OnboardingScreen} />
 				<Stack.Screen name='TabNavigator' component={TabNavigator} />
+				<Stack.Screen name='Signup' component={SignupScreen} />
 			</Stack.Navigator>
 		</NavigationContainer>
 	);

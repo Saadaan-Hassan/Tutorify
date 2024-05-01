@@ -7,15 +7,17 @@ export default function CustomButton({
 	style,
 	textColor = "#F6E9B2",
 	onPress,
+	icon,
 }) {
 	return (
 		<Button
+			icon={icon}
+			mode={mode}
+			textColor={textColor}
 			style={[
 				mode === "contained-tonal" ? styles.button : styles.buttonOutlined,
 				style,
 			]}
-			textColor={textColor}
-			mode={mode}
 			onPress={onPress}>
 			{title}
 		</Button>

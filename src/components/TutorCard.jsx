@@ -1,32 +1,43 @@
 import React from "react";
-import { Card, Avatar, Button, Icon } from "react-native-paper";
-import { Text, View, StyleSheet, Dimensions } from "react-native";
+import { Card, Icon } from "react-native-paper";
+import {
+	Text,
+	View,
+	StyleSheet,
+	Dimensions,
+	TouchableOpacity,
+} from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
-const { width, height } = Dimensions.get("window");
+const { width } = Dimensions.get("window");
 
 export default function TutorCard() {
+	const navigation = useNavigation();
+
 	const cardWidth = (width - 70) / 2;
 
 	return (
-		<Card mode='contained' style={[styles.card, { width: cardWidth }]}>
-			<Card.Cover
-				source={require("../../assets/img/logo.webp")}
-				style={styles.cardImg}
-			/>
-			<Card.Content style={styles.cardBody}>
-				<Text style={styles.title}>Omowumi John</Text>
-				<View style={styles.ratingContainer}>
-					{[...Array(5)].map((_, index) => (
-						<Icon key={index} source='star' size={20} color='#F3CA52' />
-					))}
-				</View>
-				<View style={styles.subjectsContainer}>
-					<Text style={styles.subjectText}>Mathematics</Text>
-					<Text style={styles.subjectText}>Biology</Text>
-					<Text style={styles.subjectText}>Physics</Text>
-				</View>
-			</Card.Content>
-		</Card>
+		<TouchableOpacity onPress={() => navigation.navigate("TutorDetail")}>
+			<Card mode='contained' style={[styles.card, { width: cardWidth }]}>
+				<Card.Cover
+					source={require("../../assets/img/logo.webp")}
+					style={styles.cardImg}
+				/>
+				<Card.Content style={styles.cardBody}>
+					<Text style={styles.title}>Omowumi John</Text>
+					<View style={styles.ratingContainer}>
+						{[...Array(5)].map((_, index) => (
+							<Icon key={index} source='star' size={20} color='#FBBB00' />
+						))}
+					</View>
+					<View style={styles.subjectsContainer}>
+						<Text style={styles.subjectText}>Mathematics</Text>
+						<Text style={styles.subjectText}>Biology</Text>
+						<Text style={styles.subjectText}>Physics</Text>
+					</View>
+				</Card.Content>
+			</Card>
+		</TouchableOpacity>
 	);
 }
 

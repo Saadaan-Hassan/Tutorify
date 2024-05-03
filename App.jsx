@@ -9,7 +9,7 @@ import LoginScreen from "./src/screens/LoginScreen";
 import OnboardingScreen from "./src/screens/OnboardingScreen";
 import SignupScreen from "./src/screens/SignupScreen";
 import TutorsScreen from "./src/screens/TutorsScreen";
-import TutorScreen from "./src/screens/TutorScreen";
+import TutorDetialScreen from "./src/screens/TutorDetailScreen";
 import Header from "./src/components/Header";
 
 const Stack = createStackNavigator();
@@ -73,7 +73,7 @@ export default function App() {
 					options={{ headerShown: false }}
 				/>
 				<Stack.Screen name='TabNavigator' component={TabNavigator} />
-				<Stack.Screen name='Tutor' component={TutorScreen} />
+				<Stack.Screen name='TutorDetail' component={TutorDetialScreen} />
 			</Stack.Navigator>
 		</NavigationContainer>
 	);

@@ -11,6 +11,7 @@ import SignupScreen from "./src/screens/SignupScreen";
 import TutorsScreen from "./src/screens/TutorsScreen";
 import TutorDetialScreen from "./src/screens/TutorDetailScreen";
 import Header from "./src/components/Header";
+import ProfileScreen from "./src/screens/ProfileScreen";
 
 const Stack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
@@ -74,6 +75,7 @@ export default function App() {
 				/>
 				<Stack.Screen name='TabNavigator' component={TabNavigator} />
 				<Stack.Screen name='TutorDetail' component={TutorDetialScreen} />
+				<Stack.Screen name='Profile' component={ProfileScreen} />
 			</Stack.Navigator>
 		</NavigationContainer>
 	);

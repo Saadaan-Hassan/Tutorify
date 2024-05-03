@@ -7,6 +7,7 @@ export default function CustomButton({
 	mode = "contained-tonal",
 	styleReverse = false,
 	style,
+	contentStyle,
 	onPress,
 	icon,
 	textColor,
@@ -16,7 +17,7 @@ export default function CustomButton({
 		mode === "contained-tonal"
 			? styleReverse
 				? styles.buttonReverse
-				: styles.button
+				: null
 			: styles.buttonOutlined,
 		style,
 	];
@@ -35,6 +36,7 @@ export default function CustomButton({
 			mode={mode}
 			textColor={buttonTextColor}
 			style={buttonStyles}
+			contentStyle={contentStyle}
 			onPress={onPress}>
 			{title}
 		</Button>

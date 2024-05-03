@@ -8,13 +8,13 @@ export default function Header() {
 
 	const _goBack = () => navigation.goBack();
 
-	const _handleAccount = () => console.log("Opening account");
+	const _handleAccount = () => navigation.navigate("Profile");
 
 	const _handleMore = () => console.log("Shown more");
 
 	return (
 		<Appbar.Header mode='small'>
-			{route.name === "Tutor" ? (
+			{route.name === "TutorDetail" ? (
 				<View
 					style={{
 						flex: 1,
@@ -24,6 +24,21 @@ export default function Header() {
 					}}>
 					<Appbar.Action icon='arrow-left' onPress={_goBack} />
 					<Appbar.Action icon='heart-outline' onPress={_goBack} />
+				</View>
+			) : route.name === "Profile" ? (
+				<View
+					style={{
+						flex: 1,
+						flexDirection: "row",
+						alignItems: "center",
+						justifyContent: "space-between",
+					}}>
+					<Appbar.Action
+						icon='arrow-left'
+						onPress={_goBack}
+						style={{ backgroundColor: "lightgreen" }}
+					/>
+					<Appbar.Content title='Profile' style={{ marginHorizontal: "30%" }} />
 				</View>
 			) : (
 				<>

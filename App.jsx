@@ -31,16 +31,6 @@ const TabNavigator = () => {
 					),
 				}}
 			/>
-			<Tab.Screen
-				name='Login'
-				component={LoginScreen}
-				options={{
-					tabBarLabel: "Login",
-					tabBarIcon: ({ color }) => (
-						<AwesomeIcon name='sign-in' color={color} size={26} />
-					),
-				}}
-			/>
 		</Tab.Navigator>
 	);
 };
@@ -53,8 +43,9 @@ export default function App() {
 				initialRouteName='Onboarding'
 				screenOptions={{ headerShown: false }}>
 				<Stack.Screen name='Onboarding' component={OnboardingScreen} />
-				<Stack.Screen name='TabNavigator' component={TabNavigator} />
+				<Stack.Screen name='Login' component={LoginScreen} />
 				<Stack.Screen name='Signup' component={SignupScreen} />
+				<Stack.Screen name='TabNavigator' component={TabNavigator} />
 			</Stack.Navigator>
 		</NavigationContainer>
 	);

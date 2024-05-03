@@ -23,7 +23,7 @@ export default function OnboardingScreen() {
 	}, []);
 
 	const handleDone = () => {
-		navigation.navigate("TabNavigator");
+		navigation.navigate("Login");
 	};
 
 	const dotButtons = ({ selected }) => (
@@ -51,7 +51,7 @@ export default function OnboardingScreen() {
 						image: (
 							<View>
 								<LottieView
-									source={require("../../assets/slides/slide-1.json")}
+									source={require("../../assets/img/slides/slide-1.json")}
 									autoPlay
 									loop
 									style={styles.lottie}
@@ -67,7 +67,7 @@ export default function OnboardingScreen() {
 						image: (
 							<View>
 								<LottieView
-									source={require("../../assets/slides/slide-2.json")}
+									source={require("../../assets/img/slides/slide-2.json")}
 									autoPlay
 									loop
 									style={styles.lottie}
@@ -83,7 +83,7 @@ export default function OnboardingScreen() {
 						image: (
 							<View>
 								<LottieView
-									source={require("../../assets/slides/slide-3.json")}
+									source={require("../../assets/img/slides/slide-3.json")}
 									autoPlay
 									loop
 									style={styles.lottie}

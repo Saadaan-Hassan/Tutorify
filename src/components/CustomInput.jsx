@@ -15,6 +15,7 @@ export default function CustomInput({
 				placeholder={placeholder}
 				value={value}
 				onChangeText={onChangeText}
+				inputMode={type === "password" ? "text" : type}
 				secureTextEntry={type === "password"}
 			/>
 		</View>

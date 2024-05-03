@@ -1,10 +1,19 @@
+import { useState } from "react";
 import { SafeAreaView, Text, View, StyleSheet } from "react-native";
 import CustomButton from "../components/CustomButton";
 import CustomLink from "../components/CustomLink";
 import CustomInput from "../components/CustomInput";
-import { useNavigation } from "@react-navigation/native";
 
 export default function LoginScreen({ navigation }) {
+	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("");
+
+	const handleLogin = () => {
+		console.log("Email: ", email);
+		console.log("Password: ", password);
+		navigation.navigate("TabNavigator");
+	};
+
 	return (
 		<SafeAreaView style={styles.container}>
 			<View>
@@ -15,17 +24,25 @@ export default function LoginScreen({ navigation }) {
 				</Text>
 			</View>
 
-			<CustomInput label='Email' placeholder='Enter your email' />
+			<CustomInput
+				label='Email'
+				placeholder='Enter your email'
+				value={email}
+				type='email'
+				onChangeText={setEmail}
+			/>
 			<CustomInput
 				label='Password'
 				placeholder='Enter your password'
 				type='password'
+				value={password}
+				onChangeText={setPassword}
 			/>
 
 			<View style={styles.section}>
 				<CustomLink
 					text='Forgot password?'
-					style={{ textAlign: "right" }}
+					labelStyle={{ marginEnd: 5 }}
 					onPress={() => console.log("Forgot password pressed")}
 				/>
 
@@ -33,7 +50,7 @@ export default function LoginScreen({ navigation }) {
 					title='Login'
 					textColor='#F6E9B2'
 					mode='contained-tonal'
-					onPress={() => console.log("Login button pressed")}
+					onPress={() => handleLogin()}
 				/>
 
 				<Text style={styles.orText}>OR</Text>
@@ -51,13 +68,13 @@ export default function LoginScreen({ navigation }) {
 				<View style={{ position: "relative", marginTop: 20 }}>
 					<CustomLink
 						text="I don't have an account"
-						style={{
+						buttonStyle={{
 							textAlign: "center",
-							fontSize: 18,
 							position: "absolute",
 							bottom: -100,
-							left: "25%",
+							left: "24%",
 						}}
+						labelStyle={{ fontSize: 18 }}
 						onPress={() => {
 							navigation.navigate("Signup");
 							console.log("I don't have an account pressed");

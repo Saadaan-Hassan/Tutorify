@@ -7,6 +7,16 @@ import { Checkbox } from "react-native-paper";
 
 export default function SignupScreen({ navigation }) {
 	const [checked, setChecked] = useState(false);
+	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("");
+	const [confirmPassword, setConfirmPassword] = useState("");
+
+	const handleSignup = () => {
+		console.log("Email: ", email);
+		console.log("Password: ", password);
+		console.log("Confirm Password: ", confirmPassword);
+		navigation.navigate("TabNavigator");
+	};
 
 	return (
 		<SafeAreaView style={styles.container}>
@@ -18,7 +28,7 @@ export default function SignupScreen({ navigation }) {
 				</Text>
 			</View>
 
-			<CustomInput label='Email' placeholder='Enter your email' />
+			<CustomInput label='Email' placeholder='Enter your email' type='email' />
 			<CustomInput
 				label='Password'
 				placeholder='Enter your password'
@@ -63,7 +73,7 @@ export default function SignupScreen({ navigation }) {
 					title='Create an account'
 					textColor='#F6E9B2'
 					mode='contained-tonal'
-					onPress={() => console.log("Login button pressed")}
+					onPress={() => handleSignup()}
 				/>
 
 				<Text style={styles.orText}>OR</Text>
@@ -89,8 +99,8 @@ export default function SignupScreen({ navigation }) {
 							left: "25%",
 						}}
 						onPress={() => {
-							navigation.navigate("Login");
 							console.log("I already have an account pressed");
+							navigation.navigate("Login");
 						}}
 					/>
 				</View>

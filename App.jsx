@@ -3,11 +3,12 @@ import { StatusBar } from "expo-status-bar";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createMaterialBottomTabNavigator } from "react-native-paper/react-navigation";
-import AwesomeIcon from "react-native-vector-icons/FontAwesome";
+import { Icon } from "react-native-paper";
 import HomeScreen from "./src/screens/HomeScreen";
 import LoginScreen from "./src/screens/LoginScreen";
 import OnboardingScreen from "./src/screens/OnboardingScreen";
 import SignupScreen from "./src/screens/SignupScreen";
+import TutorsScreen from "./src/screens/TutorsScreen";
 
 const Stack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
@@ -27,7 +28,17 @@ const TabNavigator = () => {
 				options={{
 					tabBarLabel: "Home",
 					tabBarIcon: ({ color }) => (
-						<AwesomeIcon name='home' color={color} size={26} />
+						<Icon source='home' color={color} size={26} />
+					),
+				}}
+			/>
+			<Tab.Screen
+				name='Tutors'
+				component={TutorsScreen}
+				options={{
+					tabBarLabel: "Tutors",
+					tabBarIcon: ({ color }) => (
+						<Icon source='compass-outline' color={color} size={26} />
 					),
 				}}
 			/>

@@ -33,7 +33,7 @@ export default function TutorCard() {
 const styles = StyleSheet.create({
 	card: {
 		margin: 5,
-		marginRight: 16,
+		marginHorizontal: 8,
 		borderRadius: 20,
 		backgroundColor: "#F6E9B2",
 	},

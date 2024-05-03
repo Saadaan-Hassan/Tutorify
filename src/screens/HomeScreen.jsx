@@ -12,60 +12,12 @@ import Header from "../components/Header";
 import SearchBar from "../components/SearchBar";
 import CustomButton from "../components/CustomButton";
 import CustomLink from "../components/CustomLink";
-import TutorCard from "../components/Card";
+import TutorCard from "../components/TutorCard";
 
 export default function HomeScreen() {
 	const navigation = useNavigation();
 
 	return (
-		// <View style={styles.container}>
-		// 	<Header />
-		// 	<SearchBar />
-
-		// 	<View
-		// 		style={[
-		// 			styles.section,
-		// 			styles.flex,
-		// 			{ backgroundColor: "#F6E9B2", padding: 20 },
-		// 		]}>
-		// 		<View style={styles.leftContent}>
-		// 			<View>
-		// 				<Text style={styles.header}>Find the right tutor for you</Text>
-		// 				<Text style={styles.para}>
-		// 					Ace your test and examination by getting the knowledge needed
-		// 				</Text>
-		// 				<CustomButton
-		// 					title='Find tutor'
-		// 					// styleReverse={true}
-		// 					style={{ width: 150, borderRadius: 20, marginTop: 20 }}
-		// 					onPress={() => navigation.navigate("Login")}
-		// 				/>
-		// 			</View>
-		// 		</View>
-		// 		<View style={styles.rightContent}>
-		// 			<Image source={require("../../assets/img/home.png")} />
-		// 		</View>
-		// 	</View>
-
-		// 	<View style={[styles.section, { backgroundColor: "#F3CA52" }]}>
-		// 		<View style={styles.sectionHeader}>
-		// 			<Text style={styles.header}>Top tutors</Text>
-		// 			<CustomLink
-		// 				text='See all'
-		// 				// labelStyle={{ fontSize: 18 }}
-		// 				onPress={() => {
-		// 					navigation.navigate("Signup");
-		// 					console.log("I don't have an account pressed");
-		// 				}}
-		// 			/>
-		// 		</View>
-
-		// 		<View>
-		// 			<TutorCard />
-		// 		</View>
-		// 	</View>
-		// </View>
-
 		<ScrollView contentContainerStyle={styles.scrollContainer}>
 			<View style={styles.container}>
 				<Header />
@@ -86,7 +38,7 @@ export default function HomeScreen() {
 							<CustomButton
 								title='Find tutor'
 								style={{ width: 150, borderRadius: 20, marginTop: 20 }}
-								onPress={() => navigation.navigate("Login")}
+								onPress={() => navigation.navigate("Tutors")}
 							/>
 						</View>
 					</View>
@@ -102,7 +54,7 @@ export default function HomeScreen() {
 						<CustomLink
 							text='See all'
 							onPress={() => {
-								navigation.navigate("Signup");
+								navigation.navigate("Tutors");
 								console.log("I don't have an account pressed");
 							}}
 						/>

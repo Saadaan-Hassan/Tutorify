@@ -1,23 +1,40 @@
+import React from "react";
 import { StyleSheet } from "react-native";
 import { Button } from "react-native-paper";
 
 export default function CustomButton({
 	title,
 	mode = "contained-tonal",
+	styleReverse = false,
 	style,
-	textColor = "#F6E9B2",
 	onPress,
 	icon,
+	textColor,
 }) {
+	const buttonStyles = [
+		styles.button,
+		mode === "contained-tonal"
+			? styleReverse
+				? styles.buttonReverse
+				: styles.button
+			: styles.buttonOutlined,
+		style,
+	];
+
+	const buttonTextColor =
+		textColor ||
+		(mode === "contained-tonal"
+			? styleReverse
+				? "#0A6847"
+				: "#F6E9B2"
+			: "#0A6847");
+
 	return (
 		<Button
 			icon={icon}
 			mode={mode}
-			textColor={textColor}
-			style={[
-				mode === "contained-tonal" ? styles.button : styles.buttonOutlined,
-				style,
-			]}
+			textColor={buttonTextColor}
+			style={buttonStyles}
 			onPress={onPress}>
 			{title}
 		</Button>
@@ -32,13 +49,13 @@ const styles = StyleSheet.create({
 		borderRadius: 16,
 		marginBottom: 10,
 	},
-	buttonOutlined: {
-		width: 300,
-		height: 40,
+	buttonReverse: {
 		backgroundColor: "#F6E9B2",
-		borderRadius: 16,
-		marginBottom: 10,
-		borderWidth: 1,
 		borderColor: "#0A6847",
+	},
+	buttonOutlined: {
+		backgroundColor: "#F6E9B2",
+		borderColor: "#0A6847",
+		borderWidth: 1,
 	},
 });

@@ -12,6 +12,7 @@ import SearchBar from "../components/SearchBar";
 import CustomButton from "../components/CustomButton";
 import CustomLink from "../components/CustomLink";
 import TutorCard from "../components/TutorCard";
+import { commonStyles } from "../styles/commonStyles";
 
 export default function HomeScreen() {
 	const navigation = useNavigation();
@@ -25,16 +26,20 @@ export default function HomeScreen() {
 					style={[
 						styles.section,
 						styles.flex,
-						{ backgroundColor: "#F6E9B2", padding: 20 },
+						{ backgroundColor: commonStyles.colors.primary, padding: 20 },
 					]}>
 					<View style={styles.leftContent}>
 						<View>
-							<Text style={styles.header}>Find the right tutor for you</Text>
+							<Text
+								style={[styles.header, { color: commonStyles.colors.neutral }]}>
+								Find the right tutor for you
+							</Text>
 							<Text style={styles.para}>
 								Ace your test and examination by getting the knowledge needed
 							</Text>
 							<CustomButton
 								title='Find tutor'
+								styleReverse={true}
 								style={{ width: 150, borderRadius: 20, marginTop: 20 }}
 								onPress={() => navigation.navigate("Tutors")}
 							/>
@@ -121,8 +126,10 @@ const styles = StyleSheet.create({
 		fontSize: 18,
 		fontWeight: "bold",
 		marginBottom: 10,
+		color: commonStyles.colors.textPrimary,
 	},
 	para: {
 		fontSize: 14,
+		color: commonStyles.colors.neutral,
 	},
 });

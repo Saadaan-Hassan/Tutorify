@@ -8,6 +8,7 @@ import {
 	TouchableOpacity,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { commonStyles } from "../styles/commonStyles";
 
 const { width } = Dimensions.get("window");
 
@@ -20,7 +21,7 @@ export default function TutorCard() {
 		<TouchableOpacity onPress={() => navigation.navigate("TutorDetail")}>
 			<Card mode='contained' style={[styles.card, { width: cardWidth }]}>
 				<Card.Cover
-					source={require("../../assets/img/logo.webp")}
+					source={require("../../assets/img/avatar/user1.png")}
 					style={styles.cardImg}
 				/>
 				<Card.Content style={styles.cardBody}>
@@ -46,7 +47,7 @@ const styles = StyleSheet.create({
 		margin: 5,
 		marginHorizontal: 8,
 		borderRadius: 20,
-		backgroundColor: "#F6E9B2",
+		backgroundColor: commonStyles.colors.neutralLight,
 	},
 
 	cardImg: {
@@ -61,7 +62,7 @@ const styles = StyleSheet.create({
 	title: {
 		fontSize: 16,
 		fontWeight: "bold",
-		color: "#0A6847",
+		color: commonStyles.colors.textPrimary,
 		textAlign: "center",
 	},
 

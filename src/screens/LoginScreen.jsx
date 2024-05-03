@@ -1,8 +1,9 @@
-import { useState } from "react";
-import { SafeAreaView, Text, View, StyleSheet } from "react-native";
+import React, { useState } from "react";
+import { SafeAreaView, Text, View, StyleSheet, Image } from "react-native";
 import CustomButton from "../components/CustomButton";
 import CustomLink from "../components/CustomLink";
 import CustomInput from "../components/CustomInput";
+import { commonStyles } from "../styles/commonStyles";
 
 export default function LoginScreen({ navigation }) {
 	const [email, setEmail] = useState("");
@@ -16,6 +17,10 @@ export default function LoginScreen({ navigation }) {
 
 	return (
 		<SafeAreaView style={styles.container}>
+			<Image
+				source={require("../../assets/img/logo.webp")}
+				style={commonStyles.logo}
+			/>
 			<View>
 				<Text style={styles.title}>Welcome back</Text>
 				<Text style={styles.subtitle}>
@@ -48,7 +53,6 @@ export default function LoginScreen({ navigation }) {
 
 				<CustomButton
 					title='Login'
-					textColor='#F6E9B2'
 					mode='contained-tonal'
 					onPress={() => handleLogin()}
 				/>
@@ -58,7 +62,6 @@ export default function LoginScreen({ navigation }) {
 				<CustomButton
 					title={"Continue with Google"}
 					icon='google'
-					textColor='#0A6847'
 					mode='outlined'
 					onPress={() => {
 						console.log("Continue with Google pressed");
@@ -92,20 +95,19 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 		alignItems: "center",
 		paddingHorizontal: 40,
-		position: "relative",
-		backgroundColor: "#F6E9B269",
 	},
 	title: {
 		fontSize: 20,
 		fontWeight: "bold",
 		marginBottom: 10,
 		textAlign: "center",
-		color: "#0A6847",
+		color: commonStyles.colors.primary,
 	},
 	subtitle: {
 		fontSize: 16,
 		textAlign: "center",
 		marginBottom: 20,
+		color: commonStyles.colors.textSecondary,
 	},
 	orText: {
 		textAlign: "center",

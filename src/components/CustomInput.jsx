@@ -1,4 +1,5 @@
 import { View, Text, TextInput, StyleSheet } from "react-native";
+import { commonStyles } from "../styles/commonStyles";
 
 export default function CustomInput({
 	label,
@@ -30,7 +31,7 @@ const styles = StyleSheet.create({
 		fontSize: 16,
 		fontWeight: "bold",
 		marginBottom: 5,
-		color: "#0A6847",
+		color: commonStyles.colors.primary,
 	},
 	input: {
 		width: 300,
@@ -38,7 +39,7 @@ const styles = StyleSheet.create({
 		padding: 5,
 		paddingLeft: 10,
 		borderWidth: 1,
-		borderColor: "#0A6847",
+		borderColor: commonStyles.colors.primary,
 		borderRadius: 15,
 	},
 });

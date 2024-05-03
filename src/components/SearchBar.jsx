@@ -1,5 +1,6 @@
 import React from "react";
 import { Icon, Searchbar } from "react-native-paper";
+import { commonStyles } from "../styles/commonStyles";
 
 export default function SearchBar() {
 	const [searchQuery, setSearchQuery] = React.useState("");
@@ -7,7 +8,7 @@ export default function SearchBar() {
 	return (
 		<Searchbar
 			placeholder='Search your subject name'
-			placeholderTextColor='#0A684790'
+			placeholderTextColor={commonStyles.colors.neutralAccent2}
 			onChangeText={setSearchQuery}
 			value={searchQuery}
 			style={{
@@ -15,14 +16,16 @@ export default function SearchBar() {
 				marginVertical: 24,
 				borderRadius: 20,
 				height: 40,
-				backgroundColor: "#F6E9B2",
+				backgroundColor: commonStyles.colors.background,
+				borderColor: commonStyles.colors.neutralAccent2,
+				borderWidth: 2,
 			}}
 			inputStyle={{
-				color: "#0A6847",
-				minHeight: 40,
+				color: commonStyles.colors.primary,
+				minHeight: 20,
 			}}
-			icon='microphone'
-			iconColor='#0A6847'
+			icon='microphone-outline'
+			iconColor={commonStyles.colors.primary}
 			onIconPress={() => console.log("Searching")}
 		/>
 	);

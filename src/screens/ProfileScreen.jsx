@@ -2,26 +2,35 @@ import { View } from "react-native";
 import React from "react";
 import { Avatar, Button, Card, Divider, Text } from "react-native-paper";
 import CustomButton from "../components/CustomButton";
+import { commonStyles } from "../styles/commonStyles";
 
 const LeftContent = (props) => (
 	<Avatar.Image
 		{...props}
-		source={require("../../assets/img/avatar/avatar.jpg")}
+		source={require("../../assets/img/avatar/user1.png")}
 		size={80}
 	/>
 );
 
 export default function ProfileScreen() {
 	return (
-		<View>
+		<View style={styles.container}>
 			<Card.Title
 				title='Damilola John'
 				subtitle='High school student'
 				style={{
 					marginVertical: 20,
 				}}
-				titleStyle={{ fontSize: 24, fontWeight: "bold", minHeight: 25 }}
-				subtitleStyle={{ fontSize: 16, color: "#656466" }}
+				titleStyle={{
+					fontSize: 24,
+					fontWeight: "bold",
+					minHeight: 25,
+					color: commonStyles.colors.textPrimary,
+				}}
+				subtitleStyle={{
+					fontSize: 16,
+					color: commonStyles.colors.textSecondary,
+				}}
 				left={LeftContent}
 				leftStyle={{ marginRight: 60 }}
 			/>
@@ -34,7 +43,7 @@ export default function ProfileScreen() {
 					title='Account'
 					style={styles.button}
 					contentStyle={{ justifyContent: "flex-start" }}
-					textColor='#120E1A'
+					textColor={commonStyles.colors.primary}
 				/>
 				<Divider />
 				<CustomButton
@@ -42,7 +51,7 @@ export default function ProfileScreen() {
 					title='Password'
 					style={styles.button}
 					contentStyle={{ justifyContent: "flex-start" }}
-					textColor='#120E1A'
+					textColor={commonStyles.colors.primary}
 				/>
 				<Divider />
 				<CustomButton
@@ -50,7 +59,7 @@ export default function ProfileScreen() {
 					title='Notifications'
 					style={styles.button}
 					contentStyle={{ justifyContent: "flex-start" }}
-					textColor='#120E1A'
+					textColor={commonStyles.colors.primary}
 				/>
 				<Divider />
 				<CustomButton
@@ -58,7 +67,7 @@ export default function ProfileScreen() {
 					title='Payments'
 					style={styles.button}
 					contentStyle={{ justifyContent: "flex-start" }}
-					textColor='#120E1A'
+					textColor={commonStyles.colors.primary}
 				/>
 				<Divider />
 				<CustomButton
@@ -66,7 +75,7 @@ export default function ProfileScreen() {
 					title='Help'
 					style={styles.button}
 					contentStyle={{ justifyContent: "flex-start" }}
-					textColor='#120E1A'
+					textColor={commonStyles.colors.primary}
 				/>
 				<Divider />
 				<CustomButton
@@ -84,8 +93,7 @@ export default function ProfileScreen() {
 const styles = {
 	container: {
 		flex: 1,
-		padding: 20,
-		backgroundColor: "#F6F6F6",
+		backgroundColor: commonStyles.colors.neutral,
 	},
 
 	editButton: {
@@ -102,6 +110,6 @@ const styles = {
 		paddingTop: 5,
 		marginBottom: 0,
 		height: 50,
-		backgroundColor: "#FAF6FD",
+		backgroundColor: commonStyles.colors.neutral,
 	},
 };

@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { SafeAreaView, Text, View, StyleSheet } from "react-native";
+import { SafeAreaView, Text, View, StyleSheet, Image } from "react-native";
 import CustomButton from "../components/CustomButton";
 import CustomLink from "../components/CustomLink";
 import CustomInput from "../components/CustomInput";
 import { Checkbox } from "react-native-paper";
+import { commonStyles } from "../styles/commonStyles";
 
 export default function SignupScreen({ navigation }) {
 	const [checked, setChecked] = useState(false);
@@ -20,6 +21,10 @@ export default function SignupScreen({ navigation }) {
 
 	return (
 		<SafeAreaView style={styles.container}>
+			<Image
+				source={require("../../assets/img/logo.webp")}
+				style={commonStyles.logo}
+			/>
 			<View>
 				<Text style={styles.title}>Create an account</Text>
 				<Text style={styles.subtitle}>
@@ -53,17 +58,21 @@ export default function SignupScreen({ navigation }) {
 						onPress={() => {
 							setChecked(!checked);
 						}}
-						color='#0A6847'
+						color={commonStyles.colors.primary}
 					/>
 					<Text
 						style={{
-							color: "#0A6847",
+							color: commonStyles.colors.textSecondary,
 							fontSize: 16,
 							width: "90%",
 							paddingLeft: 10,
 						}}>
 						By signing up,I understand and agree to{" "}
-						<Text style={{ color: "#0A6847", fontWeight: "bold" }}>
+						<Text
+							style={{
+								color: commonStyles.colors.primary,
+								fontWeight: "bold",
+							}}>
 							Terms of Service
 						</Text>
 					</Text>
@@ -71,7 +80,6 @@ export default function SignupScreen({ navigation }) {
 
 				<CustomButton
 					title='Create an account'
-					textColor='#F6E9B2'
 					mode='contained-tonal'
 					onPress={() => handleSignup()}
 				/>
@@ -80,7 +88,6 @@ export default function SignupScreen({ navigation }) {
 
 				<CustomButton
 					title={"Continue with Google"}
-					textColor='#0A6847'
 					mode='outlined'
 					icon='google'
 					onPress={() => {
@@ -91,12 +98,11 @@ export default function SignupScreen({ navigation }) {
 				<View style={{ position: "relative", marginTop: 20 }}>
 					<CustomLink
 						text='I already have an account'
-						style={{
+						buttonStyle={{
 							textAlign: "center",
-							fontSize: 18,
 							position: "absolute",
-							bottom: -100,
-							left: "25%",
+							bottom: -50,
+							left: "24%",
 						}}
 						onPress={() => {
 							console.log("I already have an account pressed");
@@ -116,24 +122,24 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		paddingHorizontal: 40,
 		position: "relative",
-		backgroundColor: "#F6E9B269",
 	},
 	title: {
 		fontSize: 20,
 		fontWeight: "bold",
 		marginBottom: 10,
 		textAlign: "center",
-		color: "#0A6847",
+		color: commonStyles.colors.primary,
 	},
 	subtitle: {
 		fontSize: 16,
 		textAlign: "center",
 		marginBottom: 20,
+		color: commonStyles.colors.textSecondary,
 	},
 	orText: {
 		textAlign: "center",
 		marginBottom: 10,
-		fontWeight: "bold",
 		fontSize: 16,
+		color: commonStyles.colors.textSecondary,
 	},
 });

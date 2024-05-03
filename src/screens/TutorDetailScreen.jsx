@@ -94,7 +94,7 @@ export default function TutorScreen() {
 					<CustomButton
 						title='Book a session'
 						style={{ width: 150, borderRadius: 20, marginTop: 20 }}
-						onPress={() => navigation.navigate("Tutors")}
+						onPress={() => console.log("Book a session pressed")}
 					/>
 				</View>
 			</View>

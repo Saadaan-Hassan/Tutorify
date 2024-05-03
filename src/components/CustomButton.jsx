@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet } from "react-native";
 import { Button } from "react-native-paper";
+import { commonStyles } from "../styles/commonStyles";
 
 export default function CustomButton({
 	title,
@@ -26,9 +27,9 @@ export default function CustomButton({
 		textColor ||
 		(mode === "contained-tonal"
 			? styleReverse
-				? "#0A6847"
-				: "#F6E9B2"
-			: "#0A6847");
+				? commonStyles.colors.primary
+				: commonStyles.colors.secondary
+			: commonStyles.colors.primary);
 
 	return (
 		<Button
@@ -47,17 +48,17 @@ const styles = StyleSheet.create({
 	button: {
 		width: 300,
 		height: 40,
-		backgroundColor: "#0A6847",
+		backgroundColor: commonStyles.colors.primary,
 		borderRadius: 16,
 		marginBottom: 10,
 	},
 	buttonReverse: {
-		backgroundColor: "#F6E9B2",
-		borderColor: "#0A6847",
+		backgroundColor: commonStyles.colors.neutral,
+		borderColor: commonStyles.colors.primary,
 	},
 	buttonOutlined: {
-		backgroundColor: "#F6E9B2",
-		borderColor: "#0A6847",
+		backgroundColor: "transparent",
+		borderColor: commonStyles.colors.primary,
 		borderWidth: 1,
 	},
 });

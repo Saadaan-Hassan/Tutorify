@@ -9,6 +9,8 @@ import LoginScreen from "./src/screens/LoginScreen";
 import OnboardingScreen from "./src/screens/OnboardingScreen";
 import SignupScreen from "./src/screens/SignupScreen";
 import TutorsScreen from "./src/screens/TutorsScreen";
+import TutorScreen from "./src/screens/TutorScreen";
+import Header from "./src/components/Header";
 
 const Stack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
@@ -52,11 +54,26 @@ export default function App() {
 			<StatusBar style='auto' />
 			<Stack.Navigator
 				initialRouteName='Onboarding'
-				screenOptions={{ headerShown: false }}>
-				<Stack.Screen name='Onboarding' component={OnboardingScreen} />
-				<Stack.Screen name='Login' component={LoginScreen} />
-				<Stack.Screen name='Signup' component={SignupScreen} />
+				screenOptions={{
+					header: () => <Header />,
+				}}>
+				<Stack.Screen
+					name='Onboarding'
+					component={OnboardingScreen}
+					options={{ headerShown: false }}
+				/>
+				<Stack.Screen
+					name='Login'
+					component={LoginScreen}
+					options={{ headerShown: false }}
+				/>
+				<Stack.Screen
+					name='Signup'
+					component={SignupScreen}
+					options={{ headerShown: false }}
+				/>
 				<Stack.Screen name='TabNavigator' component={TabNavigator} />
+				<Stack.Screen name='Tutor' component={TutorScreen} />
 			</Stack.Navigator>
 		</NavigationContainer>
 	);

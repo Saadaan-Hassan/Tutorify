@@ -1,13 +1,11 @@
 import { View, Text, FlatList, StyleSheet, Dimensions } from "react-native";
 import React from "react";
-import Header from "../components/Header";
 import SearchBar from "../components/SearchBar";
 import TutorCard from "../components/TutorCard";
 
 export default function TutorsScreen() {
 	return (
 		<View style={styles.container}>
-			<Header />
 			<SearchBar />
 
 			<Text style={styles.heading}>All Tutors</Text>

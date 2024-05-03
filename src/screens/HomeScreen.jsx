@@ -8,7 +8,6 @@ import {
 } from "react-native";
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
-import Header from "../components/Header";
 import SearchBar from "../components/SearchBar";
 import CustomButton from "../components/CustomButton";
 import CustomLink from "../components/CustomLink";
@@ -20,7 +19,6 @@ export default function HomeScreen() {
 	return (
 		<ScrollView contentContainerStyle={styles.scrollContainer}>
 			<View style={styles.container}>
-				<Header />
 				<SearchBar />
 
 				<View

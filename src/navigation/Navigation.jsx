@@ -3,6 +3,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createMaterialBottomTabNavigator } from "react-native-paper/react-navigation";
 import { Icon } from "react-native-paper";
+import { commonStyles } from "../styles/commonStyles";
 import HomeScreen from "../screens/HomeScreen";
 import LoginScreen from "../screens/LoginScreen";
 import OnboardingScreen from "../screens/OnboardingScreen";
@@ -11,10 +12,27 @@ import TutorsScreen from "../screens/TutorsScreen";
 import TutorDetialScreen from "../screens/TutorDetailScreen";
 import Header from "../components/Header";
 import ProfileScreen from "../screens/ProfileScreen";
-import { commonStyles } from "../styles/commonStyles";
+import ChatScreen from "../screens/ChatScreen";
 
 const Stack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
+
+const ChatStackNavigator = () => {
+	return (
+		<Stack.Navigator>
+			<Stack.Screen
+				name='Chat'
+				component={ChatScreen}
+				options={{ headerShown: false }}
+			/>
+			<Stack.Screen
+				name='ChatDetail'
+				component={ChatScreen}
+				options={{ headerShown: false }}
+			/>
+		</Stack.Navigator>
+	);
+};
 
 const TabNavigator = () => {
 	return (
@@ -44,6 +62,16 @@ const TabNavigator = () => {
 					tabBarLabel: "Tutors",
 					tabBarIcon: ({ color }) => (
 						<Icon source='compass-outline' color={color} size={26} />
+					),
+				}}
+			/>
+			<Tab.Screen
+				name='Chat'
+				component={ChatStackNavigator}
+				options={{
+					tabBarLabel: "Chat",
+					tabBarIcon: ({ color }) => (
+						<Icon source='message-text' color={color} size={26} />
 					),
 				}}
 			/>

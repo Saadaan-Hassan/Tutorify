@@ -83,7 +83,7 @@ export default function ProfileScreen() {
 					title='Logout'
 					style={styles.button}
 					contentStyle={{ justifyContent: "flex-start" }}
-					textColor='#FF6584'
+					textColor={commonStyles.colors.tertiary}
 				/>
 			</View>
 		</View>

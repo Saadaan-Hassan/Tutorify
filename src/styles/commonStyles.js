@@ -5,6 +5,7 @@ export const commonStyles = StyleSheet.create({
 	colors: {
 		primary: theme.colors.primary,
 		secondary: theme.colors.secondary,
+		tertiary: theme.colors.tertiary,
 
 		textPrimary: theme.colors.textPrimary,
 		textSecondary: theme.colors.textSecondary,

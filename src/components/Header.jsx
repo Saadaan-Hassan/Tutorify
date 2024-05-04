@@ -40,6 +40,19 @@ export default function Header() {
 		</View>
 	);
 
+	const renderChatHeader = () => (
+		<View style={styles.headerContainer}>
+			{renderBackButton()}
+			<Appbar.Content title='Chat' style={styles.profileTitle} />
+			<Appbar.Action
+				icon='phone-outline'
+				onPress={handleMore}
+				iconColor={commonStyles.colors.primary}
+				style={{ backgroundColor: commonStyles.colors.secondary }}
+			/>
+		</View>
+	);
+
 	const renderDefaultHeader = () => (
 		<View style={styles.headerContainer}>
 			<Appbar.Content
@@ -66,8 +79,10 @@ export default function Header() {
 			style={{ backgroundColor: commonStyles.colors.background }}>
 			{route.name === "TutorDetail" && renderTutorDetailHeader()}
 			{route.name === "Profile" && renderProfileHeader()}
+			{route.name === "ChatDetail" && renderChatHeader()}
 			{route.name !== "TutorDetail" &&
 				route.name !== "Profile" &&
+				route.name !== "ChatDetail" &&
 				renderDefaultHeader()}
 		</Appbar.Header>
 	);

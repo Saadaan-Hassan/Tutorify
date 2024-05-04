@@ -6,13 +6,15 @@ export default function CustomInput({
 	placeholder,
 	type = "text",
 	value,
+	containerStyle,
+	inputStyle,
 	onChangeText,
 }) {
 	return (
-		<View style={styles.container}>
+		<View style={[styles.container, containerStyle]}>
 			<Text style={styles.label}>{label}</Text>
 			<TextInput
-				style={styles.input}
+				style={[styles.input, inputStyle]}
 				placeholder={placeholder}
 				value={value}
 				onChangeText={onChangeText}

@@ -13,26 +13,10 @@ import TutorDetialScreen from "../screens/TutorDetailScreen";
 import Header from "../components/Header";
 import ProfileScreen from "../screens/ProfileScreen";
 import ChatScreen from "../screens/ChatScreen";
+import ChatDetailScreen from "../screens/ChatDetailScreen";
 
 const Stack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
-
-const ChatStackNavigator = () => {
-	return (
-		<Stack.Navigator>
-			<Stack.Screen
-				name='Chat'
-				component={ChatScreen}
-				options={{ headerShown: false }}
-			/>
-			<Stack.Screen
-				name='ChatDetail'
-				component={ChatScreen}
-				options={{ headerShown: false }}
-			/>
-		</Stack.Navigator>
-	);
-};
 
 const TabNavigator = () => {
 	return (
@@ -67,7 +51,7 @@ const TabNavigator = () => {
 			/>
 			<Tab.Screen
 				name='Chat'
-				component={ChatStackNavigator}
+				component={ChatScreen}
 				options={{
 					tabBarLabel: "Chat",
 					tabBarIcon: ({ color }) => (
@@ -104,6 +88,7 @@ const MainNavigator = () => {
 			<Stack.Screen name='TabNavigator' component={TabNavigator} />
 			<Stack.Screen name='TutorDetail' component={TutorDetialScreen} />
 			<Stack.Screen name='Profile' component={ProfileScreen} />
+			<Stack.Screen name='ChatDetail' component={ChatDetailScreen} />
 		</Stack.Navigator>
 	);
 };

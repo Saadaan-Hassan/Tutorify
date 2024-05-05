@@ -7,7 +7,7 @@ import CustomInput from "../components/CustomInput";
 import { Avatar, Button, Card, Divider, Text, Dialog, Portal, TextInput } from 'react-native-paper';
 
 
-export default function ProfileInfo() {
+export default function ProfilePassword() {
 return (
 	<View style={styles.container}>
 		<View>
@@ -30,14 +30,14 @@ return (
         }}
       	/>
 			<CustomInput
-				label="Name"
-				placeholder="Enter your name"
+				label="Password"
+				placeholder="Enter Your Password"
 				value=""
 				onChangeText={(text) => console.log(text)}
 			/>
 			<CustomInput
-				label="Academic Status"
-				placeholder="Enter your academic status"
+				label="Confirm Password"
+				placeholder="Confirm Your Password"
 				value=""
 				onChangeText={(text) => console.log(text)}
 			/>
@@ -45,7 +45,7 @@ return (
 
 		<View style={styles.centered}>
 			<CustomButton
-				title='Edit Profile'
+				title='Confirm'
 				style={styles.editButton}
 			/>
 		</View>

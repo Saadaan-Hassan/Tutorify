@@ -10,10 +10,13 @@ import OnboardingScreen from "../screens/OnboardingScreen";
 import SignupScreen from "../screens/SignupScreen";
 import TutorsScreen from "../screens/TutorsScreen";
 import TutorDetialScreen from "../screens/TutorDetailScreen";
+import ProfileInfo from '../screens/ProfileInfo';  
 import Header from "../components/Header";
 import ProfileScreen from "../screens/ProfileScreen";
 import ChatScreen from "../screens/ChatScreen";
 import ChatDetailScreen from "../screens/ChatDetailScreen";
+import ProfilePassword from "../screens/ProfilePassword";
+import ProfilePrivacy from "../screens/ProfilePrivacy";
 
 const Stack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
@@ -87,6 +90,9 @@ const MainNavigator = () => {
 			/>
 			<Stack.Screen name='TabNavigator' component={TabNavigator} />
 			<Stack.Screen name='TutorDetail' component={TutorDetialScreen} />
+			<Stack.Screen name='ProfileInfo' component={ProfileInfo} />
+			<Stack.Screen name='ProfilePassword' component={ProfilePassword} />
+			<Stack.Screen name='ProfilePrivacy' component={ProfilePrivacy} />
 			<Stack.Screen name='Profile' component={ProfileScreen} />
 			<Stack.Screen name='ChatDetail' component={ChatDetailScreen} />
 		</Stack.Navigator>

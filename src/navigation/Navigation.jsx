@@ -14,6 +14,10 @@ import Header from "../components/Header";
 import ProfileScreen from "../screens/ProfileScreen";
 import ChatScreen from "../screens/ChatScreen";
 import ChatDetailScreen from "../screens/ChatDetailScreen";
+import RegistrationScreen from "../screens/RegistrationScreen";
+import EmailVerificationScreen from "../screens/EmailVerificationScreen";
+import LocationScreen from "../screens/LocationScreen";
+import UsernameScreen from "../screens/UsernameScreen";
 
 const Stack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
@@ -83,6 +87,26 @@ const MainNavigator = () => {
 			<Stack.Screen
 				name='Signup'
 				component={SignupScreen}
+				options={{ headerShown: false }}
+			/>
+			<Stack.Screen
+				name='Register'
+				component={RegistrationScreen}
+				options={{ headerShown: false }}
+			/>
+			<Stack.Screen
+				name='EmailVerify'
+				component={EmailVerificationScreen}
+				options={{ headerShown: false }}
+			/>
+			<Stack.Screen
+				name='AddLocation'
+				component={LocationScreen}
+				options={{ headerShown: false }}
+			/>
+			<Stack.Screen
+				name='Username'
+				component={UsernameScreen}
 				options={{ headerShown: false }}
 			/>
 			<Stack.Screen name='TabNavigator' component={TabNavigator} />

@@ -3,6 +3,7 @@ import React from "react";
 import { Avatar, Button, Card, Divider, Text } from "react-native-paper";
 import CustomButton from "../components/CustomButton";
 import { commonStyles } from "../styles/commonStyles";
+import useAuth from "../utils/hooks/useAuth";
 
 const LeftContent = (props) => (
 	<Avatar.Image
@@ -13,6 +14,8 @@ const LeftContent = (props) => (
 );
 
 export default function ProfileScreen() {
+	const { logOut } = useAuth();
+
 	return (
 		<View style={styles.container}>
 			<Card.Title
@@ -84,6 +87,7 @@ export default function ProfileScreen() {
 					style={styles.button}
 					contentStyle={{ justifyContent: "flex-start" }}
 					textColor={commonStyles.colors.tertiary}
+					onPress={logOut}
 				/>
 			</View>
 		</View>

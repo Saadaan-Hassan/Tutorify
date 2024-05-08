@@ -1,4 +1,5 @@
-import { View, Text, TextInput, StyleSheet } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
+import { TextInput } from "react-native-paper";
 import { commonStyles } from "../styles/commonStyles";
 
 export default function CustomInput({
@@ -9,13 +10,18 @@ export default function CustomInput({
 	containerStyle,
 	inputStyle,
 	onChangeText,
+	error,
 }) {
 	return (
 		<View style={[styles.container, containerStyle]}>
 			<Text style={styles.label}>{label}</Text>
 			<TextInput
+				mode='outlined'
 				style={[styles.input, inputStyle]}
+				outlineStyle={{ borderRadius: 16 }}
+				error={error}
 				placeholder={placeholder}
+				placeholderTextColor={commonStyles.colors.textSecondary}
 				value={value}
 				onChangeText={onChangeText}
 				inputMode={type === "password" ? "text" : type}
@@ -38,10 +44,6 @@ const styles = StyleSheet.create({
 	input: {
 		width: 300,
 		height: 40,
-		padding: 5,
-		paddingLeft: 10,
-		borderWidth: 1,
-		borderColor: commonStyles.colors.primary,
-		borderRadius: 15,
+		color: commonStyles.colors.textPrimary,
 	},
 });

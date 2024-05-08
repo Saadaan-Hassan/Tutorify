@@ -4,11 +4,10 @@ import Onboarding from "react-native-onboarding-swiper";
 import LottieView from "lottie-react-native";
 import { useNavigation } from "@react-navigation/native";
 import { commonStyles } from "../styles/commonStyles";
-import { Icon } from "react-native-paper";
 
 const { width } = Dimensions.get("window");
 
-export default function OnboardingScreen() {
+export default function OnboardingScreen({ onComplete }) {
 	const navigation = useNavigation();
 	const onboardingRef = useRef(null);
 
@@ -24,7 +23,8 @@ export default function OnboardingScreen() {
 	}, []);
 
 	const handleDone = () => {
-		navigation.navigate("Login");
+		onComplete();
+		navigation.navigate("Auth");
 	};
 
 	const dotButtons = ({ selected }) => (

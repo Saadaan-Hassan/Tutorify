@@ -12,6 +12,8 @@ export default function CustomButton({
 	onPress,
 	icon,
 	textColor,
+	disabled,
+	loading,
 }) {
 	const buttonStyles = [
 		styles.button,
@@ -21,6 +23,7 @@ export default function CustomButton({
 				: null
 			: styles.buttonOutlined,
 		style,
+		disabled && { backgroundColor: commonStyles.colors.inactivePrimary },
 	];
 
 	const buttonTextColor =
@@ -38,7 +41,9 @@ export default function CustomButton({
 			textColor={buttonTextColor}
 			style={buttonStyles}
 			contentStyle={contentStyle}
-			onPress={onPress}>
+			onPress={onPress}
+			disabled={disabled}
+			loading={loading}>
 			{title}
 		</Button>
 	);

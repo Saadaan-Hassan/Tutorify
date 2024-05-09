@@ -52,7 +52,7 @@ const useAuth = () => {
 			);
 
 			// Navigate to the TabNavigator
-			navigation.navigate("TabNavigator");
+			navigation.navigate("Registration");
 		} catch (error) {
 			setError(error.message);
 		}

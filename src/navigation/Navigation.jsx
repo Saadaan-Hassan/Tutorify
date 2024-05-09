@@ -14,6 +14,7 @@ import {
 	ProfileScreen,
 	ChatScreen,
 	ChatDetailScreen,
+	RegistrationScreen,
 } from "../screens";
 import Header from "../components/Header";
 import { Icon } from "react-native-paper";
@@ -114,6 +115,11 @@ const MainNavigator = () => {
 					<Stack.Screen name='TutorDetail' component={TutorDetailScreen} />
 					<Stack.Screen name='Profile' component={ProfileScreen} />
 					<Stack.Screen name='ChatDetail' component={ChatDetailScreen} />
+					<Stack.Screen
+						name='Registration'
+						component={RegistrationScreen}
+						options={{ headerShown: false }}
+					/>
 				</>
 			) : (
 				<>

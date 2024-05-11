@@ -7,7 +7,7 @@ import { Checkbox } from "react-native-paper";
 import { commonStyles } from "../styles/commonStyles";
 import useAuth from "../utils/hooks/useAuth.js";
 
-export default function AuthScreen({ navigation }) {
+export default function AuthScreen() {
 	const { signUp, signIn, error } = useAuth();
 
 	const [isSignup, setIsSignup] = useState(false);

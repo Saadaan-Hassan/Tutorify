@@ -7,6 +7,9 @@ import {
 	StyleSheet,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { doc, updateDoc, getDoc } from "firebase/firestore";
+import { db } from "../services/firebase";
+import { useUser } from "../utils/context/UserContext";
 
 const questions = [
 	{
@@ -43,21 +46,40 @@ const questions = [
 	{
 		id: 4,
 		question: "Username",
-		input: true, // Indicate that it's an input field
+		input: true,
 	},
 ];
 
-export default function RegistrationScreen() {
+const Option = ({ option, selected, onPress }) => (
+	<TouchableOpacity
+		onPress={onPress}
+		style={[styles.choice, selected && styles.selectedChoice]}>
+		<Text style={styles.text}>{option}</Text>
+	</TouchableOpacity>
+);
+
+const InputField = ({ value, onChangeText, placeholder }) => (
+	<TextInput
+		style={styles.input}
+		value={value}
+		onChangeText={onChangeText}
+		placeholder={placeholder}
+	/>
+);
+
+const RegistrationScreen = () => {
+	const { user } = useUser();
 	const navigation = useNavigation();
+
 	const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 	const [selectedOptionIndex, setSelectedOptionIndex] = useState(null);
 	const [selectedOptions, setSelectedOptions] = useState([]);
-	const [username, setUsername] = useState(""); // State for username input
+	const [username, setUsername] = useState("");
 	const [isDisabled, setIsDisabled] = useState(true);
 	const currentQuestion = questions[currentQuestionIndex];
+	const [userDetails, setUserDetails] = useState({});
 
 	useEffect(() => {
-		// Enable the Continue button if an option is selected or username is entered
 		setIsDisabled(
 			currentQuestion.multiSelect
 				? selectedOptions.length === 0
@@ -67,8 +89,6 @@ export default function RegistrationScreen() {
 
 	const handleOptionSelect = (index) => {
 		if (currentQuestion.multiSelect) {
-			// For questions where multiple selections are allowed
-			// Toggle the selection state of the option
 			setSelectedOptions((prevSelectedOptions) => {
 				const newSelectedOptions = [...prevSelectedOptions];
 				const selectedIndex = newSelectedOptions.indexOf(index);
@@ -80,7 +100,6 @@ export default function RegistrationScreen() {
 				return newSelectedOptions;
 			});
 		} else {
-			// For questions where only one selection is allowed
 			setSelectedOptionIndex(index);
 		}
 	};
@@ -89,16 +108,66 @@ export default function RegistrationScreen() {
 		setUsername(text);
 	};
 
-	const handleQuestionSelect = () => {
-		if (currentQuestionIndex < questions.length - 1) {
-			setSelectedOptions([]);
-			setSelectedOptionIndex(null);
-			setUsername(""); // Clear username input on proceeding to the next question
-			setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
-		} else {
-			navigation.navigate("Profile");
-			console.log("Registration Successful");
+	const handleQuestionSelect = async () => {
+		try {
+			let updatedUserDetails = { ...userDetails };
+
+			if (currentQuestion.input) {
+				updatedUserDetails = { ...updatedUserDetails, username: username };
+			} else {
+				const selectedOption = getSelectedOption();
+
+				// Assign the selected option to the appropriate attribute based on the question
+				switch (currentQuestionIndex) {
+					case 0:
+						updatedUserDetails.role = selectedOption;
+						break;
+					case 1:
+						updatedUserDetails.level = selectedOption;
+						break;
+					case 2:
+						updatedUserDetails.subjects = selectedOption;
+						break;
+					default:
+						break;
+				}
+			}
+
+			setUserDetails(updatedUserDetails);
+
+			if (currentQuestionIndex < questions.length - 1) {
+				setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
+			} else {
+				const userDocSnapshot = await getDoc(doc(db, "users", user.uid));
+				const userDocRef = userDocSnapshot.ref;
+				await updateDoc(userDocRef, updatedUserDetails);
+				navigation.navigate("Profile");
+				console.log("Registration Successful");
+			}
+		} catch (error) {
+			console.error("Error updating user data:", error.message);
+			// You can display a user-friendly error message here
 		}
+	};
+
+	const getSelectedOption = () => {
+		if (currentQuestion.multiSelect) {
+			return selectedOptions.map((index) => currentQuestion.options[index]);
+		} else {
+			return currentQuestion.options[selectedOptionIndex];
+		}
+	};
+
+	const handleBackQuestion = () => {
+		// Decrease the current question index
+		setCurrentQuestionIndex((prevIndex) => prevIndex - 1);
+
+		// Remove the previous question from userDetails
+		setUserDetails((prevUserDetails) => {
+			const updatedUserDetails = { ...prevUserDetails };
+			delete updatedUserDetails[`question${currentQuestionIndex}`];
+			return updatedUserDetails;
+		});
 	};
 
 	return (
@@ -106,41 +175,45 @@ export default function RegistrationScreen() {
 			<Text style={styles.title}>{currentQuestion.question}</Text>
 			{currentQuestion.options &&
 				currentQuestion.options.map((option, index) => (
-					<TouchableOpacity
+					<Option
 						key={index}
+						option={option}
+						selected={
+							currentQuestion.multiSelect
+								? selectedOptions.includes(index)
+								: selectedOptionIndex === index
+						}
 						onPress={() => handleOptionSelect(index)}
-						style={[
-							styles.choice,
-							currentQuestion.multiSelect &&
-								selectedOptions.includes(index) &&
-								styles.selectedChoice,
-							!currentQuestion.multiSelect &&
-								selectedOptionIndex === index &&
-								styles.selectedChoice,
-						]}>
-						<Text style={styles.text}>{option}</Text>
-					</TouchableOpacity>
+					/>
 				))}
 			{currentQuestion.input && (
-				<TextInput
-					style={styles.input}
-					onChangeText={handleUsernameChange}
+				<InputField
 					value={username}
+					onChangeText={handleUsernameChange}
 					placeholder='Enter your username'
 				/>
 			)}
-			<TouchableOpacity
-				disabled={isDisabled}
-				onPress={handleQuestionSelect}
-				style={[
-					styles.button,
-					{ backgroundColor: isDisabled ? "#b6a6bd" : "#5316B6" },
-				]}>
-				<Text style={styles.buttonText}>Continue</Text>
-			</TouchableOpacity>
+			<View style={styles.buttonContainer}>
+				{currentQuestionIndex > 0 && (
+					<TouchableOpacity
+						onPress={handleBackQuestion}
+						style={[styles.button, { backgroundColor: "#b6a6bd" }]}>
+						<Text style={styles.buttonText}>Back</Text>
+					</TouchableOpacity>
+				)}
+				<TouchableOpacity
+					disabled={isDisabled}
+					onPress={handleQuestionSelect}
+					style={[
+						styles.button,
+						{ backgroundColor: isDisabled ? "#b6a6bd" : "#5316B6" },
+					]}>
+					<Text style={styles.buttonText}>Continue</Text>
+				</TouchableOpacity>
+			</View>
 		</View>
 	);
-}
+};
 
 const styles = StyleSheet.create({
 	container: {
@@ -187,8 +260,15 @@ const styles = StyleSheet.create({
 		borderWidth: 1,
 		borderColor: "transparent",
 	},
+	buttonContainer: {
+		flexDirection: "row",
+		gap: 20,
+		justifyContent: "space-between",
+		marginTop: 10,
+		marginHorizontal: 10,
+	},
 	button: {
-		width: 350,
+		width: "50%",
 		height: 50,
 		borderRadius: 16,
 		marginTop: 20,
@@ -201,3 +281,5 @@ const styles = StyleSheet.create({
 		fontWeight: "bold",
 	},
 });
+
+export default RegistrationScreen;

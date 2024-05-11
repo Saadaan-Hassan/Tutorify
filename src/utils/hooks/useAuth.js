@@ -5,6 +5,8 @@ import {
 	signInWithEmailAndPassword,
 	signOut,
 } from "firebase/auth";
+import { collection, addDoc, getDoc, doc, setDoc } from "firebase/firestore";
+import { db } from "../../services/firebase";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { useUser } from "../context/UserContext";
@@ -18,13 +20,17 @@ const useAuth = () => {
 		const unsubscribe = auth.onAuthStateChanged(async (authUser) => {
 			try {
 				if (authUser) {
-					setUser(authUser);
-					await AsyncStorage.setItem("accessToken", authUser.accessToken);
-					console.log("User is signed in:", authUser.email);
+					const usersCollection = collection(db, "users");
+					const userDoc = doc(usersCollection, authUser.uid);
+					const userSnapshot = await getDoc(userDoc);
+
+					if (userSnapshot.exists()) {
+						setUser(userSnapshot.data());
+					} else {
+						console.error("User not found in Firestore database");
+					}
 				} else {
 					setUser(null);
-					await AsyncStorage.removeItem("accessToken");
-					console.log("User is signed out");
 				}
 			} catch (error) {
 				console.error("Error during authentication state change:", error);
@@ -44,14 +50,26 @@ const useAuth = () => {
 				email,
 				password
 			);
-			setUser(userCredential.user);
+
+			// Add user to the Firestore database
+			const usersCollection = collection(db, "users");
+
+			await setDoc(doc(usersCollection, userCredential.user.uid), {
+				uid: userCredential.user.uid,
+				email: userCredential.user.email,
+				createAt: new Date(),
+			});
+
+			// Clear the error
 			setError(null);
+
+			// Store the access token in AsyncStorage
 			await AsyncStorage.setItem(
 				"accessToken",
 				userCredential.user.accessToken
 			);
 
-			// Navigate to the TabNavigator
+			// Navigate to the Registration screen
 			navigation.navigate("Registration");
 		} catch (error) {
 			setError(error.message);
@@ -66,8 +84,11 @@ const useAuth = () => {
 				email,
 				password
 			);
-			setUser(userCredential.user);
+
+			// Clear the error
 			setError(null);
+
+			// Store the access token in AsyncStorage
 			await AsyncStorage.setItem(
 				"accessToken",
 				userCredential.user.accessToken
@@ -87,7 +108,8 @@ const useAuth = () => {
 			await signOut(auth);
 			setUser(null);
 			setError(null);
-			// Remove user token from AsyncStorage
+
+			// Remove the access token from AsyncStorage
 			await AsyncStorage.removeItem("accessToken");
 
 			// Navigate to the Auth

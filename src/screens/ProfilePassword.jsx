@@ -11,26 +11,9 @@ export default function ProfilePassword() {
 return (
 	<View style={styles.container}>
 		<View>
-		<Card.Title
-        title='Email: '
-        subtitle='example@gmail.com'
-        style={{ marginVertical: 20 }}
-        titleStyle={{
-          fontSize: 24,
-          fontWeight: "bold",
-          minHeight: 25,
-          color: commonStyles.colors.textPrimary,
-		  marginLeft: -15,
-        }}
-        subtitleStyle={{
-          fontSize: 16,
-          color: commonStyles.colors.textSecondary,
-		  marginLeft: -5,
-		  marginBottom: -25,
-        }}
-      	/>
+		
 			<CustomInput
-				label="Password"
+				label="New Password"
 				placeholder="Enter Your Password"
 				value=""
 				onChangeText={(text) => console.log(text)}

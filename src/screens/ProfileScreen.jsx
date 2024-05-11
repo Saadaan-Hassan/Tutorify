@@ -1,9 +1,10 @@
 import { View } from "react-native";
 import React from "react";
-import { Avatar, Button, Card, Divider, Text } from "react-native-paper";
+import { Avatar, Card, Divider } from "react-native-paper";
 import CustomButton from "../components/CustomButton";
 import { commonStyles } from "../styles/commonStyles";
 import useAuth from "../utils/hooks/useAuth";
+import { useUser } from "../utils/context/UserContext";
 
 const LeftContent = (props) => (
 	<Avatar.Image
@@ -14,13 +15,14 @@ const LeftContent = (props) => (
 );
 
 export default function ProfileScreen() {
+	const { user } = useUser();
 	const { logOut } = useAuth();
 
 	return (
 		<View style={styles.container}>
 			<Card.Title
-				title='Damilola John'
-				subtitle='High school student'
+				title={user?.username}
+				subtitle={user?.level}
 				style={{
 					marginVertical: 20,
 				}}

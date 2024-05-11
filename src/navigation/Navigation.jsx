@@ -100,7 +100,7 @@ const MainNavigator = () => {
 	if (isLoading) {
 		return null;
 	}
-
+	console.log("In MainNavigator, user:", user);
 	return (
 		<Stack.Navigator
 			initialRouteName={

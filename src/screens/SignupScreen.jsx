@@ -16,7 +16,7 @@ export default function SignupScreen({ navigation }) {
 		console.log("Email: ", email);
 		console.log("Password: ", password);
 		console.log("Confirm Password: ", confirmPassword);
-		navigation.navigate("TabNavigator");
+		navigation.navigate("Register");
 	};
 
 	return (

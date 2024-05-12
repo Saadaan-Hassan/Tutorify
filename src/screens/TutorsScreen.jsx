@@ -1,21 +1,34 @@
-import { View, Text, FlatList, StyleSheet, Dimensions } from "react-native";
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { View, Text, FlatList, StyleSheet } from "react-native";
 import SearchBar from "../components/SearchBar";
 import TutorCard from "../components/TutorCard";
+import useRoleBasedUser from "../utils/hooks/useRoleBasedUser";
+import { useUser } from "../utils/context/UserContext";
 
 export default function TutorsScreen() {
+	const { user } = useUser();
+	const users = useRoleBasedUser(user.role);
+
+	const [searchedUsers, setSearchedUsers] = useState(users);
+
+	useEffect(() => {
+		setSearchedUsers(users);
+	}, [users]);
+
 	return (
 		<View style={styles.container}>
-			<SearchBar />
+			<SearchBar users={users} setSearchedUsers={setSearchedUsers} />
 
 			<Text style={styles.heading}>All Tutors</Text>
 
 			<FlatList
-				data={[1, 2, 3, 4, 5, 6, 7, 8, 10]}
-				renderItem={() => <TutorCard />}
-				keyExtractor={(item) => item.toString()}
+				data={searchedUsers}
+				keyExtractor={(item) => item.id}
 				numColumns={2}
 				contentContainerStyle={styles.flatListContainer}
+				renderItem={({ item }) => (
+					<TutorCard username={item.username} subjects={item.subjects} />
+				)}
 			/>
 		</View>
 	);

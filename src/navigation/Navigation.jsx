@@ -15,6 +15,10 @@ import {
 	ChatScreen,
 	ChatDetailScreen,
 	RegistrationScreen,
+	AccountScreen,
+	PasswordScreen,
+	PrivacyScreen,
+	LocationScreen,
 } from "../screens";
 import Header from "../components/Header";
 import { Icon } from "react-native-paper";
@@ -114,7 +118,12 @@ const MainNavigator = () => {
 					<Stack.Screen name='TabNavigator' component={TabNavigator} />
 					<Stack.Screen name='TutorDetail' component={TutorDetailScreen} />
 					<Stack.Screen name='Profile' component={ProfileScreen} />
+					<Stack.Screen name='Account' component={AccountScreen} />
+					<Stack.Screen name='Password' component={PasswordScreen} />
+					<Stack.Screen name='PrivacyScreen' component={PrivacyScreen} />
 					<Stack.Screen name='ChatDetail' component={ChatDetailScreen} />
+					<Stack.Screen name='Location' component={LocationScreen} />
+
 					<Stack.Screen
 						name='Registration'
 						component={RegistrationScreen}

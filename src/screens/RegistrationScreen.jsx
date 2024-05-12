@@ -10,7 +10,7 @@ import { useNavigation } from "@react-navigation/native";
 import { doc, updateDoc, getDoc } from "firebase/firestore";
 import { db } from "../services/firebase";
 import { useUser } from "../utils/context/UserContext";
-import LocationPicker from "../components/LocationPiker";
+import LocationPicker from "../components/LocationPicker";
 
 const questions = [
 	{

@@ -5,6 +5,7 @@ import { Picker } from "@react-native-picker/picker";
 import countriesData from "../data/countries.min.json";
 
 export default function LocationSelector({
+	title,
 	subtitle,
 	selectedCountry,
 	setSelectedCountry,
@@ -16,7 +17,7 @@ export default function LocationSelector({
 
 	return (
 		<View style={styles.container}>
-			<Text style={styles.title}>Add Location</Text>
+			<Text style={styles.title}>{title || "Add Location"}</Text>
 			<Text style={styles.subtitle}>
 				{subtitle || "Add your location to find tutors near you"}
 			</Text>

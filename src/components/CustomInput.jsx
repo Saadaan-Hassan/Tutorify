@@ -11,12 +11,14 @@ export default function CustomInput({
 	inputStyle,
 	onChangeText,
 	error,
+	multiline = false,
 }) {
 	return (
 		<View style={[styles.container, containerStyle]}>
 			<Text style={styles.label}>{label}</Text>
 			<TextInput
 				mode='outlined'
+				multiline={multiline}
 				style={[styles.input, inputStyle]}
 				outlineStyle={{ borderRadius: 16 }}
 				error={error}

@@ -1,10 +1,20 @@
+import React, { useState } from "react";
 import { View } from "react-native";
-import React from "react";
-import { Avatar, Card, Divider } from "react-native-paper";
+import {
+	Avatar,
+	Button,
+	Card,
+	Divider,
+	Text,
+	Dialog,
+	Portal,
+	TextInput,
+} from "react-native-paper";
 import CustomButton from "../components/CustomButton";
 import { commonStyles } from "../styles/commonStyles";
 import useAuth from "../utils/hooks/useAuth";
 import { useUser } from "../utils/context/UserContext";
+import { useNavigation } from "@react-navigation/native";
 
 const LeftContent = (props) => (
 	<Avatar.Image
@@ -17,8 +27,8 @@ const LeftContent = (props) => (
 export default function ProfileScreen() {
 	const { user } = useUser();
 	const { logOut } = useAuth();
-
 	const navigation = useNavigation();
+
 	const [visible, setVisible] = useState(false);
 	const [password, setPassword] = useState("");
 
@@ -26,7 +36,7 @@ export default function ProfileScreen() {
 	const hideDialog = () => setVisible(false);
 	const checkPassword = () => {
 		hideDialog();
-		navigation.navigate("ProfilePassword");
+		navigation.navigate("Password");
 	};
 
 	return (
@@ -58,6 +68,7 @@ export default function ProfileScreen() {
 					style={styles.button}
 					contentStyle={{ justifyContent: "flex-start" }}
 					textColor={commonStyles.colors.primary}
+					onPress={() => navigation.navigate("Account")}
 				/>
 				<Divider />
 				<CustomButton
@@ -66,6 +77,7 @@ export default function ProfileScreen() {
 					style={styles.button}
 					contentStyle={{ justifyContent: "flex-start" }}
 					textColor={commonStyles.colors.primary}
+					onPress={showDialog}
 				/>
 				<Divider />
 				<CustomButton
@@ -77,19 +89,14 @@ export default function ProfileScreen() {
 				/>
 				<Divider />
 				<CustomButton
-					icon={"credit-card"}
-					title='Payments'
+					icon={"shield-account"}
+					title='Privacy Policy'
 					style={styles.button}
 					contentStyle={{ justifyContent: "flex-start" }}
 					textColor={commonStyles.colors.primary}
-				/>
-				<Divider />
-				<CustomButton
-					icon={"help-circle"}
-					title='Help'
-					style={styles.button}
-					contentStyle={{ justifyContent: "flex-start" }}
-					textColor={commonStyles.colors.primary}
+					onPress={() => {
+						navigation.navigate("PrivacyScreen");
+					}}
 				/>
 				<Divider />
 				<CustomButton
@@ -101,6 +108,25 @@ export default function ProfileScreen() {
 					onPress={logOut}
 				/>
 			</View>
+
+			<Portal>
+				<Dialog visible={visible} onDismiss={hideDialog}>
+					<Dialog.Title>Confirm Password</Dialog.Title>
+					<Dialog.Content>
+						<TextInput
+							label='Password'
+							value={password}
+							onChangeText={setPassword}
+							secureTextEntry
+							autoFocus
+						/>
+					</Dialog.Content>
+					<Dialog.Actions>
+						<Button onPress={hideDialog}>Cancel</Button>
+						<Button onPress={checkPassword}>Confirm</Button>
+					</Dialog.Actions>
+				</Dialog>
+			</Portal>
 		</View>
 	);
 }

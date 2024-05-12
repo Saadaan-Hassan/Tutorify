@@ -1,34 +1,24 @@
+// LocationSelector.js
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 import { Picker } from "@react-native-picker/picker";
-import data from "../data/countries.min.json";
+import countriesData from "../data/countries.min.json";
 
-export default function LocationScreen() {
-	const navigation = useNavigation();
-	const [selectedCountry, setSelectedCountry] = useState("");
-	const [selectedCity, setSelectedCity] = useState("");
-	const countries = Object.keys(data);
-	const cities = selectedCountry ? data[selectedCountry] : [];
-
-	const handleContinue = () => {
-		if (selectedCountry && selectedCity) {
-			// Perform navigation or any other action
-			navigation.navigate("Username");
-		} else {
-			alert("Please select both country and city.");
-		}
-	};
-
-	const handleSkip = () => {
-		navigation.navigate("Username");
-	};
+export default function LocationSelector({
+	subtitle,
+	selectedCountry,
+	setSelectedCountry,
+	selectedCity,
+	setSelectedCity,
+}) {
+	const countries = Object.keys(countriesData);
+	const cities = selectedCountry ? countriesData[selectedCountry] : [];
 
 	return (
 		<View style={styles.container}>
 			<Text style={styles.title}>Add Location</Text>
 			<Text style={styles.subtitle}>
-				Add your location to find tutors near you
+				{subtitle || "Add your location to find tutors near you"}
 			</Text>
 			<View style={styles.dropdownContainer}>
 				<View style={styles.dropdown}>
@@ -53,7 +43,7 @@ export default function LocationScreen() {
 					</Picker>
 				</View>
 			</View>
-			<TouchableOpacity
+			{/* <TouchableOpacity
 				style={[
 					styles.button,
 					!selectedCountry || !selectedCity
@@ -63,20 +53,17 @@ export default function LocationScreen() {
 				onPress={handleContinue}
 				disabled={!selectedCountry || !selectedCity}>
 				<Text style={styles.buttonText}>Continue</Text>
-			</TouchableOpacity>
-			<TouchableOpacity style={styles.skipButton} onPress={handleSkip}>
-				<Text style={styles.skipButtonText}>Skip for now</Text>
-			</TouchableOpacity>
+			</TouchableOpacity> */}
 		</View>
 	);
 }
 
 const styles = StyleSheet.create({
 	container: {
-		flex: 1,
+		// flex: 1,
 		alignItems: "center",
 		justifyContent: "center",
-		paddingHorizontal: 20,
+		// paddingHorizontal: 20,
 	},
 	title: {
 		fontSize: 22,
@@ -92,16 +79,19 @@ const styles = StyleSheet.create({
 		marginBottom: 20,
 	},
 	dropdownContainer: {
-		flexDirection: "row",
+		// flexDirection: "row",
 		marginBottom: 20,
 	},
 	dropdown: {
-		flex: 1,
+		// flex: 1,
+		width: 350,
 		height: 50,
 		borderWidth: 2,
 		borderColor: "#ccc",
 		borderRadius: 10,
 		marginHorizontal: 5,
+		marginTop: 20,
+
 		paddingHorizontal: 10,
 		justifyContent: "center",
 	},
@@ -114,25 +104,8 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		justifyContent: "center",
 	},
-	skipButton: {
-		width: 350,
-		height: 50,
-		backgroundColor: "transparent",
-		borderRadius: 16,
-		marginBottom: 10,
-		marginTop: 10,
-		alignItems: "center",
-		justifyContent: "center",
-		borderWidth: 1,
-		borderColor: "#5316B6",
-	},
 	buttonText: {
 		color: "white",
-		fontSize: 16,
-		fontWeight: "bold",
-	},
-	skipButtonText: {
-		color: "#5316B6",
 		fontSize: 16,
 		fontWeight: "bold",
 	},

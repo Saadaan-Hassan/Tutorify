@@ -11,18 +11,18 @@ export default function LocationSelector({
 	setSelectedCountry,
 	selectedCity,
 	setSelectedCity,
+	titleStyle,
+	dropdownStyle,
 }) {
 	const countries = Object.keys(countriesData);
 	const cities = selectedCountry ? countriesData[selectedCountry] : [];
 
 	return (
 		<View style={styles.container}>
-			<Text style={styles.title}>{title || "Add Location"}</Text>
-			<Text style={styles.subtitle}>
-				{subtitle || "Add your location to find tutors near you"}
-			</Text>
+			<Text style={[styles.title, titleStyle]}>{title || "Add Location"}</Text>
+			{subtitle && <Text style={styles.subtitle}>{subtitle}</Text>}
 			<View style={styles.dropdownContainer}>
-				<View style={styles.dropdown}>
+				<View style={[styles.dropdown, dropdownStyle]}>
 					<Picker
 						selectedValue={selectedCountry}
 						onValueChange={(itemValue) => setSelectedCountry(itemValue)}>
@@ -32,7 +32,7 @@ export default function LocationSelector({
 						))}
 					</Picker>
 				</View>
-				<View style={styles.dropdown}>
+				<View style={[styles.dropdown, dropdownStyle]}>
 					<Picker
 						selectedValue={selectedCity}
 						onValueChange={(itemValue) => setSelectedCity(itemValue)}
@@ -44,28 +44,11 @@ export default function LocationSelector({
 					</Picker>
 				</View>
 			</View>
-			{/* <TouchableOpacity
-				style={[
-					styles.button,
-					!selectedCountry || !selectedCity
-						? { backgroundColor: "#b6a6bd" }
-						: null,
-				]}
-				onPress={handleContinue}
-				disabled={!selectedCountry || !selectedCity}>
-				<Text style={styles.buttonText}>Continue</Text>
-			</TouchableOpacity> */}
 		</View>
 	);
 }
 
 const styles = StyleSheet.create({
-	container: {
-		// flex: 1,
-		alignItems: "center",
-		justifyContent: "center",
-		// paddingHorizontal: 20,
-	},
 	title: {
 		fontSize: 22,
 		fontWeight: "700",
@@ -87,10 +70,9 @@ const styles = StyleSheet.create({
 		// flex: 1,
 		width: 350,
 		height: 50,
-		borderWidth: 2,
-		borderColor: "#ccc",
-		borderRadius: 10,
-		marginHorizontal: 5,
+		borderWidth: 1,
+		borderColor: "#000000",
+		borderRadius: 20,
 		marginTop: 20,
 
 		paddingHorizontal: 10,

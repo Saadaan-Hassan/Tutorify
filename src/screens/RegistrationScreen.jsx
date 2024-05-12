@@ -10,6 +10,7 @@ import { useNavigation } from "@react-navigation/native";
 import { doc, updateDoc, getDoc } from "firebase/firestore";
 import { db } from "../services/firebase";
 import { useUser } from "../utils/context/UserContext";
+import LocationPicker from "../components/LocationPiker";
 
 const questions = [
 	{
@@ -45,6 +46,15 @@ const questions = [
 	},
 	{
 		id: 4,
+		question: "Preferred Mode of Study",
+		options: ["Online", "In-person"],
+	},
+	{
+		id: 5,
+		component: true,
+	},
+	{
+		id: 6,
 		question: "Username",
 		input: true,
 	},
@@ -74,18 +84,50 @@ const RegistrationScreen = () => {
 	const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 	const [selectedOptionIndex, setSelectedOptionIndex] = useState(null);
 	const [selectedOptions, setSelectedOptions] = useState([]);
-	const [username, setUsername] = useState("");
 	const [isDisabled, setIsDisabled] = useState(true);
 	const currentQuestion = questions[currentQuestionIndex];
 	const [userDetails, setUserDetails] = useState({});
+	const [username, setUsername] = useState("");
+	const [selectedCountry, setSelectedCountry] = useState("");
+	const [selectedCity, setSelectedCity] = useState("");
 
 	useEffect(() => {
 		setIsDisabled(
 			currentQuestion.multiSelect
-				? selectedOptions.length === 0
-				: selectedOptionIndex === null && username === ""
+				? selectedOptions.length === 0 ||
+						(currentQuestion.input && username === "") ||
+						(currentQuestion.component &&
+							(selectedCountry === "" || selectedCity === ""))
+				: selectedOptionIndex === null ||
+						(currentQuestion.input && username === "") ||
+						(currentQuestion.component &&
+							(selectedCountry === "" || selectedCity === ""))
 		);
-	}, [selectedOptionIndex, selectedOptions, username, currentQuestion]);
+	}, [
+		selectedOptionIndex,
+		selectedOptions,
+		username,
+		currentQuestion,
+		selectedCity,
+		selectedCountry,
+	]);
+
+	useEffect(() => {
+		console.log(userDetails.role);
+		if (userDetails.role === "Teacher") {
+			questions[1].question = "Select the level of education you can teach";
+			questions[2].question = "Select the subjects you can teach";
+		}
+	}, [userDetails]);
+
+	useEffect(() => {
+		const unsubscribe = navigation.addListener("beforeRemove", (e) => {
+			// Prevent the user from going back
+			e.preventDefault();
+		});
+
+		return unsubscribe;
+	}, [navigation]);
 
 	const handleOptionSelect = (index) => {
 		if (currentQuestion.multiSelect) {
@@ -114,6 +156,11 @@ const RegistrationScreen = () => {
 
 			if (currentQuestion.input) {
 				updatedUserDetails = { ...updatedUserDetails, username: username };
+			} else if (currentQuestion.component) {
+				updatedUserDetails = {
+					...updatedUserDetails,
+					location: { country: selectedCountry, city: selectedCity },
+				};
 			} else {
 				const selectedOption = getSelectedOption();
 
@@ -128,11 +175,13 @@ const RegistrationScreen = () => {
 					case 2:
 						updatedUserDetails.subjects = selectedOption;
 						break;
+					case 3:
+						updatedUserDetails.preferredMode = selectedOption;
 					default:
 						break;
 				}
 			}
-
+			console.log(updatedUserDetails);
 			setUserDetails(updatedUserDetails);
 
 			if (currentQuestionIndex < questions.length - 1) {
@@ -142,7 +191,6 @@ const RegistrationScreen = () => {
 				const userDocRef = userDocSnapshot.ref;
 				await updateDoc(userDocRef, updatedUserDetails);
 				navigation.navigate("Profile");
-				console.log("Registration Successful");
 			}
 		} catch (error) {
 			console.error("Error updating user data:", error.message);
@@ -186,6 +234,15 @@ const RegistrationScreen = () => {
 						onPress={() => handleOptionSelect(index)}
 					/>
 				))}
+			{currentQuestion.component && (
+				<LocationPicker
+					subtitle={"Select your location to find students near you"}
+					selectedCountry={selectedCountry}
+					setSelectedCountry={setSelectedCountry}
+					selectedCity={selectedCity}
+					setSelectedCity={setSelectedCity}
+				/>
+			)}
 			{currentQuestion.input && (
 				<InputField
 					value={username}

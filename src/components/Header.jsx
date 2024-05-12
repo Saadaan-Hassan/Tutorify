@@ -3,10 +3,12 @@ import { TouchableOpacity, View, Text } from "react-native";
 import { Avatar, Appbar } from "react-native-paper";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import { commonStyles } from "../styles/commonStyles";
+import { useUser } from "../utils/context/UserContext";
 
 export default function Header() {
 	const route = useRoute();
 	const navigation = useNavigation();
+	const { user } = useUser();
 
 	const goBack = () => navigation.goBack();
 	const handleAccount = () => navigation.navigate("Profile");
@@ -58,7 +60,7 @@ export default function Header() {
 			<Appbar.Content
 				title={
 					<Text style={styles.welcomeText}>
-						Welcome <Text style={styles.nameText}>Name</Text>
+						Welcome <Text style={styles.nameText}>{user.username}</Text>
 					</Text>
 				}
 				style={styles.defaultContent}

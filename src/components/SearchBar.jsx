@@ -1,13 +1,23 @@
-import React from "react";
-import { Icon, Searchbar } from "react-native-paper";
+import React, { useState, useEffect } from "react";
+import { Searchbar } from "react-native-paper";
 import { commonStyles } from "../styles/commonStyles";
+import useSearch from "../utils/hooks/useSearch";
 
-export default function SearchBar() {
-	const [searchQuery, setSearchQuery] = React.useState("");
+export default function SearchBar({ users, setSearchedUsers }) {
+	const {
+		searchQuery,
+		setSearchQuery,
+		searchedUsers,
+		handleSearchButtonPress,
+	} = useSearch(users);
+
+	useEffect(() => {
+		if (setSearchedUsers) setSearchedUsers(searchedUsers);
+	}, [searchedUsers, setSearchedUsers]);
 
 	return (
 		<Searchbar
-			placeholder='Search your subject name'
+			placeholder='Search by your subject name'
 			placeholderTextColor={commonStyles.colors.neutralAccent2}
 			onChangeText={setSearchQuery}
 			value={searchQuery}
@@ -26,7 +36,8 @@ export default function SearchBar() {
 			}}
 			icon='microphone-outline'
 			iconColor={commonStyles.colors.primary}
-			onIconPress={() => console.log("Searching")}
+			onIconPress={() => console.log("Voice search")}
+			onSubmitEditing={() => handleSearchButtonPress(searchQuery)}
 		/>
 	);
 }

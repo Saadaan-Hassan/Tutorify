@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {
 	View,
 	Text,
@@ -6,8 +7,9 @@ import {
 	ScrollView,
 	FlatList,
 } from "react-native";
-import React from "react";
 import { useNavigation } from "@react-navigation/native";
+import { useUser } from "../utils/context/UserContext";
+import useRoleBasedUser from "../utils/hooks/useRoleBasedUser";
 import SearchBar from "../components/SearchBar";
 import CustomButton from "../components/CustomButton";
 import CustomLink from "../components/CustomLink";
@@ -16,11 +18,16 @@ import { commonStyles } from "../styles/commonStyles";
 
 export default function HomeScreen() {
 	const navigation = useNavigation();
+	const { user } = useUser();
+	const { isSearching, setIsSearching } = useState(false);
+
+	const users = useRoleBasedUser(user.role);
 
 	return (
 		<ScrollView contentContainerStyle={styles.scrollContainer}>
 			<View style={styles.container}>
-				<SearchBar />
+				{/* Search Section */}
+				<SearchBar users={users} />
 
 				<View
 					style={[
@@ -64,9 +71,11 @@ export default function HomeScreen() {
 					</View>
 
 					<FlatList
-						data={[1, 2, 3, 4, 5]}
-						keyExtractor={(item) => item.toString()}
-						renderItem={() => <TutorCard />}
+						data={users}
+						keyExtractor={(item) => item.id}
+						renderItem={({ item }) => (
+							<TutorCard username={item.username} subjects={item.subjects} />
+						)}
 						horizontal
 						showsHorizontalScrollIndicator={false}
 					/>
@@ -79,9 +88,11 @@ export default function HomeScreen() {
 					</View>
 
 					<FlatList
-						data={[1, 2, 3, 4, 5]}
-						keyExtractor={(item) => item.toString()}
-						renderItem={() => <TutorCard />}
+						data={users}
+						keyExtractor={(item) => item.id}
+						renderItem={({ item }) => (
+							<TutorCard username={item.username} subjects={item.subjects} />
+						)}
 						horizontal
 						showsHorizontalScrollIndicator={false}
 					/>

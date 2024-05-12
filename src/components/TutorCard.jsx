@@ -12,7 +12,7 @@ import { commonStyles } from "../styles/commonStyles";
 
 const { width } = Dimensions.get("window");
 
-export default function TutorCard() {
+export default function TutorCard({ username, subjects }) {
 	const navigation = useNavigation();
 
 	const cardWidth = (width - 70) / 2;
@@ -25,16 +25,21 @@ export default function TutorCard() {
 					style={styles.cardImg}
 				/>
 				<Card.Content style={styles.cardBody}>
-					<Text style={styles.title}>Omowumi John</Text>
+					<Text style={styles.title}>{username}</Text>
 					<View style={styles.ratingContainer}>
 						{[...Array(5)].map((_, index) => (
 							<Icon key={index} source='star' size={20} color='#FBBB00' />
 						))}
 					</View>
 					<View style={styles.subjectsContainer}>
-						<Text style={styles.subjectText}>Mathematics</Text>
-						<Text style={styles.subjectText}>Biology</Text>
-						<Text style={styles.subjectText}>Physics</Text>
+						{subjects.slice(0, 3).map((subject, index) => (
+							<Text key={index} style={styles.subjectText}>
+								{subject}
+							</Text>
+						))}
+						{subjects.length > 3 && (
+							<Text style={styles.subjectText}>+{subjects.length - 3}</Text>
+						)}
 					</View>
 				</Card.Content>
 			</Card>
@@ -44,6 +49,7 @@ export default function TutorCard() {
 
 const styles = StyleSheet.create({
 	card: {
+		height: 183,
 		margin: 5,
 		marginHorizontal: 8,
 		borderRadius: 20,

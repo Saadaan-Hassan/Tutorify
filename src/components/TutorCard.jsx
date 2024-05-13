@@ -13,7 +13,6 @@ import { commonStyles } from "../styles/commonStyles";
 const { width } = Dimensions.get("window");
 
 export default function TutorCard({ userData }) {
-	console.log(userData);
 	const navigation = useNavigation();
 
 	const cardWidth = (width - 70) / 2;
@@ -25,7 +24,7 @@ export default function TutorCard({ userData }) {
 				<Card.Cover
 					source={
 						userData?.profileImage
-							? { uri: profileImage }
+							? { uri: userData?.profileImage }
 							: require("../../assets/img/avatar/avatar.jpg")
 					}
 					style={styles.cardImg}

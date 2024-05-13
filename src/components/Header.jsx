@@ -69,8 +69,8 @@ export default function Header() {
 				<Avatar.Image
 					size={35}
 					source={
-						user.profileImage
-							? { uri: user.profileImage }
+						user?.profileImage
+							? { uri: user?.profileImage }
 							: require("../../assets/img/avatar/avatar.jpg")
 					}
 					style={styles.avatar}

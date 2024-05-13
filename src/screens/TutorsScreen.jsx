@@ -26,9 +26,7 @@ export default function TutorsScreen() {
 				keyExtractor={(item) => item.id}
 				numColumns={2}
 				contentContainerStyle={styles.flatListContainer}
-				renderItem={({ item }) => (
-					<TutorCard username={item.username} subjects={item.subjects} />
-				)}
+				renderItem={({ item }) => <TutorCard userData={item} />}
 			/>
 		</View>
 	);

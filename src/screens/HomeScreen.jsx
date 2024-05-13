@@ -19,7 +19,6 @@ import { commonStyles } from "../styles/commonStyles";
 export default function HomeScreen() {
 	const navigation = useNavigation();
 	const { user } = useUser();
-	const { isSearching, setIsSearching } = useState(false);
 
 	const users = useRoleBasedUser(user.role);
 
@@ -73,9 +72,7 @@ export default function HomeScreen() {
 					<FlatList
 						data={users}
 						keyExtractor={(item) => item.id}
-						renderItem={({ item }) => (
-							<TutorCard username={item.username} subjects={item.subjects} />
-						)}
+						renderItem={({ item }) => <TutorCard userData={item} />}
 						horizontal
 						showsHorizontalScrollIndicator={false}
 					/>
@@ -90,9 +87,7 @@ export default function HomeScreen() {
 					<FlatList
 						data={users}
 						keyExtractor={(item) => item.id}
-						renderItem={({ item }) => (
-							<TutorCard username={item.username} subjects={item.subjects} />
-						)}
+						renderItem={({ item }) => <TutorCard userData={item} />}
 						horizontal
 						showsHorizontalScrollIndicator={false}
 					/>

@@ -5,9 +5,9 @@ import {
 	Button,
 	Card,
 	Divider,
-	Text,
 	Dialog,
 	Portal,
+	Text,
 	TextInput,
 } from "react-native-paper";
 import CustomButton from "../components/CustomButton";
@@ -15,6 +15,8 @@ import { commonStyles } from "../styles/commonStyles";
 import useAuth from "../utils/hooks/useAuth";
 import { useUser } from "../utils/context/UserContext";
 import { useNavigation } from "@react-navigation/native";
+import { auth } from "../services/firebase";
+import { EmailAuthProvider, reauthenticateWithCredential } from "firebase/auth";
 
 const LeftContent = ({ profileImage }) => (
 	<Avatar.Image
@@ -29,7 +31,7 @@ const LeftContent = ({ profileImage }) => (
 
 export default function ProfileScreen() {
 	const { user } = useUser();
-	const { logOut } = useAuth();
+	const { logOut, confirmPassword, error } = useAuth();
 	const navigation = useNavigation();
 
 	const [visible, setVisible] = useState(false);
@@ -37,9 +39,13 @@ export default function ProfileScreen() {
 
 	const showDialog = () => setVisible(true);
 	const hideDialog = () => setVisible(false);
-	const checkPassword = () => {
-		hideDialog();
-		navigation.navigate("Password");
+
+	const checkPassword = async () => {
+		confirmPassword(password);
+		if (!error) {
+			setPassword("");
+			hideDialog();
+		}
 	};
 
 	return (
@@ -123,6 +129,7 @@ export default function ProfileScreen() {
 							secureTextEntry
 							autoFocus
 						/>
+						<Text style={{ color: "red" }}>{error}</Text>
 					</Dialog.Content>
 					<Dialog.Actions>
 						<Button onPress={hideDialog}>Cancel</Button>

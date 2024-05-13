@@ -4,6 +4,9 @@ import {
 	createUserWithEmailAndPassword,
 	signInWithEmailAndPassword,
 	signOut,
+	updatePassword,
+	EmailAuthProvider,
+	reauthenticateWithCredential,
 } from "firebase/auth";
 import { collection, getDoc, doc, setDoc } from "firebase/firestore";
 import { db } from "../../services/firebase";
@@ -119,7 +122,42 @@ const useAuth = () => {
 		}
 	};
 
-	return { user, error, signUp, signIn, logOut };
+	// Function to confirm the user's password before proceeding
+	const confirmPassword = async (password) => {
+		try {
+			const user = auth.currentUser;
+			const credential = EmailAuthProvider.credential(user.email, password);
+			await reauthenticateWithCredential(user, credential);
+
+			setError(null);
+			navigation.navigate("Password");
+		} catch (error) {
+			setError("Incorrect password");
+		}
+	};
+
+	// Function to handle password reset
+	const resetPassword = async (newPassword) => {
+		try {
+			const user = auth.currentUser;
+			await updatePassword(user, newPassword);
+
+			setError(null);
+			navigation.navigate("Profile");
+		} catch (error) {
+			setError(error.message);
+		}
+	};
+
+	return {
+		user,
+		error,
+		signUp,
+		signIn,
+		logOut,
+		confirmPassword,
+		resetPassword,
+	};
 };
 
 export default useAuth;

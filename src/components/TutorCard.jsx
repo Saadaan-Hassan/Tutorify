@@ -12,7 +12,7 @@ import { commonStyles } from "../styles/commonStyles";
 
 const { width } = Dimensions.get("window");
 
-export default function TutorCard({ username, subjects }) {
+export default function TutorCard({ username, subjects, profileImage }) {
 	const navigation = useNavigation();
 
 	const cardWidth = (width - 70) / 2;
@@ -21,7 +21,11 @@ export default function TutorCard({ username, subjects }) {
 		<TouchableOpacity onPress={() => navigation.navigate("TutorDetail")}>
 			<Card mode='contained' style={[styles.card, { width: cardWidth }]}>
 				<Card.Cover
-					source={require("../../assets/img/avatar/user1.png")}
+					source={
+						profileImage
+							? { uri: profileImage }
+							: require("../../assets/img/avatar/avatar.jpg")
+					}
 					style={styles.cardImg}
 				/>
 				<Card.Content style={styles.cardBody}>

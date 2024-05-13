@@ -16,10 +16,13 @@ import useAuth from "../utils/hooks/useAuth";
 import { useUser } from "../utils/context/UserContext";
 import { useNavigation } from "@react-navigation/native";
 
-const LeftContent = (props) => (
+const LeftContent = ({ profileImage }) => (
 	<Avatar.Image
-		{...props}
-		source={require("../../assets/img/avatar/user1.png")}
+		source={
+			profileImage
+				? { uri: profileImage }
+				: require("../../assets/img/avatar/avatar.jpg")
+		}
 		size={80}
 	/>
 );
@@ -57,7 +60,7 @@ export default function ProfileScreen() {
 					fontSize: 16,
 					color: commonStyles.colors.textSecondary,
 				}}
-				left={LeftContent}
+				left={() => <LeftContent profileImage={user.profileImage} />}
 				leftStyle={{ marginRight: 60 }}
 			/>
 

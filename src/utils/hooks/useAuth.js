@@ -5,7 +5,7 @@ import {
 	signInWithEmailAndPassword,
 	signOut,
 } from "firebase/auth";
-import { collection, addDoc, getDoc, doc, setDoc } from "firebase/firestore";
+import { collection, getDoc, doc, setDoc } from "firebase/firestore";
 import { db } from "../../services/firebase";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";

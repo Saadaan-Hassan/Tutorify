@@ -68,7 +68,11 @@ export default function Header() {
 			<TouchableOpacity onPress={handleAccount}>
 				<Avatar.Image
 					size={35}
-					source={require("../../assets/img/avatar/user1.png")}
+					source={
+						user.profileImage
+							? { uri: user.profileImage }
+							: require("../../assets/img/avatar/avatar.jpg")
+					}
 					style={styles.avatar}
 				/>
 			</TouchableOpacity>
@@ -80,10 +84,12 @@ export default function Header() {
 			mode='small'
 			style={{ backgroundColor: commonStyles.colors.background }}>
 			{route.name === "TutorDetail" && renderTutorDetailHeader()}
-			{route.name === "Profile" && renderProfileHeader()}
+			{(route.name === "Profile" || route.name === "Account") &&
+				renderProfileHeader()}
 			{route.name === "ChatDetail" && renderChatHeader()}
 			{route.name !== "TutorDetail" &&
 				route.name !== "Profile" &&
+				route.name !== "Account" &&
 				route.name !== "ChatDetail" &&
 				renderDefaultHeader()}
 		</Appbar.Header>

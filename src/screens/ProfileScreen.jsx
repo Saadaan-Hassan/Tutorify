@@ -15,8 +15,6 @@ import { commonStyles } from "../styles/commonStyles";
 import useAuth from "../utils/hooks/useAuth";
 import { useUser } from "../utils/context/UserContext";
 import { useNavigation } from "@react-navigation/native";
-import { auth } from "../services/firebase";
-import { EmailAuthProvider, reauthenticateWithCredential } from "firebase/auth";
 
 const LeftContent = ({ profileImage }) => (
 	<Avatar.Image
@@ -66,7 +64,11 @@ export default function ProfileScreen() {
 					fontSize: 16,
 					color: commonStyles.colors.textSecondary,
 				}}
-				left={() => <LeftContent profileImage={user?.profileImage} />}
+				left={() => (
+					<LeftContent
+						profileImage={user?.profileImage ? user?.profileImage : null}
+					/>
+				)}
 				leftStyle={{ marginRight: 60 }}
 			/>
 

@@ -23,14 +23,16 @@ export default function ProfileInfo() {
 	const { user, setUser } = useUser();
 	const navigation = useNavigation();
 
-	const [username, setUsername] = useState(user.username);
-	const [bio, setBio] = useState(user.bio);
-	const [experience, setExperience] = useState(user.experience);
-	const [rate, setRate] = useState(user.rate);
-	const [selectedCity, setSelectedCity] = useState(user.location.city);
-	const [selectedCountry, setSelectedCountry] = useState(user.location.country);
-	const [preferredMode, setPreferredMode] = useState(user.preferredMode);
-	const [image, setImage] = useState(user.profileImage);
+	const [username, setUsername] = useState(user?.username);
+	const [bio, setBio] = useState(user?.bio);
+	const [experience, setExperience] = useState(user?.experience);
+	const [rate, setRate] = useState(user?.rate);
+	const [selectedCity, setSelectedCity] = useState(user?.location?.city);
+	const [selectedCountry, setSelectedCountry] = useState(
+		user?.location?.country
+	);
+	const [preferredMode, setPreferredMode] = useState(user?.preferredMode);
+	const [image, setImage] = useState(user?.profileImage);
 
 	const pickImage = async () => {
 		let result = await ImagePicker.launchImageLibraryAsync({
@@ -51,7 +53,7 @@ export default function ProfileInfo() {
 		const blob = await response.blob();
 
 		// Create a reference to the location you want to upload to in Firebase Storage
-		const storageRef = ref(storage, `profileImages/${user.uid}`);
+		const storageRef = ref(storage, `profileImages/${user?.uid}`);
 
 		// Upload the file to Firebase Storage
 		const uploadTask = uploadBytesResumable(storageRef, blob);
@@ -77,7 +79,7 @@ export default function ProfileInfo() {
 
 	const updateUserDocument = async (downloadURL) => {
 		const usersCollection = collection(db, "users");
-		const userDoc = doc(usersCollection, user.uid);
+		const userDoc = doc(usersCollection, user?.uid);
 
 		console.log("Updating user document with image URL: ", downloadURL);
 
@@ -104,7 +106,7 @@ export default function ProfileInfo() {
 
 	handleUpdateProfile = async () => {
 		const usersCollection = collection(db, "users");
-		const userDoc = doc(usersCollection, user.uid);
+		const userDoc = doc(usersCollection, user?.uid);
 
 		await setDoc(userDoc, {
 			...user,
@@ -162,7 +164,7 @@ export default function ProfileInfo() {
 						/>
 					</TouchableOpacity>
 				</View>
-				<Card.Title subtitle={user.email} subtitleStyle={styles.email} />
+				<Card.Title subtitle={user?.email} subtitleStyle={styles.email} />
 
 				<CustomInput
 					label='Username:'
@@ -235,13 +237,13 @@ export default function ProfileInfo() {
 					style={styles.button}
 					mode='outlined'
 					onPress={() => {
-						setUsername(user.username);
-						setBio(user.bio);
-						setExperience(user.experience);
-						setRate(user.rate);
-						setSelectedCity(user.location.city);
-						setSelectedCountry(user.location.country);
-						setPreferredMode(user.preferredMode);
+						setUsername(user?.username);
+						setBio(user?.bio);
+						setExperience(user?.experience);
+						setRate(user?.rate);
+						setSelectedCity(user?.location.city);
+						setSelectedCountry(user?.location.country);
+						setPreferredMode(user?.preferredMode);
 						navigation.goBack();
 					}}
 				/>

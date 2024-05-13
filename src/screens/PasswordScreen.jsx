@@ -1,59 +1,85 @@
-import React from "react";
-import { View, StyleSheet} from "react-native";
-import { Appbar } from "react-native-paper";
+import React, { useState } from "react";
+import { View, StyleSheet } from "react-native";
+import { Text } from "react-native-paper";
 import { commonStyles } from "../styles/commonStyles";
 import CustomButton from "../components/CustomButton";
 import CustomInput from "../components/CustomInput";
-import { Avatar, Button, Card, Divider, Text, Dialog, Portal, TextInput } from 'react-native-paper';
-
+import useAuth from "../utils/hooks/useAuth";
 
 export default function ProfilePassword() {
-return (
-	<View style={styles.container}>
-		<View>
-		
-			<CustomInput
-				label="New Password"
-				placeholder="Enter Your Password"
-				value=""
-				onChangeText={(text) => console.log(text)}
-			/>
-			<CustomInput
-				label="Confirm Password"
-				placeholder="Confirm Your Password"
-				value=""
-				onChangeText={(text) => console.log(text)}
-			/>
-		</View>
+	const { resetPassword, error } = useAuth();
+	const [newPassword, setNewPassword] = useState("");
+	const [confirmPassword, setConfirmPassword] = useState("");
+	const [errorText, setErrorText] = useState("");
 
-		<View style={styles.centered}>
-			<CustomButton
-				title='Confirm'
-				style={styles.editButton}
-			/>
+	const handleResetPassword = () => {
+		if (newPassword === "" || confirmPassword === "") {
+			setErrorText("Please fill in all fields");
+			return;
+		}
+
+		if (newPassword !== confirmPassword) {
+			setErrorText("Passwords do not match");
+			return;
+		}
+
+		resetPassword(newPassword);
+
+		setNewPassword("");
+		setConfirmPassword("");
+	};
+
+	return (
+		<View style={styles.container}>
+			<View style={styles.centered}>
+				<Text style={styles.title}>Setup New Password</Text>
+			</View>
+
+			<View>
+				<CustomInput
+					label='New Password'
+					placeholder='Enter Your Password'
+					value={newPassword}
+					error={error}
+					onChangeText={setNewPassword}
+				/>
+				<CustomInput
+					label='Confirm Password'
+					placeholder='Confirm Your Password'
+					value={confirmPassword}
+					error={error}
+					onChangeText={setConfirmPassword}
+				/>
+			</View>
+
+			<View style={styles.centered}>
+				<CustomButton title='Confirm' onPress={handleResetPassword} />
+			</View>
+
+			<View style={styles.centered}>
+				<Text style={styles.errorText}>{error || errorText}</Text>
+			</View>
 		</View>
-	</View>
-);
+	);
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: commonStyles.colors.neutral,
-    alignItems: "center",
-	// justifyContent: "center",
-    paddingHorizontal: 20,
-  },
-  editButton: {
-    width: "35%",
-    fontSize: 18,
-  },
-  emailTitle: {
-    color: commonStyles.colors.textPrimary,
-    fontSize: 18,
-    fontWeight: "bold",
-    paddingVertical: 10,
-    textAlign: "center",
-    flexGrow: 1,
-  },
+	container: {
+		flex: 1,
+		backgroundColor: commonStyles.colors.background,
+		alignItems: "center",
+		paddingTop: 50,
+	},
+	title: {
+		fontSize: 24,
+		fontWeight: "bold",
+		marginBottom: 20,
+		color: commonStyles.colors.primary,
+	},
+	centered: {
+		marginVertical: 10,
+	},
+	errorText: {
+		color: "red",
+	},
 });

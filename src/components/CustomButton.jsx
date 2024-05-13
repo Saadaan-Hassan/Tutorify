@@ -9,6 +9,7 @@ export default function CustomButton({
 	styleReverse = false,
 	style,
 	contentStyle,
+	labelStyle,
 	onPress,
 	icon,
 	textColor,
@@ -41,6 +42,7 @@ export default function CustomButton({
 			textColor={buttonTextColor}
 			style={buttonStyles}
 			contentStyle={contentStyle}
+			labelStyle={labelStyle}
 			onPress={onPress}
 			disabled={disabled}
 			loading={loading}>

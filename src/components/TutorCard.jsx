@@ -12,37 +12,41 @@ import { commonStyles } from "../styles/commonStyles";
 
 const { width } = Dimensions.get("window");
 
-export default function TutorCard({ username, subjects, profileImage }) {
+export default function TutorCard({ userData }) {
+	console.log(userData);
 	const navigation = useNavigation();
 
 	const cardWidth = (width - 70) / 2;
 
 	return (
-		<TouchableOpacity onPress={() => navigation.navigate("TutorDetail")}>
+		<TouchableOpacity
+			onPress={() => navigation.navigate("TutorDetail", { user: userData })}>
 			<Card mode='contained' style={[styles.card, { width: cardWidth }]}>
 				<Card.Cover
 					source={
-						profileImage
+						userData?.profileImage
 							? { uri: profileImage }
 							: require("../../assets/img/avatar/avatar.jpg")
 					}
 					style={styles.cardImg}
 				/>
 				<Card.Content style={styles.cardBody}>
-					<Text style={styles.title}>{username}</Text>
+					<Text style={styles.title}>{userData?.username}</Text>
 					<View style={styles.ratingContainer}>
 						{[...Array(5)].map((_, index) => (
 							<Icon key={index} source='star' size={20} color='#FBBB00' />
 						))}
 					</View>
 					<View style={styles.subjectsContainer}>
-						{subjects.slice(0, 3).map((subject, index) => (
+						{userData?.subjects.slice(0, 3).map((subject, index) => (
 							<Text key={index} style={styles.subjectText}>
 								{subject}
 							</Text>
 						))}
-						{subjects.length > 3 && (
-							<Text style={styles.subjectText}>+{subjects.length - 3}</Text>
+						{userData?.subjects.length > 3 && (
+							<Text style={styles.subjectText}>
+								+{userData?.subjects.length - 3}
+							</Text>
 						)}
 					</View>
 				</Card.Content>

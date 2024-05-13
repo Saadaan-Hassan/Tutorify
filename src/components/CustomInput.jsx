@@ -10,7 +10,7 @@ export default function CustomInput({
 	containerStyle,
 	inputStyle,
 	onChangeText,
-	error,
+	error = false,
 	multiline = false,
 }) {
 	return (

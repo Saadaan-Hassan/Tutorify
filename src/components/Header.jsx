@@ -84,12 +84,15 @@ export default function Header() {
 			mode='small'
 			style={{ backgroundColor: commonStyles.colors.background }}>
 			{route.name === "TutorDetail" && renderTutorDetailHeader()}
-			{(route.name === "Profile" || route.name === "Account") &&
+			{(route.name === "Profile" ||
+				route.name === "Account" ||
+				route.name === "Password") &&
 				renderProfileHeader()}
 			{route.name === "ChatDetail" && renderChatHeader()}
 			{route.name !== "TutorDetail" &&
 				route.name !== "Profile" &&
 				route.name !== "Account" &&
+				route.name !== "Password" &&
 				route.name !== "ChatDetail" &&
 				renderDefaultHeader()}
 		</Appbar.Header>

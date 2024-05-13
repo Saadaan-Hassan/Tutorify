@@ -66,7 +66,7 @@ export default function ProfileScreen() {
 					fontSize: 16,
 					color: commonStyles.colors.textSecondary,
 				}}
-				left={() => <LeftContent profileImage={user.profileImage} />}
+				left={() => <LeftContent profileImage={user?.profileImage} />}
 				leftStyle={{ marginRight: 60 }}
 			/>
 

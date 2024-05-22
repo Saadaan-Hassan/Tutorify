@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, StyleSheet } from "react-native";
 import { commonStyles } from "../styles/commonStyles";
 import { IconButton } from "react-native-paper";
 import CustomInput from "./CustomInput";
 
-export default function MessageInput() {
+export default function MessageInput({ onSend }) {
+	const [message, setMessage] = useState("");
+
 	return (
 		<View style={styles.container}>
 			<IconButton
@@ -18,13 +20,18 @@ export default function MessageInput() {
 				placeholder='Type a message'
 				containerStyle={styles.inputContainer}
 				inputStyle={styles.input}
+				value={message}
+				onChangeText={setMessage}
 			/>
 			<IconButton
 				icon='send'
 				iconColor={commonStyles.colors.primary}
 				size={20}
 				containerColor={commonStyles.colors.neutralLight}
-				onPress={() => console.log("Pressed")}
+				onPress={() => {
+					onSend(message);
+					setMessage("");
+				}}
 			/>
 		</View>
 	);

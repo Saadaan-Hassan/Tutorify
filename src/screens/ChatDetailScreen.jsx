@@ -1,127 +1,94 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, FlatList } from "react-native";
 import { Avatar } from "react-native-paper";
 import MessageBox from "../components/MessageBox";
 import { commonStyles } from "../styles/commonStyles";
 import MessageInput from "../components/MessageInput";
+import { db } from "../services/firebase";
+import {
+	doc,
+	getDoc,
+	setDoc,
+	updateDoc,
+	Timestamp,
+	onSnapshot,
+} from "firebase/firestore";
+import { useUser } from "../utils/context/UserContext";
+import { getDateString, getTimeString } from "../utils/helpers";
 
-export default function ChatDetailScreen() {
-	const messages = [
-		{
-			id: 1,
-			timestamp: "Wed 22 June",
-			sender: {
-				name: "Sender Name",
-				avatar: require("../../assets/img/avatar/user1.png"),
-			},
-			message:
-				"Hello, I will like to tell you that you can message me about anything",
-			userType: "sender",
-		},
-		{
-			id: 2,
-			timestamp: "Wed 22 June",
-			sender: {
-				name: "Receiver Name",
-				avatar: require("../../assets/img/avatar/user2.png"),
-			},
-			message:
-				"Thank you for reaching out to me, I will let you know if I need any information",
-			userType: "receiver",
-		},
-		{
-			id: 3,
-			timestamp: "Wed 27 June",
-			sender: {
-				name: "Receiver Name",
-				avatar: require("../../assets/img/avatar/user2.png"),
-			},
-			message:
-				"Can you please send a detailed direction to your house from Oshodi",
-			userType: "receiver",
-		},
-		{
-			id: 4,
-			timestamp: "Wed 27 June",
-			sender: {
-				name: "Sender Name",
-				avatar: require("../../assets/img/avatar/user1.png"),
-			},
-			message: "Sure, I will send you the direction to my house from Oshodi",
-			userType: "sender",
-		},
-		{
-			id: 5,
-			timestamp: "Wed 27 June",
-			sender: {
-				name: "Sender Name",
-				avatar: require("../../assets/img/avatar/user1.png"),
-			},
-			message:
-				"Hello, I will like to tell you that you can message me about anything",
-			userType: "sender",
-		},
-		{
-			id: 6,
-			timestamp: "Today",
-			sender: {
-				name: "Receiver Name",
-				avatar: require("../../assets/img/avatar/user2.png"),
-			},
-			message:
-				"Thank you for reaching out to me, I will let you know if I need any information",
-			userType: "receiver",
-		},
-		{
-			id: 7,
-			timestamp: "Today",
-			sender: {
-				name: "Receiver Name",
-				avatar: require("../../assets/img/avatar/user2.png"),
-			},
-			message:
-				"Can you please send a detailed direction to your house from Oshodi",
-			userType: "receiver",
-		},
-		{
-			id: 8,
-			timestamp: "Today",
-			sender: {
-				name: "Sender Name",
-				avatar: require("../../assets/img/avatar/user1.png"),
-			},
-			message: "Sure, I will send you the direction to my house from Oshodi",
-			userType: "sender",
-		},
-		{
-			id: 9,
-			timestamp: "Today",
-			sender: {
-				name: "Sender Name",
-				avatar: require("../../assets/img/avatar/user1.png"),
-			},
-			message:
-				"Hello, I will like to tell you that you can message me about anything",
-			userType: "sender",
-		},
-		{
-			id: 10,
-			timestamp: "Today",
-			sender: {
-				name: "Receiver Name",
-				avatar: require("../../assets/img/avatar/user2.png"),
-			},
-			message:
-				"Thank you for reaching out to me, I will let you know if I need any information",
-			userType: "receiver",
-		},
-	];
+export default function ChatDetailScreen({ route }) {
+	const { user, otherUsers } = useUser();
+	const [messages, setMessages] = useState([]);
+	const chatPartner = route.params.user;
+	const chatPartnerData = otherUsers.find((u) => u.uid === chatPartner.uid);
+	const sortedUserIds = [user.uid, chatPartner.uid].sort();
+	const chatRoomId = `${sortedUserIds[0]}-${sortedUserIds[1]}`;
+
+	// Listen for new messages in the chat room
+	useEffect(() => {
+		const chatRoomRef = doc(db, "chatRooms", chatRoomId);
+		const unsubscribe = onSnapshot(chatRoomRef, (doc) => {
+			if (doc.exists()) {
+				setMessages(doc.data().messages || []);
+			}
+		});
+
+		return () => {
+			unsubscribe();
+		};
+	}, []);
+
+	// Change the unread status of the chat room to false
+	useEffect(() => {
+		const chatRoomRef = doc(db, "chatRooms", chatRoomId);
+		const updateUnreadStatus = async () => {
+			const chatRoomSnapshot = await getDoc(chatRoomRef);
+			if (chatRoomSnapshot.exists()) {
+				if (chatRoomSnapshot.data().unread) {
+					await updateDoc(chatRoomRef, {
+						unread: false,
+					});
+				}
+			}
+		};
+
+		updateUnreadStatus();
+	}, []);
+
+	// Function to send a message
+	const sendMessage = async (messageText) => {
+		if (!messageText || typeof messageText !== "string" || !messageText.trim())
+			return; // Avoid sending empty or invalid messages
+
+		const chatRoomRef = doc(db, "chatRooms", chatRoomId);
+		const timestamp = Timestamp.now();
+		const newMessage = {
+			message: messageText,
+			senderId: user.uid,
+			timestamp: timestamp,
+		};
+
+		if (messages.length === 0) {
+			await setDoc(chatRoomRef, {
+				users: sortedUserIds,
+				createdAt: timestamp,
+				unread: true,
+				messages: [newMessage],
+			});
+		} else {
+			await updateDoc(chatRoomRef, {
+				messages: [...messages, newMessage],
+				unread: true,
+			});
+		}
+	};
 
 	const renderMessageItem = ({ item, index }) => {
 		const previousMessage = index > 0 ? messages[index - 1] : null;
 		const showTimestamp =
-			!previousMessage || previousMessage.timestamp !== item.timestamp;
-
+			!previousMessage ||
+			item.timestamp.toDate().toDateString() !==
+				previousMessage.timestamp.toDate().toDateString();
 		return (
 			<View>
 				{showTimestamp && (
@@ -132,40 +99,46 @@ export default function ChatDetailScreen() {
 							marginVertical: 10,
 							color: commonStyles.colors.textSecondary,
 						}}>
-						{item.timestamp}
+						{getDateString(item.timestamp)}
 					</Text>
 				)}
 				<View
 					style={{
 						flexDirection: "row",
 						justifyContent:
-							item.userType === "sender" ? "flex-end" : "flex-start",
+							item.senderId === user.uid ? "flex-end" : "flex-start",
 						alignItems: "center",
-						marginLeft: item.userType === "sender" ? 0 : 10,
-						marginRight: item.userType === "sender" ? 10 : 0,
+						marginLeft: item.senderId === user.uid ? 0 : 10,
+						marginRight: item.senderId === user.uid ? 10 : 0,
 					}}>
-					{item.userType === "receiver" && (
-						<Avatar.Image source={item.sender.avatar} size={40} />
+					{item.senderId !== user.uid && (
+						<Avatar.Image
+							source={{ uri: chatPartnerData.profileImage }}
+							size={40}
+						/>
 					)}
-					<MessageBox message={item.message} userType={item.userType} />
+					<MessageBox
+						message={item.message}
+						time={getTimeString(item.timestamp)}
+						userType={item.senderId === user.uid ? "sender" : "receiver"}
+					/>
 				</View>
 			</View>
 		);
 	};
 
 	return (
-		<>
+		<View style={{ flex: 1, backgroundColor: commonStyles.colors.background }}>
 			<FlatList
 				data={messages}
 				renderItem={renderMessageItem}
-				keyExtractor={(item) => item.id.toString()}
+				keyExtractor={(item) => item.timestamp.toMillis().toString()}
 				contentContainerStyle={{
 					paddingVertical: 10,
 					backgroundColor: commonStyles.colors.background,
 				}}
 			/>
-
-			<MessageInput />
-		</>
+			<MessageInput onSend={sendMessage} />
+		</View>
 	);
 }

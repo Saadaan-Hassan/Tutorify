@@ -12,7 +12,7 @@ export default function TutorDetailsScreen() {
 	const user = route.params.user;
 
 	const handleChatbutton = () => {
-		navigation.navigate("ChatDetail");
+		navigation.navigate("ChatDetail", { user });
 	};
 
 	return (

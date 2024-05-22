@@ -15,7 +15,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useUser } from "../context/UserContext";
 
 const useAuth = () => {
-	const { user, setUser } = useUser();
+	const { user, setUser, setOtherUsers } = useUser();
 	const [error, setError] = useState(null);
 	const navigation = useNavigation();
 
@@ -29,11 +29,16 @@ const useAuth = () => {
 
 					if (userSnapshot.exists()) {
 						setUser(userSnapshot.data());
+						console.log(
+							"User found in Firestore database:",
+							userSnapshot.data()
+						);
 					} else {
 						console.error("User not found in Firestore database");
 					}
 				} else {
 					setUser(null);
+					setOtherUsers([]);
 				}
 			} catch (error) {
 				console.error("Error during authentication state change:", error);
@@ -110,6 +115,7 @@ const useAuth = () => {
 			console.log("Logging out...");
 			await signOut(auth);
 			setUser(null);
+			setOtherUsers([]);
 			setError(null);
 
 			// Remove the access token from AsyncStorage

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
 	View,
 	Text,
@@ -18,9 +18,13 @@ import { commonStyles } from "../styles/commonStyles";
 
 export default function HomeScreen() {
 	const navigation = useNavigation();
-	const { user } = useUser();
+	const { user, setOtherUsers } = useUser();
 
 	const users = useRoleBasedUser(user.role);
+
+	useEffect(() => {
+		setOtherUsers(users);
+	}, [users]);
 
 	return (
 		<ScrollView contentContainerStyle={styles.scrollContainer}>

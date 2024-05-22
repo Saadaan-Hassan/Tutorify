@@ -1,16 +1,38 @@
-import { View, Text, TouchableOpacity } from "react-native";
-import React from "react";
-import { useNavigation } from "@react-navigation/native";
+import { FlatList } from "react-native";
+import React, { useEffect, useState } from "react";
 import ChatCard from "../components/ChatCard";
+import { db } from "../services/firebase";
+import { collection, onSnapshot, where, query } from "firebase/firestore";
+import { useUser } from "../utils/context/UserContext";
 
 export default function ChatScreen() {
-	const navigation = useNavigation();
+	const { user } = useUser();
+	const [chatRooms, setChatRooms] = useState([]);
+
+	// Fetch all chat rooms that the current user is a part of
+	useEffect(() => {
+		const chatRoomsRef = collection(db, "chatRooms");
+		const q = query(chatRoomsRef, where("users", "array-contains", user.uid));
+
+		const unsubscribe = onSnapshot(q, (querySnapshot) => {
+			const fetchedChatRooms = [];
+			querySnapshot.forEach((doc) => {
+				fetchedChatRooms.push({ ...doc.data() });
+			});
+
+			setChatRooms(fetchedChatRooms);
+		});
+
+		return () => {
+			unsubscribe();
+		};
+	}, [user]);
+
 	return (
-		<View>
-			<ChatCard />
-			<ChatCard />
-			<ChatCard />
-			<ChatCard />
-		</View>
+		<FlatList
+			data={chatRooms}
+			keyExtractor={(item) => item.id}
+			renderItem={({ item }) => <ChatCard chatRoom={item} />}
+		/>
 	);
 }

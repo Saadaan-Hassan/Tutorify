@@ -51,7 +51,7 @@ export default function HomeScreen() {
 								title='Find tutor'
 								styleReverse={true}
 								style={{ width: 150, borderRadius: 20, marginTop: 20 }}
-								onPress={() => navigation.navigate("Tutors")}
+								onPress={() => navigation.navigate("UserSearch")}
 							/>
 						</View>
 					</View>

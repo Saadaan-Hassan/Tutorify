@@ -10,3 +10,4 @@ export { default as RegistrationScreen } from "./RegistrationScreen";
 export { default as AccountScreen } from "./AccountScreen";
 export { default as PasswordScreen } from "./PasswordScreen";
 export { default as PrivacyScreen } from "./PrivacyScreen";
+export { default as UserSearch } from "./UserSearch";

@@ -1,4 +1,4 @@
-import "react-native-gesture-handler";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import "./src/services/firebase.js";
 import React from "react";
 import { StatusBar } from "expo-status-bar";
@@ -13,10 +13,12 @@ import { UserProvider } from "./src/utils/context/UserContext.js";
 export default function App() {
 	return (
 		<UserProvider>
-			<PaperProvider theme={theme}>
-				<StatusBar style='light' />
-				<AppNavigator />
-			</PaperProvider>
+			<GestureHandlerRootView style={{ flex: 1 }}>
+				<PaperProvider theme={theme}>
+					<StatusBar style='light' />
+					<AppNavigator />
+				</PaperProvider>
+			</GestureHandlerRootView>
 		</UserProvider>
 	);
 }

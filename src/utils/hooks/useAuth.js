@@ -17,12 +17,14 @@ import { useUser } from "../context/UserContext";
 const useAuth = () => {
 	const { user, setUser, setOtherUsers } = useUser();
 	const [error, setError] = useState(null);
+	const [loading, setLoading] = useState(true);
 	const navigation = useNavigation();
 
 	useEffect(() => {
 		const unsubscribe = auth.onAuthStateChanged(async (authUser) => {
 			try {
 				if (authUser) {
+					setLoading(true);
 					const usersCollection = collection(db, "users");
 					const userDoc = doc(usersCollection, authUser.uid);
 					const userSnapshot = await getDoc(userDoc);
@@ -42,6 +44,8 @@ const useAuth = () => {
 				}
 			} catch (error) {
 				console.error("Error during authentication state change:", error);
+			} finally {
+				setLoading(false);
 			}
 		});
 
@@ -103,7 +107,7 @@ const useAuth = () => {
 			);
 
 			// Navigate to the TabNavigator
-			navigation.navigate("TabNavigator");
+			if (!loading) navigation.navigate("TabNavigator");
 		} catch (error) {
 			setError(error.message);
 		}
@@ -121,7 +125,7 @@ const useAuth = () => {
 			// Remove the access token from AsyncStorage
 			await AsyncStorage.removeItem("accessToken");
 
-			// Navigate to the Auth
+			// Navigate to the Auth when the user logs out
 			navigation.navigate("Auth");
 		} catch (error) {
 			setError(error.message);
@@ -158,6 +162,7 @@ const useAuth = () => {
 	return {
 		user,
 		error,
+		loading,
 		signUp,
 		signIn,
 		logOut,

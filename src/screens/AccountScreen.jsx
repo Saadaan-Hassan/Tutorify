@@ -6,7 +6,13 @@ import {
 	ScrollView,
 	TouchableOpacity,
 } from "react-native";
-import { Card, SegmentedButtons, Avatar, Icon } from "react-native-paper";
+import {
+	Card,
+	SegmentedButtons,
+	Avatar,
+	Icon,
+	ActivityIndicator,
+} from "react-native-paper";
 import { commonStyles } from "../styles/commonStyles";
 import CustomButton from "../components/CustomButton";
 import CustomInput from "../components/CustomInput";
@@ -34,6 +40,8 @@ export default function ProfileInfo() {
 	const [preferredMode, setPreferredMode] = useState(user?.preferredMode);
 	const [image, setImage] = useState(user?.profileImage);
 
+	const [isLoading, setIsLoading] = useState(false);
+
 	const pickImage = async () => {
 		let result = await ImagePicker.launchImageLibraryAsync({
 			mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -49,26 +57,23 @@ export default function ProfileInfo() {
 	};
 
 	const uploadImage = async (uri) => {
+		setIsLoading(true);
 		const response = await fetch(uri);
 		const blob = await response.blob();
 
-		// Create a reference to the location you want to upload to in Firebase Storage
 		const storageRef = ref(storage, `profileImages/${user?.uid}`);
-
-		// Upload the file to Firebase Storage
 		const uploadTask = uploadBytesResumable(storageRef, blob);
 
 		uploadTask.on(
 			"state_changed",
 			(snapshot) => {
-				// Observe state change events such as progress, pause, and resume
 				console.log("Image is uploading...");
 			},
 			(error) => {
 				console.error("Error uploading image: ", error);
+				setIsLoading(false);
 			},
 			() => {
-				// Handle successful uploads on complete
 				getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
 					console.log("File available at", downloadURL);
 					updateUserDocument(downloadURL);
@@ -93,8 +98,8 @@ export default function ProfileInfo() {
 			profileImage: downloadURL,
 		});
 		setImage(downloadURL);
-
-		console.log("Image uploaded successfully");
+		setIsLoading(false);
+		navigation.goBack();
 	};
 
 	const handleBioChange = (text) => {
@@ -104,44 +109,77 @@ export default function ProfileInfo() {
 		}
 	};
 
-	handleUpdateProfile = async () => {
+	const handleUpdateProfile = async () => {
 		const usersCollection = collection(db, "users");
 		const userDoc = doc(usersCollection, user?.uid);
 
-		await setDoc(userDoc, {
-			...user,
+		if (
+			!username ||
+			!bio ||
+			!selectedCity ||
+			!selectedCountry ||
+			!preferredMode
+		) {
+			alert("Please fill in all the fields");
+			return;
+		}
+
+		if (user?.role === "tutor" && (!experience || !rate)) {
+			alert("Please fill in all the fields");
+			return;
+		}
+
+		if (username.length < 3) {
+			alert("Username must be at least 3 characters long");
+			return;
+		}
+
+		if (bio.length < 10) {
+			alert("Bio must be at least 10 characters long");
+			return;
+		}
+
+		setIsLoading(true);
+
+		const updateUserDocument = {
 			username: username,
 			bio: bio,
-			experience: experience,
-			rate: rate,
 			location: {
 				city: selectedCity,
 				country: selectedCountry,
 			},
 			preferredMode: preferredMode,
+		};
+
+		if (user?.role === "tutor") {
+			updateUserDocument.experience = experience;
+			updateUserDocument.rate = rate;
+		}
+
+		await setDoc(userDoc, {
+			...user,
+			...updateUserDocument,
 		});
 
 		setUser({
 			...user,
-			username: username,
-			bio: bio,
-			experience: experience,
-			rate: rate,
-			location: {
-				city: selectedCity,
-				country: selectedCountry,
-			},
-			preferredMode: preferredMode,
+			...updateUserDocument,
 		});
+		setIsLoading(false);
+		navigation.goBack();
 	};
 
 	const handleImageChange = () => {
-		// Implement image picker
 		pickImage();
 	};
 
 	return (
 		<ScrollView contentContainerStyle={styles.container}>
+			{isLoading && (
+				<View style={styles.loadingOverlay}>
+					<ActivityIndicator size='large' color={commonStyles.colors.primary} />
+				</View>
+			)}
 			<View>
 				<View style={styles.avatarContainer}>
 					<Avatar.Image
@@ -182,23 +220,26 @@ export default function ProfileInfo() {
 					inputStyle={{ height: 100 }}
 				/>
 
-				<View style={{ flexDirection: "row", gap: 5 }}>
-					<CustomInput
-						label='Experience:'
-						placeholder='Enter your Experience'
-						value={experience ? experience : ""}
-						onChangeText={setExperience}
-						inputStyle={{ width: 150 }}
-					/>
-					<CustomInput
-						label='Rate / Month:'
-						placeholder='Enter your Rate'
-						type='number'
-						value={rate ? rate : ""}
-						onChangeText={setRate}
-						inputStyle={{ width: 150 }}
-					/>
-				</View>
+				{user?.role === "Teacher" && (
+					<View style={{ flexDirection: "row", gap: 5 }}>
+						<CustomInput
+							label='Experience:'
+							placeholder='Enter your Experience'
+							value={experience ? experience : ""}
+							onChangeText={setExperience}
+							inputStyle={{ width: 150 }}
+							type='numeric'
+						/>
+						<CustomInput
+							label='Rate / Month:'
+							placeholder='Enter your Rate'
+							value={rate ? rate : ""}
+							onChangeText={setRate}
+							inputStyle={{ width: 150 }}
+							type='numeric'
+						/>
+					</View>
+				)}
 
 				<LocationPicker
 					title={"Location:"}
@@ -300,5 +341,12 @@ const styles = StyleSheet.create({
 	button: {
 		width: "41.5%",
 		fontSize: 18,
+	},
+	loadingOverlay: {
+		...StyleSheet.absoluteFillObject,
+		backgroundColor: "rgba(255, 255, 255, 0.8)",
+		justifyContent: "center",
+		alignItems: "center",
+		zIndex: 1,
 	},
 });

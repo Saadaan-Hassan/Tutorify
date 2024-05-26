@@ -34,7 +34,10 @@ export default function TutorDetailsScreen() {
 				<View style={styles.headerContainer}>
 					<View style={styles.header}>
 						<Text style={styles.headerTitle}>{user?.username}</Text>
-						<Text style={styles.rate}>{user?.rate}</Text>
+
+						{user?.role === "Teacher" && (
+							<Text style={styles.rate}>Rs. {user?.rate}</Text>
+						)}
 					</View>
 				</View>
 
@@ -42,16 +45,43 @@ export default function TutorDetailsScreen() {
 					{/* About Section */}
 					<View style={styles.section}>
 						<View style={styles.titleWithIcon}>
-							<Icon source='information' color='#5316B6' size={28} />
+							<View style={styles.iconBackground}>
+								<Icon
+									source='information-outline'
+									color={commonStyles.colors.primary}
+									size={20}
+								/>
+							</View>
 							<Text style={styles.title}>About</Text>
 						</View>
-						<Text style={[styles.para, { color: "#656466" }]}>{user?.bio}</Text>
+						<Text style={[styles.para]}>{user?.bio}</Text>
+					</View>
+
+					{/* Current Education Level Section */}
+					<View style={styles.section}>
+						<View style={styles.titleWithIcon}>
+							<View style={styles.iconBackground}>
+								<Icon
+									source='school-outline'
+									color={commonStyles.colors.primary}
+									size={20}
+								/>
+							</View>
+							<Text style={styles.title}>Current Education Level</Text>
+						</View>
+						<Text style={styles.para}>{user?.level}</Text>
 					</View>
 
 					{/* Subjects Section */}
 					<View style={styles.section}>
 						<View style={styles.titleWithIcon}>
-							<Icon source='bookshelf' color='#5316B6' size={28} />
+							<View style={styles.iconBackground}>
+								<Icon
+									source='bookshelf'
+									color={commonStyles.colors.primary}
+									size={20}
+								/>
+							</View>
 							<Text style={styles.title}>Subjects</Text>
 						</View>
 						<Text style={styles.para}>
@@ -66,31 +96,53 @@ export default function TutorDetailsScreen() {
 					{/* Preferred Mode Section */}
 					<View style={styles.section}>
 						<View style={styles.titleWithIcon}>
-							<Icon source='account-box' color='#5316B6' size={28} />
+							<View style={styles.iconBackground}>
+								<Icon
+									source='access-point'
+									color={commonStyles.colors.primary}
+									size={20}
+								/>
+							</View>
 							<Text style={styles.title}>Preferred Mode</Text>
 						</View>
 						<Text style={styles.para}>{user?.preferredMode}</Text>
 					</View>
 
-					{/* Experience Section */}
-					<View style={styles.section}>
-						<View style={styles.titleWithIcon}>
-							<Icon source='briefcase' color='#5316B6' size={28} />
-							<Text style={styles.title}>Experience</Text>
-						</View>
-						<Text style={styles.para}>{user?.experience} years</Text>
-					</View>
+					{user?.role === "Teacher" && (
+						<>
+							{/* Experience Section */}
+							<View style={styles.section}>
+								<View style={styles.titleWithIcon}>
+									<View style={styles.iconBackground}>
+										<Icon
+											source='briefcase-outline'
+											color={commonStyles.colors.primary}
+											size={20}
+										/>
+									</View>
+									<Text style={styles.title}>Experience</Text>
+								</View>
+								<Text style={styles.para}>{user?.experience} years</Text>
+							</View>
 
-					{/* Location Section */}
-					<View style={styles.section}>
-						<View style={styles.titleWithIcon}>
-							<Icon source='map-marker' color='#5316B6' size={28} />
-							<Text style={styles.title}>Location</Text>
-						</View>
-						<Text style={styles.para}>
-							{user?.location?.city}, {user?.location?.country}
-						</Text>
-					</View>
+							{/* Location Section */}
+							<View style={styles.section}>
+								<View style={styles.titleWithIcon}>
+									<View style={styles.iconBackground}>
+										<Icon
+											source='map-marker'
+											color={commonStyles.colors.primary}
+											size={20}
+										/>
+									</View>
+									<Text style={styles.title}>Location</Text>
+								</View>
+								<Text style={styles.para}>
+									{user?.location?.city}, {user?.location?.country}
+								</Text>
+							</View>
+						</>
+					)}
 				</View>
 			</ScrollView>
 
@@ -110,11 +162,11 @@ const styles = StyleSheet.create({
 	},
 	scrollContentContainer: {
 		flexGrow: 1,
-		paddingBottom: 430, // Adjust as needed to make sure the button is fully visible
+		paddingBottom: 40,
 	},
 	imageContainer: {
 		position: "relative",
-		height: "60%",
+		height: 300,
 	},
 	image: {
 		height: "100%",
@@ -123,7 +175,7 @@ const styles = StyleSheet.create({
 	},
 
 	headerContainer: {
-		backgroundColor: commonStyles.colors.neutralAccent2,
+		backgroundColor: commonStyles.colors.secondary,
 		paddingHorizontal: 24,
 		paddingVertical: 10,
 	},
@@ -172,7 +224,12 @@ const styles = StyleSheet.create({
 	titleWithIcon: {
 		flexDirection: "row",
 		alignItems: "center",
-		columnGap: 3,
+		columnGap: 10,
 		marginBottom: 10,
+	},
+	iconBackground: {
+		backgroundColor: commonStyles.colors.secondary,
+		borderRadius: 50,
+		padding: 3,
 	},
 });

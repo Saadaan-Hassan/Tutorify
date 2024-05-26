@@ -2,22 +2,20 @@ import React, { useState, useEffect } from "react";
 import { View, Text, FlatList, StyleSheet } from "react-native";
 import SearchBar from "../components/SearchBar";
 import TutorCard from "../components/TutorCard";
-import useRoleBasedUser from "../utils/hooks/useRoleBasedUser";
 import { useUser } from "../utils/context/UserContext";
 
 export default function TutorsScreen() {
-	const { user } = useUser();
-	const users = useRoleBasedUser(user.role);
+	const { otherUsers } = useUser();
 
-	const [searchedUsers, setSearchedUsers] = useState(users);
+	const [searchedUsers, setSearchedUsers] = useState(otherUsers);
 
 	useEffect(() => {
-		setSearchedUsers(users);
-	}, [users]);
+		setSearchedUsers(otherUsers);
+	}, [otherUsers]);
 
 	return (
 		<View style={styles.container}>
-			<SearchBar users={users} setSearchedUsers={setSearchedUsers} />
+			<SearchBar users={otherUsers} setSearchedUsers={setSearchedUsers} />
 
 			<Text style={styles.heading}>All Tutors</Text>
 

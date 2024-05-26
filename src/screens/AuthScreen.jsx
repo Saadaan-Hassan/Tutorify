@@ -3,12 +3,12 @@ import { SafeAreaView, Text, View, StyleSheet, Image } from "react-native";
 import CustomButton from "../components/CustomButton";
 import CustomLink from "../components/CustomLink";
 import CustomInput from "../components/CustomInput";
-import { Checkbox } from "react-native-paper";
+import { Checkbox, ActivityIndicator } from "react-native-paper";
 import { commonStyles } from "../styles/commonStyles";
 import useAuth from "../utils/hooks/useAuth.js";
 
 export default function AuthScreen() {
-	const { signUp, signIn, error } = useAuth();
+	const { signUp, signIn, error, loading } = useAuth();
 
 	const [isSignup, setIsSignup] = useState(false);
 	const [checked, setChecked] = useState(false);
@@ -78,6 +78,11 @@ export default function AuthScreen() {
 
 	return (
 		<SafeAreaView style={styles.container}>
+			{loading && (
+				<View style={styles.loadingOverlay}>
+					<ActivityIndicator size='large' color={commonStyles.colors.primary} />
+				</View>
+			)}
 			<Image
 				source={require("../../assets/img/logo.webp")}
 				style={commonStyles.logo}
@@ -234,5 +239,12 @@ const styles = StyleSheet.create({
 	errorText: {
 		color: "red",
 		marginTop: 10,
+	},
+	loadingOverlay: {
+		...StyleSheet.absoluteFillObject,
+		backgroundColor: "rgba(255, 255, 255, 0.8)",
+		justifyContent: "center",
+		alignItems: "center",
+		zIndex: 1,
 	},
 });

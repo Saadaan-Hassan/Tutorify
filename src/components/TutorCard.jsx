@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Icon } from "react-native-paper";
+import { Card, Avatar } from "react-native-paper";
 import {
 	Text,
 	View,
@@ -15,37 +15,42 @@ const { width } = Dimensions.get("window");
 export default function TutorCard({ userData }) {
 	const navigation = useNavigation();
 
-	const cardWidth = (width - 70) / 2;
+	const cardWidth = (width - 40) / 2;
 
 	return (
 		<TouchableOpacity
 			onPress={() => navigation.navigate("TutorDetail", { user: userData })}>
-			<Card mode='contained' style={[styles.card, { width: cardWidth }]}>
-				<Card.Cover
-					source={
-						userData?.profileImage
-							? { uri: userData?.profileImage }
-							: require("../../assets/img/avatar/avatar.jpg")
-					}
-					style={styles.cardImg}
-				/>
+			<Card
+				mode='contained'
+				style={[styles.card, { width: cardWidth }]}
+				elevation={5}>
+				<View style={styles.cardHeader}>
+					<Avatar.Image
+						source={
+							userData?.profileImage
+								? { uri: userData?.profileImage }
+								: require("../../assets/img/avatar/avatar.jpg")
+						}
+						size={56}
+						style={styles.avatar}
+					/>
+				</View>
 				<Card.Content style={styles.cardBody}>
-					<Text style={styles.title}>{userData?.username}</Text>
-					<View style={styles.ratingContainer}>
-						{[...Array(5)].map((_, index) => (
-							<Icon key={index} source='star' size={20} color='#FBBB00' />
-						))}
-					</View>
+					<Text style={styles.username}>{userData?.username}</Text>
+					<Text style={styles.level}>{userData?.level}</Text>
+					<Text style={styles.mode}>{userData?.preferredMode}</Text>
 					<View style={styles.subjectsContainer}>
-						{userData?.subjects.slice(0, 3).map((subject, index) => (
-							<Text key={index} style={styles.subjectText}>
-								{subject}
-							</Text>
+						{userData?.subjects?.slice(0, 2).map((subject, index) => (
+							<View key={index} style={styles.subjectChip}>
+								<Text style={styles.subjectText}>{subject}</Text>
+							</View>
 						))}
-						{userData?.subjects.length > 3 && (
-							<Text style={styles.subjectText}>
-								+{userData?.subjects.length - 3}
-							</Text>
+						{userData?.subjects?.length > 2 && (
+							<View style={styles.subjectChip}>
+								<Text style={styles.subjectText}>
+									+{userData?.subjects?.length - 2}
+								</Text>
+							</View>
 						)}
 					</View>
 				</Card.Content>
@@ -56,46 +61,72 @@ export default function TutorCard({ userData }) {
 
 const styles = StyleSheet.create({
 	card: {
-		height: 183,
-		margin: 5,
-		marginHorizontal: 8,
-		borderRadius: 20,
-		backgroundColor: commonStyles.colors.neutralLight,
+		margin: 10,
+		backgroundColor: "transparent",
+		paddingTop: 30,
+		height: 230,
 	},
-
-	cardImg: {
-		height: 56,
-		width: 56,
-		alignSelf: "center",
-		marginTop: 16,
-		marginBottom: 10,
-		borderRadius: 100,
-	},
-
-	title: {
-		fontSize: 16,
-		fontWeight: "bold",
-		color: commonStyles.colors.textPrimary,
-		textAlign: "center",
-	},
-
-	ratingContainer: {
+	cardHeader: {
 		flexDirection: "row",
 		alignItems: "center",
-		justifyContent: "space-between",
-		flexWrap: "wrap",
-		marginVertical: 10,
+		justifyContent: "center",
+		position: "relative",
+		marginBottom: 0,
 	},
-
+	avatar: {
+		position: "absolute",
+		top: -30,
+		borderWidth: 2,
+		borderColor: commonStyles.colors.primary,
+		zIndex: 1,
+	},
+	cardBody: {
+		alignItems: "center",
+		padding: 10,
+		paddingTop: 30,
+		backgroundColor: commonStyles.colors.neutralLight,
+		borderRadius: 20,
+		shadowColor: commonStyles.colors.primary,
+		shadowOffset: {
+			width: 0,
+			height: 2,
+		},
+		shadowOpacity: 0.9,
+		shadowRadius: 4,
+		height: 200,
+	},
+	username: {
+		fontSize: 18,
+		fontWeight: "bold",
+		color: commonStyles.colors.textPrimary,
+		marginTop: 10,
+	},
+	level: {
+		fontSize: 16,
+		color: commonStyles.colors.textSecondary,
+	},
+	mode: {
+		fontSize: 14,
+		color: commonStyles.colors.tertiary,
+		marginBottom: 10,
+	},
 	subjectsContainer: {
 		flexDirection: "row",
 		alignItems: "center",
-		justifyContent: "space-around",
+		justifyContent: "center",
 		flexWrap: "wrap",
+		marginVertical: 10,
 	},
-
-	subjectText: {
+	subjectChip: {
+		backgroundColor: commonStyles.colors.secondary,
+		borderRadius: 15,
+		paddingVertical: 5,
+		paddingHorizontal: 10,
 		marginRight: 10,
+		marginBottom: 5,
+	},
+	subjectText: {
 		fontSize: 12,
+		color: commonStyles.colors.primary,
 	},
 });

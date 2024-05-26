@@ -60,7 +60,7 @@ export default function Header() {
 			<Appbar.Content
 				title={
 					<Text style={styles.welcomeText}>
-						Welcome <Text style={styles.nameText}>{user.username}</Text>
+						Welcome <Text style={styles.nameText}>{user?.username}</Text>
 					</Text>
 				}
 				style={styles.defaultContent}

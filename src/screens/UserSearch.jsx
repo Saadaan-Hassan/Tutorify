@@ -14,6 +14,7 @@ import { Picker } from "@react-native-picker/picker";
 import BottomSheet from "@gorhom/bottom-sheet";
 import { useUser } from "../utils/context/UserContext";
 import UserDetailModal from "../components/UserDetailModal";
+import { commonStyles } from "../styles/commonStyles";
 
 const haversineDistance = (coords1, coords2) => {
 	const toRad = (x) => (x * Math.PI) / 180;
@@ -101,7 +102,11 @@ const UserSearch = () => {
 	if (!location) {
 		return (
 			<View style={styles.loadingContainer}>
-				<ActivityIndicator animating={true} color='#000' size='large' />
+				<ActivityIndicator
+					animating={true}
+					color={commonStyles.colors.primary}
+					size='large'
+				/>
 				{errorMsg ? <Text>{errorMsg}</Text> : null}
 			</View>
 		);
@@ -161,7 +166,7 @@ const UserSearch = () => {
 						selectedValue={filter}
 						onValueChange={(itemValue) => applyFilter(itemValue)}
 						style={styles.picker}>
-						<Picker.Item label='Everywhere' value='all' />
+						<Picker.Item label='Anywhere' value='all' />
 						<Picker.Item label='Within 5 km' value='5' />
 						<Picker.Item label='Within 10 km' value='10' />
 						<Picker.Item label='Within 15 km' value='15' />

@@ -22,55 +22,78 @@ import {
 } from "../screens";
 import Header from "../components/Header";
 import { Icon } from "react-native-paper";
+import useAuth from "../utils/hooks/useAuth";
 
 const Stack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
 
-const TabNavigator = () => (
-	<Tab.Navigator
-		initialRouteName='Home'
-		activeColor={commonStyles.colors.neutral}
-		inactiveColor={commonStyles.colors.inactivePrimary}
-		activeIndicatorStyle={{
-			backgroundColor: commonStyles.colors.neutralAccent,
-		}}
-		barStyle={{
-			backgroundColor: commonStyles.colors.primary,
-			height: 70,
-		}}
-		screenOptions={{ headerShown: false }}>
-		<Tab.Screen
-			name='Home'
-			component={HomeScreen}
-			options={{
-				tabBarLabel: "Home",
-				tabBarIcon: ({ color }) => (
-					<Icon source='home' color={color} size={26} />
-				),
+const TabNavigator = () => {
+	const { user } = useUser();
+
+	if (!user) {
+		return null;
+	}
+
+	return (
+		<Tab.Navigator
+			initialRouteName='Home'
+			activeColor={commonStyles.colors.neutral}
+			inactiveColor={commonStyles.colors.inactivePrimary}
+			activeIndicatorStyle={{
+				backgroundColor: commonStyles.colors.neutralAccent,
 			}}
-		/>
-		<Tab.Screen
-			name='Tutors'
-			component={TutorsScreen}
-			options={{
-				tabBarLabel: "Tutors",
-				tabBarIcon: ({ color }) => (
-					<Icon source='compass-outline' color={color} size={26} />
-				),
+			barStyle={{
+				backgroundColor: commonStyles.colors.primary,
+				height: 70,
 			}}
-		/>
-		<Tab.Screen
-			name='Chat'
-			component={ChatScreen}
-			options={{
-				tabBarLabel: "Chat",
-				tabBarIcon: ({ color }) => (
-					<Icon source='message-text' color={color} size={26} />
-				),
-			}}
-		/>
-	</Tab.Navigator>
-);
+			screenOptions={{ headerShown: false }}>
+			<Tab.Screen
+				name='Home'
+				component={HomeScreen}
+				options={{
+					tabBarLabel: "Home",
+					tabBarIcon: ({ color }) => (
+						<Icon source='home' color={color} size={26} />
+					),
+				}}
+			/>
+			<Tab.Screen
+				name={user.role === "Teacher" ? "Students" : "Tutors"}
+				component={TutorsScreen}
+				options={{
+					tabBarLabel: user.role === "Teacher" ? "Students" : "Tutors",
+					tabBarIcon: ({ color }) => (
+						<Icon
+							source={user.role === "Teacher" ? "school" : "human-male-board"}
+							color={color}
+							size={26}
+						/>
+					),
+				}}
+			/>
+			<Tab.Screen
+				name='Search'
+				component={UserSearch}
+				options={{
+					tabBarLabel: "Search",
+					tabBarIcon: ({ color }) => (
+						<Icon source='compass-outline' color={color} size={26} />
+					),
+				}}
+			/>
+			<Tab.Screen
+				name='Chat'
+				component={ChatScreen}
+				options={{
+					tabBarLabel: "Chat",
+					tabBarIcon: ({ color }) => (
+						<Icon source='message-text' color={color} size={26} />
+					),
+				}}
+			/>
+		</Tab.Navigator>
+	);
+};
 
 const MainNavigator = () => {
 	const { user } = useUser();
@@ -104,7 +127,7 @@ const MainNavigator = () => {
 	if (isLoading) {
 		return null;
 	}
-	console.log("In MainNavigator, user:", user);
+
 	return (
 		<Stack.Navigator
 			initialRouteName={
@@ -113,16 +136,16 @@ const MainNavigator = () => {
 			screenOptions={{
 				header: () => <Header />,
 			}}>
+			<Stack.Screen name='TabNavigator' component={TabNavigator} />
 			{user ? (
 				<>
-					<Stack.Screen name='TabNavigator' component={TabNavigator} />
 					<Stack.Screen name='TutorDetail' component={TutorDetailScreen} />
 					<Stack.Screen name='Profile' component={ProfileScreen} />
 					<Stack.Screen name='Account' component={AccountScreen} />
 					<Stack.Screen name='Password' component={PasswordScreen} />
 					<Stack.Screen name='PrivacyScreen' component={PrivacyScreen} />
-					<Stack.Screen name='ChatDetail' component={ChatDetailScreen} />
 					<Stack.Screen name='UserSearch' component={UserSearch} />
+					<Stack.Screen name='ChatDetail' component={ChatDetailScreen} />
 
 					<Stack.Screen
 						name='Registration'

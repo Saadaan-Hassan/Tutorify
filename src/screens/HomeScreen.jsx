@@ -16,11 +16,28 @@ import CustomLink from "../components/CustomLink";
 import TutorCard from "../components/TutorCard";
 import { commonStyles } from "../styles/commonStyles";
 
+// Recommended Users based on the subjects and make them random
+
+const recommendedUsers = (users, user) => {
+	const recommended = users
+		.filter((u) => {
+			return u.subjects.some((subject) => user?.subjects.includes(subject));
+		})
+		.slice(0, 5)
+		.sort(() => Math.random() - 0.5);
+	return recommended;
+};
+
+const filterUsersByMode = (users, mode) => {
+	return users.filter((u) => u.preferredMode === mode);
+};
+
 export default function HomeScreen() {
 	const navigation = useNavigation();
 	const { user, setOtherUsers } = useUser();
+	const topTutors = useRoleBasedUser("Student");
 
-	const users = useRoleBasedUser(user.role);
+	const users = useRoleBasedUser(user?.role);
 
 	useEffect(() => {
 		setOtherUsers(users);
@@ -40,15 +57,37 @@ export default function HomeScreen() {
 					]}>
 					<View style={styles.leftContent}>
 						<View>
-							<Text
-								style={[styles.header, { color: commonStyles.colors.neutral }]}>
-								Find the right tutor for you
-							</Text>
-							<Text style={styles.para}>
-								Ace your test and examination by getting the knowledge needed
-							</Text>
+							{user?.role === "Teacher" ? (
+								<View>
+									<Text
+										style={[
+											styles.header,
+											{ color: commonStyles.colors.neutral },
+										]}>
+										Find the right student
+									</Text>
+									<Text style={styles.para}>
+										Help students achieve their academic goals by sharing your
+										knowledge
+									</Text>
+								</View>
+							) : (
+								<View>
+									<Text
+										style={[
+											styles.header,
+											{ color: commonStyles.colors.neutral },
+										]}>
+										Find the right tutor for you
+									</Text>
+									<Text style={styles.para}>
+										Ace your test and examination by getting the knowledge
+										needed
+									</Text>
+								</View>
+							)}
 							<CustomButton
-								title='Find tutor'
+								title={user.role === "Teacher" ? "Find Student" : "Find Tutor"}
 								styleReverse={true}
 								style={{ width: 150, borderRadius: 20, marginTop: 20 }}
 								onPress={() => navigation.navigate("UserSearch")}
@@ -60,28 +99,6 @@ export default function HomeScreen() {
 					</View>
 				</View>
 
-				{/* Top Tutors Section */}
-				<View style={[styles.section]}>
-					<View style={styles.sectionHeader}>
-						<Text style={styles.header}>Top tutors</Text>
-						<CustomLink
-							text='See all'
-							onPress={() => {
-								navigation.navigate("Tutors");
-								console.log("I don't have an account pressed");
-							}}
-						/>
-					</View>
-
-					<FlatList
-						data={users}
-						keyExtractor={(item) => item.id}
-						renderItem={({ item }) => <TutorCard userData={item} />}
-						horizontal
-						showsHorizontalScrollIndicator={false}
-					/>
-				</View>
-
 				{/* Recommended For You Section */}
 				<View style={[styles.section]}>
 					<View style={styles.sectionHeader}>
@@ -89,7 +106,84 @@ export default function HomeScreen() {
 					</View>
 
 					<FlatList
-						data={users}
+						data={recommendedUsers(users, user)}
+						keyExtractor={(item) => item.id}
+						renderItem={({ item }) => <TutorCard userData={item} />}
+						horizontal
+						showsHorizontalScrollIndicator={false}
+					/>
+				</View>
+
+				<View style={[styles.section]}>
+					<View style={styles.sectionHeader}>
+						<Text style={styles.header}>Top tutors</Text>
+
+						{user.role === "Student" && (
+							<CustomLink
+								text='See all'
+								onPress={() => {
+									navigation.navigate("Tutors");
+								}}
+							/>
+						)}
+					</View>
+
+					<FlatList
+						data={topTutors.slice(0, 5).sort(() => Math.random() - 0.5)}
+						keyExtractor={(item) => item.id}
+						renderItem={({ item }) => <TutorCard userData={item} />}
+						horizontal
+						showsHorizontalScrollIndicator={false}
+					/>
+				</View>
+
+				<View style={[styles.section]}>
+					<View style={styles.sectionHeader}>
+						<Text style={styles.header}>
+							{user.role === "Teacher" ? "Students" : "Tutors"} Prefer Online
+						</Text>
+
+						<CustomLink
+							text='See all'
+							onPress={() => {
+								navigation.navigate(
+									user.role === "Teacher" ? "Students" : "Tutors"
+								);
+							}}
+						/>
+					</View>
+
+					<FlatList
+						data={filterUsersByMode(users, "Online")
+							.slice(0, 5)
+							.sort(() => Math.random() - 0.5)}
+						keyExtractor={(item) => item.id}
+						renderItem={({ item }) => <TutorCard userData={item} />}
+						horizontal
+						showsHorizontalScrollIndicator={false}
+					/>
+				</View>
+
+				<View style={[styles.section]}>
+					<View style={styles.sectionHeader}>
+						<Text style={styles.header}>
+							{user.role === "Teacher" ? "Students" : "Tutors"} Prefer In-person
+						</Text>
+
+						<CustomLink
+							text='See all'
+							onPress={() => {
+								navigation.navigate(
+									user.role === "Teacher" ? "Students" : "Tutors"
+								);
+							}}
+						/>
+					</View>
+
+					<FlatList
+						data={filterUsersByMode(users, "In-person")
+							.slice(0, 5)
+							.sort(() => Math.random() - 0.5)}
 						keyExtractor={(item) => item.id}
 						renderItem={({ item }) => <TutorCard userData={item} />}
 						horizontal

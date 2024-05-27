@@ -53,6 +53,9 @@ export default function TutorCard({ userData }) {
 							</View>
 						)}
 					</View>
+					{userData?.role === "Teacher" && (
+						<Text style={styles.rate}>Rs. {userData?.rate} / Month</Text>
+					)}
 				</Card.Content>
 			</Card>
 		</TouchableOpacity>
@@ -94,6 +97,7 @@ const styles = StyleSheet.create({
 		shadowOpacity: 0.9,
 		shadowRadius: 4,
 		height: 200,
+		position: "relative",
 	},
 	username: {
 		fontSize: 18,
@@ -128,5 +132,12 @@ const styles = StyleSheet.create({
 	subjectText: {
 		fontSize: 12,
 		color: commonStyles.colors.primary,
+	},
+	rate: {
+		fontSize: 12,
+		color: commonStyles.colors.primary,
+		position: "absolute",
+		bottom: 10,
+		right: 10,
 	},
 });

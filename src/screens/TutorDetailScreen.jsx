@@ -36,7 +36,7 @@ export default function TutorDetailsScreen() {
 						<Text style={styles.headerTitle}>{user?.username}</Text>
 
 						{user?.role === "Teacher" && (
-							<Text style={styles.rate}>Rs. {user?.rate}</Text>
+							<Text style={styles.rate}>Rs. {user?.rate} / Month</Text>
 						)}
 					</View>
 				</View>

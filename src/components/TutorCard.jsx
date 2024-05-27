@@ -9,13 +9,36 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { commonStyles } from "../styles/commonStyles";
+import {
+	Placeholder,
+	PlaceholderMedia,
+	PlaceholderLine,
+	Fade,
+} from "rn-placeholder";
+import useAuth from "../utils/hooks/useAuth";
 
 const { width } = Dimensions.get("window");
 
 export default function TutorCard({ userData }) {
 	const navigation = useNavigation();
+	const { loading } = useAuth();
 
 	const cardWidth = (width - 40) / 2;
+
+	if (loading) {
+		return (
+			<Placeholder Animation={Fade} style={styles.placeholder}>
+				<View style={styles.placeholderContent}>
+					<PlaceholderMedia style={styles.placeholderAvatar} />
+					<PlaceholderLine style={styles.placeholderLine} />
+					<PlaceholderLine style={styles.placeholderLine} />
+					<PlaceholderLine style={styles.placeholderLine} />
+					<PlaceholderLine style={styles.placeholderLine} />
+					<PlaceholderLine style={styles.placeholderLine} />
+				</View>
+			</Placeholder>
+		);
+	}
 
 	return (
 		<TouchableOpacity
@@ -139,5 +162,45 @@ const styles = StyleSheet.create({
 		position: "absolute",
 		bottom: 10,
 		right: 10,
+	},
+	placeholder: {
+		flex: 1,
+		justifyContent: "center",
+		alignItems: "center",
+		margin: 10,
+		marginTop: 40,
+		width: width / 2 - 20,
+		height: 230,
+	},
+	placeholderContent: {
+		alignItems: "center",
+		padding: 10,
+		paddingTop: 30,
+		backgroundColor: commonStyles.colors.neutralLight,
+		borderRadius: 20,
+		shadowColor: commonStyles.colors.primary,
+		shadowOffset: {
+			width: 0,
+			height: 2,
+		},
+		shadowOpacity: 0.9,
+		shadowRadius: 4,
+		height: 200,
+		position: "relative",
+	},
+	placeholderAvatar: {
+		position: "absolute",
+		top: -30,
+		width: 56,
+		height: 56,
+		borderWidth: 2,
+		borderColor: commonStyles.colors.primary,
+		borderRadius: 28, // Adjust border radius to match avatar
+	},
+	placeholderLine: {
+		width: 100,
+		height: 10,
+		backgroundColor: commonStyles.colors.neutralLight,
+		marginVertical: 5,
 	},
 });

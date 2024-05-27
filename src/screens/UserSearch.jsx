@@ -236,7 +236,8 @@ const styles = StyleSheet.create({
 		flex: 1,
 	},
 	sheetContent: {
-		flex: 1,
+		// flex: 1,
+		flexGrow: 1,
 		padding: 16,
 	},
 	drawerTitle: {

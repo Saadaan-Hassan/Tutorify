@@ -31,10 +31,6 @@ const useAuth = () => {
 
 					if (userSnapshot.exists()) {
 						setUser(userSnapshot.data());
-						console.log(
-							"User found in Firestore database:",
-							userSnapshot.data()
-						);
 					} else {
 						console.error("User not found in Firestore database");
 					}
@@ -116,7 +112,6 @@ const useAuth = () => {
 	// Function to handle user signout
 	const logOut = async () => {
 		try {
-			console.log("Logging out...");
 			await signOut(auth);
 			setUser(null);
 			setOtherUsers([]);

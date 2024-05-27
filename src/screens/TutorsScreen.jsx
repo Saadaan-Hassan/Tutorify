@@ -143,10 +143,12 @@ const styles = StyleSheet.create({
 		marginLeft: 10,
 	},
 	flatListContainer: {
-		paddingHorizontal: 10,
 		paddingTop: 10,
 		paddingBottom: 20,
+		display: "flex",
 		alignItems: "center",
+		justifyContent: "space-between",
+		gap: 10,
 	},
 	filter: {
 		flexDirection: "row",

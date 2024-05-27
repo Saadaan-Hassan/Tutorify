@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
 	View,
 	Text,
@@ -17,7 +17,6 @@ import TutorCard from "../components/TutorCard";
 import { commonStyles } from "../styles/commonStyles";
 
 // Recommended Users based on the subjects and make them random
-
 const recommendedUsers = (users, user) => {
 	const recommended = users
 		.filter((u) => {
@@ -43,12 +42,14 @@ export default function HomeScreen() {
 		setOtherUsers(users);
 	}, [users]);
 
+	const onlineUsers = filterUsersByMode(users, "Online");
+	const inPersonUsers = filterUsersByMode(users, "In-person");
+
 	return (
 		<ScrollView contentContainerStyle={styles.scrollContainer}>
 			<View style={styles.container}>
 				{/* Search Section */}
 				<SearchBar users={users} />
-
 				<View
 					style={[
 						styles.section,
@@ -98,7 +99,6 @@ export default function HomeScreen() {
 						<Image source={require("../../assets/img/home.png")} />
 					</View>
 				</View>
-
 				{/* Recommended For You Section */}
 				<View style={[styles.section]}>
 					<View style={styles.sectionHeader}>
@@ -113,7 +113,6 @@ export default function HomeScreen() {
 						showsHorizontalScrollIndicator={false}
 					/>
 				</View>
-
 				<View style={[styles.section]}>
 					<View style={styles.sectionHeader}>
 						<Text style={styles.header}>Top tutors</Text>
@@ -137,59 +136,56 @@ export default function HomeScreen() {
 					/>
 				</View>
 
-				<View style={[styles.section]}>
-					<View style={styles.sectionHeader}>
-						<Text style={styles.header}>
-							{user.role === "Teacher" ? "Students" : "Tutors"} Prefer Online
-						</Text>
-
-						<CustomLink
-							text='See all'
-							onPress={() => {
-								navigation.navigate(
-									user.role === "Teacher" ? "Students" : "Tutors"
-								);
-							}}
+				{onlineUsers.length > 0 && (
+					<View style={[styles.section]}>
+						<View style={styles.sectionHeader}>
+							<Text style={styles.header}>
+								{user.role === "Teacher" ? "Students" : "Tutors"} Prefer Online
+							</Text>
+							<CustomLink
+								text='See all'
+								onPress={() => {
+									navigation.navigate(
+										user.role === "Teacher" ? "Students" : "Tutors"
+									);
+								}}
+							/>
+						</View>
+						<FlatList
+							data={onlineUsers.slice(0, 5).sort(() => Math.random() - 0.5)}
+							keyExtractor={(item) => item.id}
+							renderItem={({ item }) => <TutorCard userData={item} />}
+							horizontal
+							showsHorizontalScrollIndicator={false}
 						/>
 					</View>
+				)}
 
-					<FlatList
-						data={filterUsersByMode(users, "Online")
-							.slice(0, 5)
-							.sort(() => Math.random() - 0.5)}
-						keyExtractor={(item) => item.id}
-						renderItem={({ item }) => <TutorCard userData={item} />}
-						horizontal
-						showsHorizontalScrollIndicator={false}
-					/>
-				</View>
-
-				<View style={[styles.section]}>
-					<View style={styles.sectionHeader}>
-						<Text style={styles.header}>
-							{user.role === "Teacher" ? "Students" : "Tutors"} Prefer In-person
-						</Text>
-
-						<CustomLink
-							text='See all'
-							onPress={() => {
-								navigation.navigate(
-									user.role === "Teacher" ? "Students" : "Tutors"
-								);
-							}}
+				{inPersonUsers.length > 0 && (
+					<View style={[styles.section]}>
+						<View style={styles.sectionHeader}>
+							<Text style={styles.header}>
+								{user.role === "Teacher" ? "Students" : "Tutors"} Prefer
+								In-person
+							</Text>
+							<CustomLink
+								text='See all'
+								onPress={() => {
+									navigation.navigate(
+										user.role === "Teacher" ? "Students" : "Tutors"
+									);
+								}}
+							/>
+						</View>
+						<FlatList
+							data={inPersonUsers.slice(0, 5).sort(() => Math.random() - 0.5)}
+							keyExtractor={(item) => item.id}
+							renderItem={({ item }) => <TutorCard userData={item} />}
+							horizontal
+							showsHorizontalScrollIndicator={false}
 						/>
 					</View>
-
-					<FlatList
-						data={filterUsersByMode(users, "In-person")
-							.slice(0, 5)
-							.sort(() => Math.random() - 0.5)}
-						keyExtractor={(item) => item.id}
-						renderItem={({ item }) => <TutorCard userData={item} />}
-						horizontal
-						showsHorizontalScrollIndicator={false}
-					/>
-				</View>
+				)}
 			</View>
 		</ScrollView>
 	);

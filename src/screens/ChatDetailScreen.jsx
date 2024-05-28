@@ -15,6 +15,7 @@ import {
 } from "firebase/firestore";
 import { useUser } from "../utils/context/UserContext";
 import { getDateString, getTimeString } from "../utils/helpers";
+import { sendNotification } from "../services/notifications";
 
 export default function ChatDetailScreen({ route }) {
 	const { user, otherUsers } = useUser();
@@ -80,6 +81,14 @@ export default function ChatDetailScreen({ route }) {
 				messages: [...messages, newMessage],
 				unread: true,
 			});
+		}
+
+		// Send a notification to the chat partner
+		const chatPartnerData = otherUsers.find((u) => u.uid === chatPartner.uid);
+		if (chatPartnerData.token) {
+			const title = "New message";
+			const body = `${user.username}: ${messageText}`;
+			sendNotification(chatPartnerData.token, title, body);
 		}
 	};
 

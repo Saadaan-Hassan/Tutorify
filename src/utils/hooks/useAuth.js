@@ -8,11 +8,15 @@ import {
 	EmailAuthProvider,
 	reauthenticateWithCredential,
 } from "firebase/auth";
-import { collection, getDoc, doc, setDoc } from "firebase/firestore";
+import { collection, getDoc, doc, setDoc, getDocs } from "firebase/firestore";
 import { db } from "../../services/firebase";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { useUser } from "../context/UserContext";
+import {
+	getFCMRegistrationToken,
+	sendNotification,
+} from "../../services/notifications";
 
 const useAuth = () => {
 	const { user, setUser, setOtherUsers } = useUser();
@@ -62,11 +66,30 @@ const useAuth = () => {
 			// Add user to the Firestore database
 			const usersCollection = collection(db, "users");
 
+			const token = await getFCMRegistrationToken();
+
 			await setDoc(doc(usersCollection, userCredential.user.uid), {
 				uid: userCredential.user.uid,
 				email: userCredential.user.email,
-				createAt: new Date(),
+				createdAt: new Date(),
+				token: token,
 			});
+
+			// Send a notification to all users that a new user has signed up
+			const usersSnapshot = await getDocs(usersCollection);
+			const users = usersSnapshot.docs.map((doc) => doc.data());
+
+			await Promise.all(
+				users.map(async (user) => {
+					if (user.uid !== userCredential.user.uid && user.token) {
+						await sendNotification(
+							user.token,
+							"New User",
+							"A new user has signed up"
+						);
+					}
+				})
+			);
 
 			// Clear the error
 			setError(null);

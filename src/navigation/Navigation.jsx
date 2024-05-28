@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { NavigationContainer, useNavigation } from "@react-navigation/native";
+import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createMaterialBottomTabNavigator } from "react-native-paper/react-navigation";
 import AsyncStorage from "@react-native-async-storage/async-storage";

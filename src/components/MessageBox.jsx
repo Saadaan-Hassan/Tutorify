@@ -1,6 +1,10 @@
-import { View, Text } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import React from "react";
-import { commonStyles } from "../styles/commonStyles";
+import {
+	commonStyles,
+	scaleFactor,
+	responsiveFontSize,
+} from "../styles/commonStyles";
 
 export default function MessageBox({ message, userType = "sender", time }) {
 	return (
@@ -11,13 +15,14 @@ export default function MessageBox({ message, userType = "sender", time }) {
 	);
 }
 
-const styles = {
+const styles = StyleSheet.create({
 	container: {
-		padding: 10,
-		marginHorizontal: 10,
-		marginBottom: 10,
+		padding: 10 * scaleFactor,
+		marginHorizontal: 10 * scaleFactor,
+		marginBottom: 10 * scaleFactor,
 		maxWidth: "80%",
-		borderRadius: 20,
+		minWidth: "30%",
+		borderRadius: 20 * scaleFactor,
 	},
 	sender: {
 		backgroundColor: commonStyles.colors.secondary2,
@@ -30,13 +35,13 @@ const styles = {
 		alignSelf: "flex-start",
 	},
 	text: {
-		fontSize: 18,
+		fontSize: responsiveFontSize(7),
 		color: commonStyles.colors.neutral,
 	},
 	time: {
 		color: commonStyles.colors.textSecondary,
-		fontSize: 12,
+		fontSize: responsiveFontSize(5),
 		textAlign: "right",
-		marginTop: 5,
+		marginTop: 5 * scaleFactor,
 	},
-};
+});

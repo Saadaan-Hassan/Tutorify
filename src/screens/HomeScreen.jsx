@@ -14,14 +14,17 @@ import SearchBar from "../components/SearchBar";
 import CustomButton from "../components/CustomButton";
 import CustomLink from "../components/CustomLink";
 import TutorCard from "../components/TutorCard";
-import { commonStyles } from "../styles/commonStyles";
+import {
+	commonStyles,
+	scaleFactor,
+	responsiveFontSize,
+} from "../styles/commonStyles";
 
-// Recommended Users based on the subjects and make them random
 const recommendedUsers = (users, user) => {
 	const recommended = users
-		.filter((u) => {
-			return u.subjects.some((subject) => user?.subjects.includes(subject));
-		})
+		.filter((u) =>
+			u?.subjects?.some((subject) => user?.subjects?.includes(subject))
+		)
 		.slice(0, 5)
 		.sort(() => Math.random() - 0.5);
 	return recommended;
@@ -47,41 +50,27 @@ export default function HomeScreen() {
 
 	return (
 		<ScrollView contentContainerStyle={styles.scrollContainer}>
-			<View style={styles.container}>
-				{/* Search Section */}
+			<View style={commonStyles.container}>
 				<SearchBar users={users} />
-				<View
-					style={[
-						styles.section,
-						styles.flex,
-						{ backgroundColor: commonStyles.colors.primary, padding: 20 },
-					]}>
+				<View style={[styles.section, styles.flex, styles.bannerSection]}>
 					<View style={styles.leftContent}>
 						<View>
 							{user?.role === "Teacher" ? (
 								<View>
-									<Text
-										style={[
-											styles.header,
-											{ color: commonStyles.colors.neutral },
-										]}>
+									<Text style={[commonStyles.header, styles.bannerText]}>
 										Find the right student
 									</Text>
-									<Text style={styles.para}>
+									<Text style={commonStyles.para}>
 										Help students achieve their academic goals by sharing your
 										knowledge
 									</Text>
 								</View>
 							) : (
 								<View>
-									<Text
-										style={[
-											styles.header,
-											{ color: commonStyles.colors.neutral },
-										]}>
+									<Text style={[commonStyles.header, styles.bannerText]}>
 										Find the right tutor for you
 									</Text>
-									<Text style={styles.para}>
+									<Text style={commonStyles.para}>
 										Ace your test and examination by getting the knowledge
 										needed
 									</Text>
@@ -90,7 +79,7 @@ export default function HomeScreen() {
 							<CustomButton
 								title={user.role === "Teacher" ? "Find Student" : "Find Tutor"}
 								styleReverse={true}
-								style={{ width: 150, borderRadius: 20, marginTop: 20 }}
+								style={styles.bannerButton}
 								onPress={() => navigation.navigate("UserSearch")}
 							/>
 						</View>
@@ -99,12 +88,10 @@ export default function HomeScreen() {
 						<Image source={require("../../assets/img/home.png")} />
 					</View>
 				</View>
-				{/* Recommended For You Section */}
-				<View style={[styles.section]}>
+				<View style={styles.section}>
 					<View style={styles.sectionHeader}>
-						<Text style={styles.header}>Recommended for you</Text>
+						<Text style={commonStyles.header}>Recommended for you</Text>
 					</View>
-
 					<FlatList
 						data={recommendedUsers(users, user)}
 						keyExtractor={(item) => item.id}
@@ -113,10 +100,9 @@ export default function HomeScreen() {
 						showsHorizontalScrollIndicator={false}
 					/>
 				</View>
-				<View style={[styles.section]}>
+				<View style={styles.section}>
 					<View style={styles.sectionHeader}>
-						<Text style={styles.header}>Top tutors</Text>
-
+						<Text style={commonStyles.header}>Top tutors</Text>
 						{user.role === "Student" && (
 							<CustomLink
 								text='See all'
@@ -126,7 +112,6 @@ export default function HomeScreen() {
 							/>
 						)}
 					</View>
-
 					<FlatList
 						data={topTutors.slice(0, 5).sort(() => Math.random() - 0.5)}
 						keyExtractor={(item) => item.id}
@@ -135,11 +120,10 @@ export default function HomeScreen() {
 						showsHorizontalScrollIndicator={false}
 					/>
 				</View>
-
 				{onlineUsers.length > 0 && (
-					<View style={[styles.section]}>
+					<View style={styles.section}>
 						<View style={styles.sectionHeader}>
-							<Text style={styles.header}>
+							<Text style={commonStyles.header}>
 								{user.role === "Teacher" ? "Students" : "Tutors"} Prefer Online
 							</Text>
 							<CustomLink
@@ -160,11 +144,10 @@ export default function HomeScreen() {
 						/>
 					</View>
 				)}
-
 				{inPersonUsers.length > 0 && (
-					<View style={[styles.section]}>
+					<View style={styles.section}>
 						<View style={styles.sectionHeader}>
-							<Text style={styles.header}>
+							<Text style={commonStyles.header}>
 								{user.role === "Teacher" ? "Students" : "Tutors"} Prefer
 								In-person
 							</Text>
@@ -195,18 +178,15 @@ const styles = StyleSheet.create({
 	scrollContainer: {
 		flexGrow: 1,
 	},
-	container: {
-		paddingHorizontal: 10,
-	},
 	flex: {
 		flexDirection: "row",
 		justifyContent: "space-between",
 		alignItems: "center",
 	},
 	section: {
-		borderRadius: 20,
-		marginHorizontal: 10,
-		marginVertical: 10,
+		borderRadius: 20 * scaleFactor,
+		marginHorizontal: 10 * scaleFactor,
+		marginVertical: 10 * scaleFactor,
 	},
 	sectionHeader: {
 		flex: 1,
@@ -222,14 +202,17 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		justifyContent: "center",
 	},
-	header: {
-		fontSize: 18,
-		fontWeight: "bold",
-		marginBottom: 10,
-		color: commonStyles.colors.textPrimary,
+	bannerSection: {
+		backgroundColor: commonStyles.colors.primary,
+		padding: 20 * scaleFactor,
 	},
-	para: {
-		fontSize: 14,
+	bannerText: {
 		color: commonStyles.colors.neutral,
+		fontSize: responsiveFontSize(8),
+	},
+	bannerButton: {
+		width: 150 * scaleFactor,
+		borderRadius: 20 * scaleFactor,
+		marginTop: 20 * scaleFactor,
 	},
 });

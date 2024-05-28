@@ -5,7 +5,11 @@ import TutorCard from "../components/TutorCard";
 import { useUser } from "../utils/context/UserContext";
 import CustomButton from "../components/CustomButton";
 import { Picker } from "@react-native-picker/picker";
-import { commonStyles } from "../styles/commonStyles";
+import {
+	commonStyles,
+	scaleFactor,
+	responsiveFontSize,
+} from "../styles/commonStyles";
 
 export default function TutorsScreen() {
 	const { otherUsers } = useUser();
@@ -134,29 +138,29 @@ export default function TutorsScreen() {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		paddingHorizontal: 10,
+		paddingHorizontal: 10 * scaleFactor,
 	},
 	heading: {
-		fontSize: 18,
+		fontSize: responsiveFontSize(7),
 		fontWeight: "bold",
-		marginVertical: 10,
-		marginLeft: 10,
+		marginVertical: 10 * scaleFactor,
+		marginLeft: 10 * scaleFactor,
 	},
 	flatListContainer: {
-		paddingTop: 10,
-		paddingBottom: 20,
+		paddingTop: 10 * scaleFactor,
+		paddingBottom: 20 * scaleFactor,
 		display: "flex",
 		alignItems: "center",
 		justifyContent: "space-between",
-		gap: 10,
+		gap: 10 * scaleFactor,
 	},
 	filter: {
 		flexDirection: "row",
 		alignItems: "center",
 		backgroundColor: commonStyles.colors.primary,
-		paddingHorizontal: 10,
-		paddingVertical: 5,
-		borderRadius: 20,
-		margin: 5,
+		paddingHorizontal: 10 * scaleFactor,
+		paddingVertical: 5 * scaleFactor,
+		borderRadius: 20 * scaleFactor,
+		margin: 5 * scaleFactor,
 	},
 });

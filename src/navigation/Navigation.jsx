@@ -22,7 +22,6 @@ import {
 } from "../screens";
 import Header from "../components/Header";
 import { Icon } from "react-native-paper";
-import useAuth from "../utils/hooks/useAuth";
 
 const Stack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();

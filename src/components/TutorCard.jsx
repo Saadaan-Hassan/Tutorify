@@ -8,7 +8,11 @@ import {
 	TouchableOpacity,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { commonStyles } from "../styles/commonStyles";
+import {
+	commonStyles,
+	scaleFactor,
+	responsiveFontSize,
+} from "../styles/commonStyles";
 import {
 	Placeholder,
 	PlaceholderMedia,
@@ -54,7 +58,7 @@ export default function TutorCard({ userData }) {
 								? { uri: userData?.profileImage }
 								: require("../../assets/img/avatar/avatar.jpg")
 						}
-						size={56}
+						size={56 * scaleFactor}
 						style={styles.avatar}
 					/>
 				</View>
@@ -87,120 +91,106 @@ export default function TutorCard({ userData }) {
 
 const styles = StyleSheet.create({
 	card: {
-		margin: 10,
+		margin: 10 * scaleFactor,
 		backgroundColor: "transparent",
-		paddingTop: 30,
-		height: 230,
+		paddingTop: 30 * scaleFactor,
+		height: 230 * scaleFactor,
 	},
 	cardHeader: {
 		flexDirection: "row",
 		alignItems: "center",
 		justifyContent: "center",
 		position: "relative",
-		marginBottom: 0,
+		marginBottom: 0 * scaleFactor,
 	},
 	avatar: {
 		position: "absolute",
-		top: -30,
-		borderWidth: 2,
+		top: -30 * scaleFactor,
+		borderWidth: 2 * scaleFactor,
 		borderColor: commonStyles.colors.primary,
 		zIndex: 1,
 	},
 	cardBody: {
 		alignItems: "center",
-		padding: 10,
-		paddingTop: 30,
+		padding: 10 * scaleFactor,
+		paddingTop: 30 * scaleFactor,
 		backgroundColor: commonStyles.colors.neutralLight,
-		borderRadius: 20,
-		shadowColor: commonStyles.colors.primary,
-		shadowOffset: {
-			width: 0,
-			height: 2,
-		},
-		shadowOpacity: 0.9,
-		shadowRadius: 4,
-		height: 200,
+		borderRadius: 20 * scaleFactor,
+		height: 200 * scaleFactor,
 		position: "relative",
 	},
 	username: {
-		fontSize: 18,
 		fontWeight: "bold",
 		color: commonStyles.colors.textPrimary,
-		marginTop: 10,
+		marginTop: 10 * scaleFactor,
+		fontSize: responsiveFontSize(7.5),
 	},
 	level: {
-		fontSize: 16,
 		color: commonStyles.colors.textSecondary,
+		fontSize: responsiveFontSize(6),
 	},
 	mode: {
-		fontSize: 14,
 		color: commonStyles.colors.tertiary,
-		marginBottom: 10,
+		marginBottom: 10 * scaleFactor,
+		fontSize: responsiveFontSize(5),
 	},
 	subjectsContainer: {
 		flexDirection: "row",
 		alignItems: "center",
 		justifyContent: "center",
 		flexWrap: "wrap",
-		marginVertical: 10,
+		marginVertical: 10 * scaleFactor,
 	},
 	subjectChip: {
 		backgroundColor: commonStyles.colors.secondary,
-		borderRadius: 15,
-		paddingVertical: 5,
-		paddingHorizontal: 10,
-		marginRight: 10,
-		marginBottom: 5,
+		borderRadius: 15 * scaleFactor,
+		paddingVertical: 5 * scaleFactor,
+		paddingHorizontal: 10 * scaleFactor,
+		marginRight: 10 * scaleFactor,
+		marginBottom: 5 * scaleFactor,
 	},
 	subjectText: {
-		fontSize: 12,
 		color: commonStyles.colors.primary,
+		fontSize: responsiveFontSize(4),
 	},
 	rate: {
-		fontSize: 12,
 		color: commonStyles.colors.primary,
 		position: "absolute",
-		bottom: 10,
-		right: 10,
+		bottom: 10 * scaleFactor,
+		right: 10 * scaleFactor,
+		fontSize: responsiveFontSize(4),
 	},
 	placeholder: {
 		flex: 1,
 		justifyContent: "center",
 		alignItems: "center",
-		margin: 10,
-		marginTop: 40,
-		width: width / 2 - 20,
-		height: 230,
+		margin: 10 * scaleFactor,
+		marginTop: 40 * scaleFactor,
+		width: width / 2 - 20 * scaleFactor,
+		height: 230 * scaleFactor,
 	},
 	placeholderContent: {
 		alignItems: "center",
-		padding: 10,
-		paddingTop: 30,
+		padding: 10 * scaleFactor,
+		paddingTop: 30 * scaleFactor,
 		backgroundColor: commonStyles.colors.neutralLight,
-		borderRadius: 20,
-		shadowColor: commonStyles.colors.primary,
-		shadowOffset: {
-			width: 0,
-			height: 2,
-		},
-		shadowOpacity: 0.9,
-		shadowRadius: 4,
-		height: 200,
+		borderRadius: 20 * scaleFactor,
+		height: 200 * scaleFactor,
 		position: "relative",
 	},
 	placeholderAvatar: {
 		position: "absolute",
-		top: -30,
-		width: 56,
-		height: 56,
-		borderWidth: 2,
+		top: -30 * scaleFactor,
+		width: 56 * scaleFactor,
+		height: 56 * scaleFactor,
+		borderWidth: 2 * scaleFactor,
 		borderColor: commonStyles.colors.primary,
-		borderRadius: 28, // Adjust border radius to match avatar
+		borderRadius: 28 * scaleFactor,
 	},
 	placeholderLine: {
-		width: 100,
-		height: 10,
+		width: 100 * scaleFactor,
+		height: 10 * scaleFactor,
 		backgroundColor: commonStyles.colors.neutralLight,
-		marginVertical: 5,
+		marginVertical: 5 * scaleFactor,
 	},
 });

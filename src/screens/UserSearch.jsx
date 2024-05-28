@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, useMemo } from "react";
-import { StyleSheet, View, FlatList, Image } from "react-native";
+import { StyleSheet, View, FlatList, Image, Dimensions } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
 import {
@@ -36,6 +36,9 @@ const haversineDistance = (coords1, coords2) => {
 	return distance; // distance in km
 };
 
+const { width } = Dimensions.get("window");
+const markerSize = width * 0.1;
+
 const UserSearch = () => {
 	const { otherUsers, user } = useUser();
 	const [location, setLocation] = useState(null);
@@ -48,7 +51,6 @@ const UserSearch = () => {
 	const mapRef = useRef(null);
 	const bottomSheetRef = useRef(null);
 	const snapPoints = useMemo(() => ["10%", "48%"], []);
-
 	useEffect(() => {
 		(async () => {
 			let { status } = await Location.requestForegroundPermissionsAsync();
@@ -62,12 +64,12 @@ const UserSearch = () => {
 			// Fetch nearby users here based on location.coords.latitude and location.coords.longitude
 			setNearbyUsers(
 				otherUsers
-					.filter((user) => user?.location?.geopoint)
+					.filter((user) => user?.location?.coordinates)
 					.map((user) => ({
 						...user,
 						distance: haversineDistance(
 							location.coords,
-							user.location.geopoint
+							user?.location?.coordinates
 						),
 					}))
 			);
@@ -87,8 +89,8 @@ const UserSearch = () => {
 	const handleUserPress = (user) => {
 		setSelectedUser(user);
 		mapRef.current.animateToRegion({
-			latitude: user.location.geopoint.latitude,
-			longitude: user.location.geopoint.longitude,
+			latitude: user.location.coordinates.latitude,
+			longitude: user.location.coordinates.longitude,
 			latitudeDelta: 0.005,
 			longitudeDelta: 0.005,
 		});
@@ -134,14 +136,21 @@ const UserSearch = () => {
 					<Marker
 						key={user.id}
 						coordinate={{
-							latitude: user.location.geopoint.latitude,
-							longitude: user.location.geopoint.longitude,
+							latitude: user.location.coordinates.latitude,
+							longitude: user.location.coordinates.longitude,
 						}}
 						title={user.username}
 						onPress={() => handleMarkerPress(user)}>
-						<View style={styles.markerContainer}>
+						<View
+							style={[
+								styles.markerContainer,
+								{ width: markerSize, height: markerSize },
+							]}>
 							<Image
-								style={styles.markerImage}
+								style={[
+									styles.markerImage,
+									{ width: markerSize, height: markerSize },
+								]}
 								source={
 									user.profileImage
 										? { uri: user.profileImage }
@@ -193,11 +202,11 @@ const UserSearch = () => {
 						contentContainerStyle={styles.listContent}
 					/>
 					{/* <Button
-						onPress={() => bottomSheetRef.current.close()}
-						mode='contained'
-						style={styles.closeButton}>
-						Close
-					</Button> */}
+                        onPress={() => bottomSheetRef.current.close()}
+                        mode='contained'
+                        style={styles.closeButton}>
+                        Close
+                    </Button> */}
 				</View>
 			</BottomSheet>
 			<UserDetailModal
@@ -219,12 +228,8 @@ const styles = StyleSheet.create({
 	markerContainer: {
 		alignItems: "center",
 		justifyContent: "center",
-		width: 40,
-		height: 40,
 	},
 	markerImage: {
-		width: 40,
-		height: 40,
 		borderRadius: 100,
 	},
 	loadingContainer: {
@@ -236,7 +241,6 @@ const styles = StyleSheet.create({
 		flex: 1,
 	},
 	sheetContent: {
-		// flex: 1,
 		flexGrow: 1,
 		padding: 16,
 	},

@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import { View, StyleSheet } from "react-native";
 import { Text } from "react-native-paper";
-import { commonStyles } from "../styles/commonStyles";
+import {
+	commonStyles,
+	scaleFactor,
+	responsiveFontSize,
+} from "../styles/commonStyles";
 import CustomButton from "../components/CustomButton";
 import CustomInput from "../components/CustomInput";
 import useAuth from "../utils/hooks/useAuth";
@@ -68,16 +72,16 @@ const styles = StyleSheet.create({
 		flex: 1,
 		backgroundColor: commonStyles.colors.background,
 		alignItems: "center",
-		paddingTop: 50,
+		paddingTop: 50 * scaleFactor,
 	},
 	title: {
-		fontSize: 24,
+		fontSize: responsiveFontSize(10),
 		fontWeight: "bold",
-		marginBottom: 20,
+		marginBottom: 20 * scaleFactor,
 		color: commonStyles.colors.primary,
 	},
 	centered: {
-		marginVertical: 10,
+		marginVertical: 10 * scaleFactor,
 	},
 	errorText: {
 		color: "red",

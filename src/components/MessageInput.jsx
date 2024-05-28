@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Dimensions } from "react-native";
 import { commonStyles } from "../styles/commonStyles";
 import { IconButton } from "react-native-paper";
 import CustomInput from "./CustomInput";
+
+const { width } = Dimensions.get("window");
 
 export default function MessageInput({ onSend }) {
 	const [message, setMessage] = useState("");
@@ -12,7 +14,7 @@ export default function MessageInput({ onSend }) {
 			<IconButton
 				icon='paperclip'
 				iconColor={commonStyles.colors.primary}
-				size={20}
+				size={width * 0.06}
 				containerColor={commonStyles.colors.neutralLight}
 				onPress={() => console.log("Pressed")}
 			/>
@@ -26,7 +28,7 @@ export default function MessageInput({ onSend }) {
 			<IconButton
 				icon='send'
 				iconColor={commonStyles.colors.primary}
-				size={20}
+				size={width * 0.06}
 				containerColor={commonStyles.colors.neutralLight}
 				onPress={() => {
 					onSend(message);
@@ -47,7 +49,6 @@ const styles = StyleSheet.create({
 	},
 	inputContainer: {
 		width: "70%",
-		// backgroundColor: "red",
 	},
 	input: {
 		width: "100%",

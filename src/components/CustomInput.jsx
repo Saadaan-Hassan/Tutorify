@@ -1,6 +1,11 @@
+import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { TextInput } from "react-native-paper";
-import { commonStyles } from "../styles/commonStyles";
+import {
+	commonStyles,
+	scaleFactor,
+	responsiveFontSize,
+} from "../styles/commonStyles";
 
 export default function CustomInput({
 	label,
@@ -10,6 +15,7 @@ export default function CustomInput({
 	containerStyle,
 	inputStyle,
 	onChangeText,
+	outlineStyle,
 	error = false,
 	multiline = false,
 }) {
@@ -20,13 +26,14 @@ export default function CustomInput({
 				mode='outlined'
 				multiline={multiline}
 				style={[styles.input, inputStyle]}
-				outlineStyle={{ borderRadius: 16 }}
+				outlineColor={commonStyles.colors.primary}
+				outlineStyle={[{ borderRadius: 50 * scaleFactor }, outlineStyle]}
 				error={error}
 				placeholder={placeholder}
 				placeholderTextColor={commonStyles.colors.textSecondary}
 				value={value}
 				onChangeText={onChangeText}
-				inputMode={type === "password" ? "text" : type}
+				inputMode={type}
 				secureTextEntry={type === "password"}
 			/>
 		</View>
@@ -35,17 +42,19 @@ export default function CustomInput({
 
 const styles = StyleSheet.create({
 	container: {
-		marginBottom: 20,
+		marginBottom: 20 * scaleFactor,
 	},
 	label: {
-		fontSize: 16,
+		fontSize: responsiveFontSize(7),
 		fontWeight: "bold",
-		marginBottom: 5,
+		marginBottom: 5 * scaleFactor,
 		color: commonStyles.colors.primary,
 	},
 	input: {
-		width: 300,
-		height: 40,
+		width: 300 * scaleFactor,
+		height: 40 * scaleFactor,
+		lineHeight: 20 * scaleFactor,
 		color: commonStyles.colors.textPrimary,
+		fontSize: responsiveFontSize(6.3),
 	},
 });

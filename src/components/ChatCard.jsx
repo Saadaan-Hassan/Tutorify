@@ -1,10 +1,11 @@
 import React from "react";
-import { TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View, StyleSheet } from "react-native";
 import { Avatar, Badge, Card, Divider, Text } from "react-native-paper";
 import { commonStyles } from "../styles/commonStyles";
 import { useNavigation } from "@react-navigation/native";
 import { useUser } from "../utils/context/UserContext";
 import { getTimeString } from "../utils/helpers";
+import { scaleFactor, responsiveFontSize } from "../styles/commonStyles";
 
 const LeftContent = (props) => (
 	<Avatar.Image
@@ -14,7 +15,7 @@ const LeftContent = (props) => (
 				? { uri: props.avatar }
 				: require("../../assets/img/avatar/user1.png")
 		}
-		size={50}
+		size={50 * scaleFactor}
 	/>
 );
 
@@ -25,7 +26,11 @@ const RightContent = (props) => (
 				props.unread
 					? { fontWeight: "bold", color: commonStyles.colors.tertiary }
 					: { color: commonStyles.colors.textSecondary },
-				{ marginBottom: 20 },
+				{
+					marginBottom: 20 * scaleFactor,
+					fontSize: responsiveFontSize(5),
+					marginRight: 20 * scaleFactor,
+				},
 			]}>
 			{getTimeString(props.latestMessageTime)}
 		</Text>
@@ -45,25 +50,22 @@ export default function ChatCard({ chatRoom }) {
 			onPress={() =>
 				navigation.navigate("ChatDetail", { user: chatPartnerData })
 			}>
-			<Card mode='contained'>
+			<Card mode='contained' style={styles.cardContainer}>
 				<Card.Title
 					title={chatPartnerData?.username || "Unknown"}
 					subtitle={
 						chatRoom.messages[chatRoom.messages.length - 1]?.message || ""
 					}
-					titleStyle={{
-						fontSize: 20,
-						minHeight: 25,
-						color: commonStyles.colors.textPrimary,
-					}}
-					subtitleStyle={{
-						fontSize: 16,
-						color: chatRoom.unread
-							? commonStyles.colors.tertiary
-							: commonStyles.colors.textSecondary,
-					}}
+					titleStyle={styles.title}
+					subtitleStyle={[
+						styles.subtitle,
+						{
+							color: chatRoom.unread
+								? commonStyles.colors.tertiary
+								: commonStyles.colors.textSecondary,
+						},
+					]}
 					left={() => <LeftContent avatar={chatPartnerData?.profileImage} />}
-					leftStyle={{ marginRight: 25 }}
 					right={() => (
 						<RightContent
 							latestMessageTime={
@@ -72,11 +74,26 @@ export default function ChatCard({ chatRoom }) {
 							unread={chatRoom.unread}
 						/>
 					)}
-					rightStyle={{ marginRight: 15 }}
-					style={{ backgroundColor: commonStyles.colors.neutral }}
 				/>
 				<Divider />
 			</Card>
 		</TouchableOpacity>
 	);
 }
+
+const styles = StyleSheet.create({
+	cardContainer: {
+		backgroundColor: commonStyles.colors.neutral,
+		marginBottom: 10 * scaleFactor,
+	},
+	title: {
+		color: commonStyles.colors.textPrimary,
+		fontSize: responsiveFontSize(9),
+		minHeight: 25 * scaleFactor,
+		marginLeft: 5 * scaleFactor,
+	},
+	subtitle: {
+		fontSize: responsiveFontSize(7),
+		marginLeft: 5 * scaleFactor,
+	},
+});

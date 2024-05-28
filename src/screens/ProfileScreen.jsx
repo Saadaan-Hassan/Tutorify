@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View } from "react-native";
+import { View, ScrollView, StyleSheet } from "react-native";
 import {
 	Avatar,
 	Button,
@@ -11,7 +11,11 @@ import {
 	TextInput,
 } from "react-native-paper";
 import CustomButton from "../components/CustomButton";
-import { commonStyles } from "../styles/commonStyles";
+import {
+	commonStyles,
+	scaleFactor,
+	responsiveFontSize,
+} from "../styles/commonStyles";
 import useAuth from "../utils/hooks/useAuth";
 import { useUser } from "../utils/context/UserContext";
 import { useNavigation } from "@react-navigation/native";
@@ -23,7 +27,7 @@ const LeftContent = ({ profileImage }) => (
 				? { uri: profileImage }
 				: require("../../assets/img/avatar/avatar.jpg")
 		}
-		size={80}
+		size={80 * scaleFactor}
 	/>
 );
 
@@ -47,21 +51,21 @@ export default function ProfileScreen() {
 	};
 
 	return (
-		<View style={styles.container}>
+		<ScrollView contentContainerStyle={styles.container}>
 			<Card.Title
 				title={user?.username}
 				subtitle={user?.level}
 				style={{
-					marginVertical: 20,
+					marginVertical: 20 * scaleFactor,
 				}}
 				titleStyle={{
-					fontSize: 24,
+					fontSize: responsiveFontSize(8),
 					fontWeight: "bold",
-					minHeight: 25,
+					minHeight: 20 * scaleFactor,
 					color: commonStyles.colors.textPrimary,
 				}}
 				subtitleStyle={{
-					fontSize: 16,
+					fontSize: responsiveFontSize(6),
 					color: commonStyles.colors.textSecondary,
 				}}
 				left={() => (
@@ -69,15 +73,16 @@ export default function ProfileScreen() {
 						profileImage={user?.profileImage ? user?.profileImage : null}
 					/>
 				)}
-				leftStyle={{ marginRight: 60 }}
+				leftStyle={{ marginRight: 60 * scaleFactor }}
 			/>
 
-			<View style={{ marginTop: 20 }}>
+			<View style={{ marginTop: 20 * scaleFactor }}>
 				<CustomButton
 					icon={"account"}
 					title='Account'
 					style={styles.button}
 					contentStyle={{ justifyContent: "flex-start" }}
+					labelStyle={{ fontSize: responsiveFontSize(7) }}
 					textColor={commonStyles.colors.primary}
 					onPress={() => navigation.navigate("Account")}
 				/>
@@ -87,16 +92,9 @@ export default function ProfileScreen() {
 					title='Password'
 					style={styles.button}
 					contentStyle={{ justifyContent: "flex-start" }}
+					labelStyle={{ fontSize: responsiveFontSize(7) }}
 					textColor={commonStyles.colors.primary}
 					onPress={showDialog}
-				/>
-				<Divider />
-				<CustomButton
-					icon={"bell"}
-					title='Notifications'
-					style={styles.button}
-					contentStyle={{ justifyContent: "flex-start" }}
-					textColor={commonStyles.colors.primary}
 				/>
 				<Divider />
 				<CustomButton
@@ -104,6 +102,7 @@ export default function ProfileScreen() {
 					title='Privacy Policy'
 					style={styles.button}
 					contentStyle={{ justifyContent: "flex-start" }}
+					labelStyle={{ fontSize: responsiveFontSize(7) }}
 					textColor={commonStyles.colors.primary}
 					onPress={() => {
 						navigation.navigate("PrivacyScreen");
@@ -115,6 +114,7 @@ export default function ProfileScreen() {
 					title='Logout'
 					style={styles.button}
 					contentStyle={{ justifyContent: "flex-start" }}
+					labelStyle={{ fontSize: responsiveFontSize(7) }}
 					textColor={commonStyles.colors.tertiary}
 					onPress={logOut}
 				/>
@@ -139,22 +139,22 @@ export default function ProfileScreen() {
 					</Dialog.Actions>
 				</Dialog>
 			</Portal>
-		</View>
+		</ScrollView>
 	);
 }
 
-const styles = {
+const styles = StyleSheet.create({
 	container: {
-		flex: 1,
+		flexGrow: 1,
 		backgroundColor: commonStyles.colors.neutral,
 	},
 	button: {
 		width: "100%",
 		borderRadius: 0,
-		marginTop: 10,
-		paddingTop: 5,
+		marginTop: 10 * scaleFactor,
+		paddingTop: 5 * scaleFactor,
 		marginBottom: 0,
-		height: 50,
+		height: 50 * scaleFactor,
 		backgroundColor: commonStyles.colors.neutral,
 	},
-};
+});

@@ -1,11 +1,26 @@
 import React, { useState, useEffect } from "react";
-import { SafeAreaView, Text, View, StyleSheet, Image } from "react-native";
+import {
+	SafeAreaView,
+	Text,
+	View,
+	StyleSheet,
+	Image,
+	Dimensions,
+	ScrollView,
+	KeyboardAvoidingView,
+} from "react-native";
 import CustomButton from "../components/CustomButton";
 import CustomLink from "../components/CustomLink";
 import CustomInput from "../components/CustomInput";
 import { Checkbox, ActivityIndicator } from "react-native-paper";
-import { commonStyles } from "../styles/commonStyles";
+import {
+	commonStyles,
+	scaleFactor,
+	responsiveFontSize,
+} from "../styles/commonStyles";
 import useAuth from "../utils/hooks/useAuth.js";
+
+const { width } = Dimensions.get("window");
 
 export default function AuthScreen() {
 	const { signUp, signIn, error, loading } = useAuth();
@@ -78,133 +93,130 @@ export default function AuthScreen() {
 
 	return (
 		<SafeAreaView style={styles.container}>
-			{loading && (
-				<View style={styles.loadingOverlay}>
-					<ActivityIndicator size='large' color={commonStyles.colors.primary} />
-				</View>
-			)}
-			<Image
-				source={require("../../assets/img/logo.webp")}
-				style={commonStyles.logo}
-			/>
-			<View>
-				<Text style={styles.title}>
-					{isSignup ? "Create an account" : "Welcome back"}
-				</Text>
-				<Text style={styles.subtitle}>
-					{isSignup
-						? "Enter the required details to create an account and find the right tutor for you"
-						: "Enter your credentials to access your account and find the right tutor for you"}
-				</Text>
-			</View>
-
-			<CustomInput
-				label='Email'
-				placeholder='Enter your email'
-				type='email'
-				value={email}
-				onChangeText={(text) => {
-					setEmail(text);
-					setEmailError(false);
-				}}
-				error={emailError}
-			/>
-			<CustomInput
-				label='Password'
-				placeholder='Enter your password'
-				type='password'
-				value={password}
-				onChangeText={(text) => {
-					setPassword(text);
-					setPasswordError(false);
-				}}
-				error={passwordError}
-			/>
-
-			{isSignup && (
-				<CustomInput
-					label='Confirm Password'
-					placeholder='Confirm your password'
-					type='password'
-					value={confirmPassword}
-					onChangeText={(text) => {
-						setConfirmPassword(text);
-						setConfirmPasswordError(false);
-					}}
-					error={confirmPasswordError}
+			<ScrollView
+				style={{ flex: 1, width: "100%" }}
+				contentContainerStyle={styles.contentContainer}
+				showsVerticalScrollIndicator={false}>
+				{loading && (
+					<View style={styles.loadingOverlay}>
+						<ActivityIndicator
+							size='large'
+							color={commonStyles.colors.primary}
+						/>
+					</View>
+				)}
+				<Image
+					source={require("../../assets/img/logo.webp")}
+					style={[commonStyles.logo, styles.logo]}
 				/>
-			)}
-
-			{isSignup && (
-				<View
-					style={{
-						flexDirection: "row",
-						alignItems: "center",
-						width: 300,
-						marginBottom: 20,
-					}}>
-					<Checkbox
-						status={checked ? "checked" : "unchecked"}
-						onPress={() => {
-							setChecked(!checked);
-						}}
-						color={commonStyles.colors.primary}
-					/>
-					<Text
-						style={{
-							color: commonStyles.colors.textSecondary,
-							fontSize: 16,
-							width: "90%",
-							paddingLeft: 10,
-						}}>
-						By signing up, I understand and agree to{" "}
-						<Text
-							style={{
-								color: commonStyles.colors.primary,
-								fontWeight: "bold",
-							}}>
-							Terms of Service
-						</Text>
+				<View>
+					<Text style={styles.title}>
+						{isSignup ? "Create an account" : "Welcome back"}
+					</Text>
+					<Text style={styles.subtitle}>
+						{isSignup
+							? "Enter the required details to create an account and find the right tutor for you"
+							: "Enter your credentials to access your account and find the right tutor for you"}
 					</Text>
 				</View>
-			)}
 
-			<CustomButton
-				title={isSignup ? "Create an account" : "Login"}
-				mode='contained-tonal'
-				onPress={handleAuth}
-				disabled={!isFilled}
-			/>
+				<KeyboardAvoidingView behavior='padding'>
+					<CustomInput
+						label='Email'
+						placeholder='Enter your email'
+						type='email'
+						value={email}
+						onChangeText={(text) => {
+							setEmail(text);
+							setEmailError(false);
+						}}
+						error={emailError}
+					/>
+					<CustomInput
+						label='Password'
+						placeholder='Enter your password'
+						type='password'
+						value={password}
+						onChangeText={(text) => {
+							setPassword(text);
+							setPasswordError(false);
+						}}
+						error={passwordError}
+					/>
 
-			<Text style={styles.orText}>OR</Text>
+					{isSignup && (
+						<CustomInput
+							label='Confirm Password'
+							placeholder='Confirm your password'
+							type='password'
+							value={confirmPassword}
+							onChangeText={(text) => {
+								setConfirmPassword(text);
+								setConfirmPasswordError(false);
+							}}
+							error={confirmPasswordError}
+						/>
+					)}
 
-			<CustomButton
-				title={"Continue with Google"}
-				mode='outlined'
-				icon='google'
-				onPress={() => {
-					console.log("Continue with Google pressed");
-				}}
-			/>
+					{isSignup && (
+						<View style={styles.checkboxContainer}>
+							<Checkbox
+								status={checked ? "checked" : "unchecked"}
+								onPress={() => {
+									setChecked(!checked);
+								}}
+								color={commonStyles.colors.primary}
+							/>
+							<Text style={styles.checkboxText}>
+								By signing up, I understand and agree to{" "}
+								<Text
+									style={{
+										color: commonStyles.colors.primary,
+										fontWeight: "bold",
+									}}>
+									Terms of Service
+								</Text>
+							</Text>
+						</View>
+					)}
+				</KeyboardAvoidingView>
 
-			<View style={{ position: "relative", marginTop: 20 }}>
-				<CustomLink
-					text={
-						isSignup ? "I already have an account" : "I don't have an account"
-					}
-					buttonStyle={{
-						textAlign: "center",
-					}}
-					onPress={() => {
-						setIsSignup(!isSignup);
-						setEmailError(false);
-						setPasswordError(false);
-						setConfirmPasswordError(false);
-					}}
+				<CustomButton
+					title={isSignup ? "Create an account" : "Login"}
+					mode='contained-tonal'
+					onPress={handleAuth}
+					disabled={!isFilled}
+					style={{ width: 290 * scaleFactor }}
 				/>
-			</View>
 
-			{error && <Text style={styles.errorText}>{error}</Text>}
+				<Text style={styles.orText}>OR</Text>
+
+				<CustomButton
+					title={"Continue with Google"}
+					mode='outlined'
+					icon='google'
+					onPress={() => {
+						console.log("Continue with Google pressed");
+					}}
+					style={styles.googleButton}
+				/>
+
+				<View style={styles.linkContainer}>
+					<CustomLink
+						text={
+							isSignup ? "I already have an account" : "I don't have an account"
+						}
+						buttonStyle={styles.linkButton}
+						onPress={() => {
+							setIsSignup(!isSignup);
+							setEmailError(false);
+							setPasswordError(false);
+							setConfirmPasswordError(false);
+						}}
+					/>
+				</View>
+				{error && <Text style={styles.errorText}>{error}</Text>}
+			</ScrollView>
 		</SafeAreaView>
 	);
 }
@@ -212,33 +224,35 @@ export default function AuthScreen() {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
+		backgroundColor: commonStyles.colors.background,
 		justifyContent: "center",
 		alignItems: "center",
-		paddingHorizontal: 40,
+		paddingHorizontal: scaleFactor * 20,
 		position: "relative",
 	},
 	title: {
-		fontSize: 20,
+		fontSize: responsiveFontSize(9),
 		fontWeight: "bold",
-		marginBottom: 10,
+		marginBottom: scaleFactor * 10,
 		textAlign: "center",
 		color: commonStyles.colors.primary,
 	},
 	subtitle: {
-		fontSize: 16,
+		fontSize: responsiveFontSize(6),
 		textAlign: "center",
-		marginBottom: 20,
+		marginBottom: scaleFactor * 20,
+		marginHorizontal: scaleFactor * 20,
 		color: commonStyles.colors.textSecondary,
 	},
 	orText: {
 		textAlign: "center",
-		marginBottom: 10,
-		fontSize: 16,
+		fontSize: responsiveFontSize(6),
 		color: commonStyles.colors.textSecondary,
 	},
 	errorText: {
 		color: "red",
-		marginTop: 10,
+		marginTop: scaleFactor * 10,
+		fontSize: responsiveFontSize(4),
 	},
 	loadingOverlay: {
 		...StyleSheet.absoluteFillObject,
@@ -246,5 +260,40 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 		alignItems: "center",
 		zIndex: 1,
+	},
+	logo: {
+		width: width * 0.4,
+		height: width * 0.4,
+		marginBottom: scaleFactor * 20,
+	},
+	checkboxContainer: {
+		flexDirection: "row",
+		alignItems: "center",
+		width: "90%",
+		marginBottom: scaleFactor * 20,
+	},
+	checkboxText: {
+		color: commonStyles.colors.textSecondary,
+		fontSize: responsiveFontSize(5),
+		width: "80%",
+		paddingLeft: scaleFactor * 10,
+	},
+	googleButton: {
+		marginTop: scaleFactor * 10,
+		width: 290 * scaleFactor,
+	},
+	linkContainer: {
+		position: "relative",
+		marginTop: scaleFactor * 20,
+	},
+	linkButton: {
+		textAlign: "center",
+	},
+	contentContainer: {
+		width: "100%",
+		justifyContent: "center",
+		alignItems: "center",
+		padding: scaleFactor * 20,
+		paddingTop: scaleFactor * 80,
 	},
 });

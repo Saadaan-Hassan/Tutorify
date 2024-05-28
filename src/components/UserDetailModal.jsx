@@ -5,11 +5,18 @@ import {
 	StyleSheet,
 	ScrollView,
 	TouchableOpacity,
+	Dimensions,
 } from "react-native";
 import { Text, Avatar, IconButton } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import CustomButton from "./CustomButton";
-import { commonStyles } from "../styles/commonStyles";
+import {
+	commonStyles,
+	responsiveFontSize,
+	scaleFactor,
+} from "../styles/commonStyles";
+
+const { width } = Dimensions.get("window");
 
 const UserDetailModal = ({ visible, user, onClose }) => {
 	const navigation = useNavigation();
@@ -49,7 +56,7 @@ const UserDetailModal = ({ visible, user, onClose }) => {
 					<View style={styles.profileHeader}>
 						<Avatar.Image
 							source={{ uri: user.profileImage }}
-							size={80}
+							size={80 * scaleFactor}
 							style={styles.avatar}
 						/>
 						<Text style={styles.username}>{user.username}</Text>
@@ -110,10 +117,10 @@ const styles = StyleSheet.create({
 		backgroundColor: "rgba(0, 0, 0, 0.3)",
 	},
 	modalView: {
-		width: "90%",
+		width: width * 0.9,
 		backgroundColor: commonStyles.colors.neutral,
-		borderRadius: 10,
-		padding: 20,
+		borderRadius: 10 * scaleFactor,
+		padding: 20 * scaleFactor,
 		alignItems: "center",
 		shadowColor: commonStyles.colors.primary,
 		shadowOffset: {
@@ -127,23 +134,23 @@ const styles = StyleSheet.create({
 	},
 	profileHeader: {
 		alignItems: "center",
-		marginBottom: 15,
+		marginBottom: 15 * scaleFactor,
 	},
 	avatar: {
 		position: "absolute",
-		top: -50,
-		borderWidth: 3,
+		top: -50 * scaleFactor,
+		borderWidth: 3 * scaleFactor,
 		borderColor: commonStyles.colors.primary,
 	},
 	username: {
-		marginTop: 50,
-		fontSize: 18,
+		marginTop: 50 * scaleFactor,
+		fontSize: responsiveFontSize(8),
 		fontWeight: "bold",
 	},
 	infoContainer: {
 		flexDirection: "row",
 		justifyContent: "space-between",
-		marginBottom: 10,
+		marginBottom: 10 * scaleFactor,
 		width: "100%",
 	},
 	infoItem: {
@@ -151,11 +158,11 @@ const styles = StyleSheet.create({
 	},
 	infoLabel: {
 		fontWeight: "bold",
-		marginRight: 5,
-		marginBottom: 2,
+		marginRight: 5 * scaleFactor,
+		marginBottom: 2 * scaleFactor,
 	},
 	infoText: {
-		marginBottom: 5,
+		marginBottom: 5 * scaleFactor,
 	},
 	subjectList: {
 		flexDirection: "row",
@@ -163,28 +170,28 @@ const styles = StyleSheet.create({
 	},
 	subjectChip: {
 		backgroundColor: commonStyles.colors.secondary,
-		borderRadius: 15,
-		paddingVertical: 5,
-		paddingHorizontal: 10,
-		marginRight: 10,
+		borderRadius: 15 * scaleFactor,
+		paddingVertical: 5 * scaleFactor,
+		paddingHorizontal: 10 * scaleFactor,
+		marginRight: 10 * scaleFactor,
 	},
 	subjectText: {
-		fontSize: 14,
+		fontSize: responsiveFontSize(5),
 		color: commonStyles.colors.primary,
 	},
 	buttonContainer: {
 		flexDirection: "row",
 		justifyContent: "space-between",
 		width: "100%",
-		marginTop: 20,
+		marginTop: 20 * scaleFactor,
 	},
 	btn: {
 		width: "48%",
 	},
 	closeButton: {
 		position: "absolute",
-		top: 10,
-		right: 10,
+		top: 10 * scaleFactor,
+		right: 10 * scaleFactor,
 	},
 });
 

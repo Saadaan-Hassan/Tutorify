@@ -1,6 +1,10 @@
 import React from "react";
 import { Button } from "react-native-paper";
-import { commonStyles } from "../styles/commonStyles";
+import {
+	commonStyles,
+	scaleFactor,
+	responsiveFontSize,
+} from "../styles/commonStyles";
 
 export default function CustomLink({ buttonStyle, labelStyle, text, onPress }) {
 	return (
@@ -8,14 +12,14 @@ export default function CustomLink({ buttonStyle, labelStyle, text, onPress }) {
 			onPress={onPress}
 			rippleColor={commonStyles.colors.rippleColor}
 			style={{
-				marginBottom: 15,
+				marginBottom: 15 * scaleFactor,
 				alignItems: "flex-end",
 				...buttonStyle,
 			}}
 			labelStyle={{
 				color: commonStyles.colors.primary,
 				fontWeight: "bold",
-				fontSize: 14,
+				fontSize: responsiveFontSize(5.5),
 				...labelStyle,
 			}}>
 			{text}

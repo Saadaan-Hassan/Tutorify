@@ -5,12 +5,20 @@ import {
 	TouchableOpacity,
 	TextInput,
 	StyleSheet,
+	Dimensions,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { doc, updateDoc, getDoc } from "firebase/firestore";
 import { db } from "../services/firebase";
 import { useUser } from "../utils/context/UserContext";
-import LocationPicker from "../components/LocationPicker";
+import LocationSelector from "../components/LocationSelector";
+import {
+	commonStyles,
+	scaleFactor,
+	responsiveFontSize,
+} from "../styles/commonStyles";
+
+const { width } = Dimensions.get("window");
 
 const questions = [
 	{
@@ -88,7 +96,8 @@ const RegistrationScreen = () => {
 	const currentQuestion = questions[currentQuestionIndex];
 	const [userDetails, setUserDetails] = useState({});
 	const [username, setUsername] = useState("");
-	const [selectedCountry, setSelectedCountry] = useState("");
+	const selectedCountry = "Pakistan";
+	const [coordinates, setCoordinates] = useState(null);
 	const [selectedCity, setSelectedCity] = useState("");
 
 	useEffect(() => {
@@ -113,7 +122,6 @@ const RegistrationScreen = () => {
 	]);
 
 	useEffect(() => {
-		console.log(userDetails.role);
 		if (userDetails.role === "Teacher") {
 			questions[1].question = "Select the level of education you can teach";
 			questions[2].question = "Select the subjects you can teach";
@@ -181,7 +189,6 @@ const RegistrationScreen = () => {
 						break;
 				}
 			}
-			console.log(updatedUserDetails);
 			setUserDetails(updatedUserDetails);
 
 			if (currentQuestionIndex < questions.length - 1) {
@@ -190,11 +197,14 @@ const RegistrationScreen = () => {
 				const userDocSnapshot = await getDoc(doc(db, "users", user.uid));
 				const userDocRef = userDocSnapshot.ref;
 				await updateDoc(userDocRef, updatedUserDetails);
+				navigation.reset({
+					index: 0,
+					routes: [{ name: "TabNavigator" }],
+				});
 				navigation.navigate("Profile");
 			}
 		} catch (error) {
 			console.error("Error updating user data:", error.message);
-			// You can display a user-friendly error message here
 		}
 	};
 
@@ -209,7 +219,6 @@ const RegistrationScreen = () => {
 	const handleBackQuestion = () => {
 		// Decrease the current question index
 		setCurrentQuestionIndex((prevIndex) => prevIndex - 1);
-
 		// Remove the previous question from userDetails
 		setUserDetails((prevUserDetails) => {
 			const updatedUserDetails = { ...prevUserDetails };
@@ -235,10 +244,12 @@ const RegistrationScreen = () => {
 					/>
 				))}
 			{currentQuestion.component && (
-				<LocationPicker
-					subtitle={"Select your location to find students near you"}
-					selectedCountry={selectedCountry}
-					setSelectedCountry={setSelectedCountry}
+				<LocationSelector
+					subtitle={`Select your location to find ${
+						user.role === "Teacher" ? "students" : "tutors"
+					} in your area`}
+					coordinates={coordinates}
+					setCoordinates={setCoordinates}
 					selectedCity={selectedCity}
 					setSelectedCity={setSelectedCity}
 				/>
@@ -254,7 +265,10 @@ const RegistrationScreen = () => {
 				{currentQuestionIndex > 0 && (
 					<TouchableOpacity
 						onPress={handleBackQuestion}
-						style={[styles.button, { backgroundColor: "#b6a6bd" }]}>
+						style={[
+							styles.button,
+							{ backgroundColor: commonStyles.colors.secondary },
+						]}>
 						<Text style={styles.buttonText}>Back</Text>
 					</TouchableOpacity>
 				)}
@@ -263,7 +277,11 @@ const RegistrationScreen = () => {
 					onPress={handleQuestionSelect}
 					style={[
 						styles.button,
-						{ backgroundColor: isDisabled ? "#b6a6bd" : "#5316B6" },
+						{
+							backgroundColor: isDisabled
+								? commonStyles.colors.secondary
+								: commonStyles.colors.primary,
+						},
 					]}>
 					<Text style={styles.buttonText}>Continue</Text>
 				</TouchableOpacity>
@@ -275,66 +293,67 @@ const RegistrationScreen = () => {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		padding: 20,
+		padding: 20 * scaleFactor,
 		justifyContent: "center",
 		alignItems: "center",
 	},
 	choice: {
-		width: 350,
-		height: 50,
+		width: width - 40 * scaleFactor,
+		height: 50 * scaleFactor,
 		backgroundColor: "white",
-		borderRadius: 16,
-		marginBottom: 15,
+		borderRadius: 16 * scaleFactor,
+		marginBottom: 15 * scaleFactor,
 		alignItems: "center",
 		justifyContent: "center",
-		borderWidth: 1,
+		borderWidth: 1 * scaleFactor,
 		borderColor: "transparent",
 	},
 	selectedChoice: {
-		borderColor: "#5316B6",
-		borderWidth: 2,
+		borderColor: commonStyles.colors.primary,
+		borderWidth: 2 * scaleFactor,
 	},
 	text: {
-		color: "#5316B6",
+		color: commonStyles.colors.primary,
 		textAlign: "center",
-		padding: 15,
+		padding: 15 * scaleFactor,
+		fontSize: responsiveFontSize(6),
 		fontWeight: "400",
 	},
 	title: {
-		fontSize: 18,
+		fontSize: responsiveFontSize(8),
 		fontWeight: "700",
-		color: "#5316B6",
-		marginBottom: 20,
+		color: commonStyles.colors.primary,
+		marginBottom: 20 * scaleFactor,
 		textAlign: "center",
 	},
 	input: {
-		width: 350,
-		height: 50,
+		width: width - 40 * scaleFactor,
+		height: 50 * scaleFactor,
 		backgroundColor: "white",
-		borderRadius: 16,
-		marginBottom: 15,
-		paddingHorizontal: 15,
-		borderWidth: 1,
+		borderRadius: 16 * scaleFactor,
+		marginBottom: 15 * scaleFactor,
+		paddingHorizontal: 15 * scaleFactor,
+		borderWidth: 1 * scaleFactor,
 		borderColor: "transparent",
+		fontSize: responsiveFontSize(6),
 	},
 	buttonContainer: {
 		flexDirection: "row",
-		gap: 20,
+		gap: 20 * scaleFactor,
 		justifyContent: "space-between",
-		marginTop: 10,
-		marginHorizontal: 10,
+		marginTop: 10 * scaleFactor,
+		marginHorizontal: 10 * scaleFactor,
 	},
 	button: {
 		width: "50%",
-		height: 50,
-		borderRadius: 16,
-		marginTop: 20,
+		height: 50 * scaleFactor,
+		borderRadius: 16 * scaleFactor,
+		marginTop: 20 * scaleFactor,
 		alignItems: "center",
 		justifyContent: "center",
 	},
 	buttonText: {
 		color: "white",
-		fontSize: 16,
 		fontWeight: "bold",
 	},
 });

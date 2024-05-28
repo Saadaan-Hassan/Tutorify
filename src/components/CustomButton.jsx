@@ -1,7 +1,11 @@
 import React from "react";
 import { StyleSheet } from "react-native";
 import { Button } from "react-native-paper";
-import { commonStyles } from "../styles/commonStyles";
+import {
+	commonStyles,
+	scaleFactor,
+	responsiveFontSize,
+} from "../styles/commonStyles";
 
 export default function CustomButton({
 	title,
@@ -35,6 +39,8 @@ export default function CustomButton({
 				: commonStyles.colors.secondary
 			: commonStyles.colors.primary);
 
+	const labelStyling = [styles.label, labelStyle];
+
 	return (
 		<Button
 			icon={icon}
@@ -42,7 +48,7 @@ export default function CustomButton({
 			textColor={buttonTextColor}
 			style={buttonStyles}
 			contentStyle={contentStyle}
-			labelStyle={labelStyle}
+			labelStyle={labelStyling}
 			onPress={onPress}
 			disabled={disabled}
 			loading={loading}>
@@ -53,10 +59,9 @@ export default function CustomButton({
 
 const styles = StyleSheet.create({
 	button: {
-		width: 300,
-		height: 40,
+		width: 150 * scaleFactor,
 		backgroundColor: commonStyles.colors.primary,
-		borderRadius: 16,
+		borderRadius: 50 * scaleFactor,
 		marginBottom: 10,
 	},
 	buttonReverse: {
@@ -67,5 +72,8 @@ const styles = StyleSheet.create({
 		backgroundColor: "transparent",
 		borderColor: commonStyles.colors.primary,
 		borderWidth: 1,
+	},
+	label: {
+		fontSize: responsiveFontSize(6), // Example of responsive font size
 	},
 });

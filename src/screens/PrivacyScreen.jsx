@@ -1,6 +1,10 @@
 import { View, Text, StyleSheet, ScrollView } from "react-native";
 import React from "react";
-import { commonStyles } from "../styles/commonStyles";
+import {
+	commonStyles,
+	scaleFactor,
+	responsiveFontSize,
+} from "../styles/commonStyles";
 import { version } from "../../package.json";
 
 export default function ProfilePrivacy() {
@@ -8,8 +12,7 @@ export default function ProfilePrivacy() {
 		<ScrollView contentContainerStyle={styles.contentContainer}>
 			<View style={styles.container}>
 				<View style={styles.sectionHeader}>
-					{/* Show the latest version of the app */}
-					<Text style={{ fontSize: 12 }}>
+					<Text style={{ fontSize: responsiveFontSize(5) }}>
 						Version {version} • © {new Date().getFullYear()} Tutorify
 					</Text>
 				</View>
@@ -81,12 +84,12 @@ export default function ProfilePrivacy() {
 const styles = StyleSheet.create({
 	contentContainer: {
 		flexGrow: 1,
-		paddingBottom: 20,
+		paddingBottom: 20 * scaleFactor,
 		backgroundColor: commonStyles.colors.neutral,
 	},
 
 	container: {
-		padding: 24,
+		padding: 24 * scaleFactor,
 	},
 
 	sectionHeader: {
@@ -96,24 +99,24 @@ const styles = StyleSheet.create({
 	},
 
 	header: {
-		fontSize: 20,
+		fontSize: responsiveFontSize(8),
 		fontWeight: "bold",
-		marginVertical: 10,
+		marginVertical: 10 * scaleFactor,
 	},
 
 	section: {
-		marginVertical: 16,
+		marginVertical: 16 * scaleFactor,
 	},
 
 	title: {
-		fontSize: 18,
+		fontSize: responsiveFontSize(7),
 		fontWeight: "500",
-		marginBottom: 5,
+		marginBottom: 5 * scaleFactor,
 		color: commonStyles.colors.primary,
 	},
 
 	para: {
-		fontSize: 16,
+		fontSize: responsiveFontSize(6),
 		color: commonStyles.colors.textSecondary,
 	},
 });

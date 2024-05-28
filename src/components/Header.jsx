@@ -1,16 +1,34 @@
 import React from "react";
-import { TouchableOpacity, View, Text } from "react-native";
+import {
+	TouchableOpacity,
+	View,
+	Text,
+	StyleSheet,
+	Dimensions,
+} from "react-native";
 import { Avatar, Appbar } from "react-native-paper";
 import { useRoute, useNavigation } from "@react-navigation/native";
-import { commonStyles } from "../styles/commonStyles";
+import {
+	commonStyles,
+	scaleFactor,
+	responsiveFontSize,
+} from "../styles/commonStyles";
 import { useUser } from "../utils/context/UserContext";
+
+const windowWidth = Dimensions.get("window").width;
 
 export default function Header() {
 	const route = useRoute();
 	const navigation = useNavigation();
 	const { user } = useUser();
 
-	const goBack = () => navigation.goBack();
+	const goBack = () => {
+		if (route.name === "Profile") {
+			navigation.navigate("Home");
+		} else {
+			navigation.goBack();
+		}
+	};
 	const handleAccount = () => navigation.navigate("Profile");
 	const handleMore = () => console.log("Shown more");
 
@@ -67,7 +85,7 @@ export default function Header() {
 			/>
 			<TouchableOpacity onPress={handleAccount}>
 				<Avatar.Image
-					size={35}
+					size={windowWidth * 0.12}
 					source={
 						user?.profileImage
 							? { uri: user?.profileImage }
@@ -99,7 +117,7 @@ export default function Header() {
 	);
 }
 
-const styles = {
+const styles = StyleSheet.create({
 	headerContainer: {
 		flex: 1,
 		flexDirection: "row",
@@ -107,10 +125,10 @@ const styles = {
 		justifyContent: "space-between",
 	},
 	profileTitle: {
-		marginHorizontal: "30%",
+		marginHorizontal: windowWidth * 0.3,
 	},
 	welcomeText: {
-		fontSize: 24,
+		fontSize: responsiveFontSize(8.5),
 		fontWeight: "500",
 		color: commonStyles.colors.textSecondary,
 	},
@@ -118,9 +136,9 @@ const styles = {
 		color: commonStyles.colors.textPrimary,
 	},
 	defaultContent: {
-		marginLeft: 10,
+		marginLeft: 10 * scaleFactor,
 	},
 	avatar: {
-		marginRight: 10,
+		marginRight: 10 * scaleFactor,
 	},
-};
+});

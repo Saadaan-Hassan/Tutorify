@@ -19,6 +19,7 @@ import {
 	scaleFactor,
 	responsiveFontSize,
 } from "../styles/commonStyles";
+import CustomFlatList from "../components/CustomFlatList";
 
 const recommendedUsers = (users, user) => {
 	const recommended = users
@@ -92,12 +93,9 @@ export default function HomeScreen() {
 					<View style={styles.sectionHeader}>
 						<Text style={commonStyles.header}>Recommended for you</Text>
 					</View>
-					<FlatList
+					<CustomFlatList
 						data={recommendedUsers(users, user)}
-						keyExtractor={(item) => item.id}
-						renderItem={({ item }) => <TutorCard userData={item} />}
-						horizontal
-						showsHorizontalScrollIndicator={false}
+						child={<TutorCard />}
 					/>
 				</View>
 				<View style={styles.section}>
@@ -112,12 +110,9 @@ export default function HomeScreen() {
 							/>
 						)}
 					</View>
-					<FlatList
+					<CustomFlatList
 						data={topTutors.slice(0, 5).sort(() => Math.random() - 0.5)}
-						keyExtractor={(item) => item.id}
-						renderItem={({ item }) => <TutorCard userData={item} />}
-						horizontal
-						showsHorizontalScrollIndicator={false}
+						child={<TutorCard />}
 					/>
 				</View>
 				{onlineUsers.length > 0 && (
@@ -135,12 +130,9 @@ export default function HomeScreen() {
 								}}
 							/>
 						</View>
-						<FlatList
+						<CustomFlatList
 							data={onlineUsers.slice(0, 5).sort(() => Math.random() - 0.5)}
-							keyExtractor={(item) => item.id}
-							renderItem={({ item }) => <TutorCard userData={item} />}
-							horizontal
-							showsHorizontalScrollIndicator={false}
+							child={<TutorCard />}
 						/>
 					</View>
 				)}
@@ -160,12 +152,9 @@ export default function HomeScreen() {
 								}}
 							/>
 						</View>
-						<FlatList
+						<CustomFlatList
 							data={inPersonUsers.slice(0, 5).sort(() => Math.random() - 0.5)}
-							keyExtractor={(item) => item.id}
-							renderItem={({ item }) => <TutorCard userData={item} />}
-							horizontal
-							showsHorizontalScrollIndicator={false}
+							child={<TutorCard />}
 						/>
 					</View>
 				)}

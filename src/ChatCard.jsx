@@ -1,11 +1,11 @@
 import React from "react";
 import { TouchableOpacity, View, StyleSheet } from "react-native";
 import { Avatar, Badge, Card, Divider, Text } from "react-native-paper";
-import { commonStyles } from "../styles/commonStyles";
+import { commonStyles } from "./styles/commonStyles";
 import { useNavigation } from "@react-navigation/native";
-import { useUser } from "../utils/context/UserContext";
-import { getTimeString } from "../utils/helpers";
-import { scaleFactor, responsiveFontSize } from "../styles/commonStyles";
+import { useUser } from "./utils/context/UserContext";
+import { getTimeString } from "./utils/helpers";
+import { scaleFactor, responsiveFontSize } from "./styles/commonStyles";
 
 const LeftContent = (props) => (
 	<Avatar.Image

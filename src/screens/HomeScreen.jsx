@@ -5,7 +5,6 @@ import {
 	StyleSheet,
 	Image,
 	ScrollView,
-	FlatList,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useUser } from "../utils/context/UserContext";
@@ -92,13 +91,11 @@ export default function HomeScreen() {
 					<View style={styles.sectionHeader}>
 						<Text style={commonStyles.header}>Recommended for you</Text>
 					</View>
-					<FlatList
-						data={recommendedUsers(users, user)}
-						keyExtractor={(item) => item.id}
-						renderItem={({ item }) => <TutorCard userData={item} />}
-						horizontal
-						showsHorizontalScrollIndicator={false}
-					/>
+					<ScrollView horizontal showsHorizontalScrollIndicator={false}>
+						{recommendedUsers(users, user).map((item) => (
+							<TutorCard key={item.id} userData={item} />
+						))}
+					</ScrollView>
 				</View>
 				<View style={styles.section}>
 					<View style={styles.sectionHeader}>
@@ -112,13 +109,11 @@ export default function HomeScreen() {
 							/>
 						)}
 					</View>
-					<FlatList
-						data={topTutors.slice(0, 5).sort(() => Math.random() - 0.5)}
-						keyExtractor={(item) => item.id}
-						renderItem={({ item }) => <TutorCard userData={item} />}
-						horizontal
-						showsHorizontalScrollIndicator={false}
-					/>
+					<ScrollView horizontal showsHorizontalScrollIndicator={false}>
+						{topTutors.slice(0, 5).sort(() => Math.random() - 0.5).map((item) => (
+							<TutorCard key={item.id} userData={item} />
+						))}
+					</ScrollView>
 				</View>
 				{onlineUsers.length > 0 && (
 					<View style={styles.section}>
@@ -135,13 +130,11 @@ export default function HomeScreen() {
 								}}
 							/>
 						</View>
-						<FlatList
-							data={onlineUsers.slice(0, 5).sort(() => Math.random() - 0.5)}
-							keyExtractor={(item) => item.id}
-							renderItem={({ item }) => <TutorCard userData={item} />}
-							horizontal
-							showsHorizontalScrollIndicator={false}
-						/>
+						<ScrollView horizontal showsHorizontalScrollIndicator={false}>
+							{onlineUsers.slice(0, 5).sort(() => Math.random() - 0.5).map((item) => (
+								<TutorCard key={item.id} userData={item} />
+							))}
+						</ScrollView>
 					</View>
 				)}
 				{inPersonUsers.length > 0 && (
@@ -160,13 +153,11 @@ export default function HomeScreen() {
 								}}
 							/>
 						</View>
-						<FlatList
-							data={inPersonUsers.slice(0, 5).sort(() => Math.random() - 0.5)}
-							keyExtractor={(item) => item.id}
-							renderItem={({ item }) => <TutorCard userData={item} />}
-							horizontal
-							showsHorizontalScrollIndicator={false}
-						/>
+						<ScrollView horizontal showsHorizontalScrollIndicator={false}>
+							{inPersonUsers.slice(0, 5).sort(() => Math.random() - 0.5).map((item) => (
+								<TutorCard key={item.id} userData={item} />
+							))}
+						</ScrollView>
 					</View>
 				)}
 			</View>

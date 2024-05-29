@@ -1,12 +1,14 @@
 import { View, Text, StyleSheet } from "react-native";
 import React from "react";
-import {
-	commonStyles,
-	scaleFactor,
-	responsiveFontSize,
-} from "../styles/commonStyles";
+import { colors, scaleFactor, responsiveFontSize } from "../styles/commonStyles";
 
-export default function MessageBox({ message, userType = "sender", time }) {
+interface MessageBoxProps {
+	message: string;
+	userType?: "sender" | "receiver";
+	time: string;
+}
+
+const MessageBox: React.FC<MessageBoxProps> = ({ message, userType = "sender", time }) => {
 	return (
 		<View style={[styles.container, styles[userType]]}>
 			<Text style={styles.text}>{message}</Text>
@@ -25,23 +27,25 @@ const styles = StyleSheet.create({
 		borderRadius: 20 * scaleFactor,
 	},
 	sender: {
-		backgroundColor: commonStyles.colors.secondary2,
+		backgroundColor: colors.secondary2,
 		borderBottomRightRadius: 0,
 		alignSelf: "flex-end",
 	},
 	receiver: {
-		backgroundColor: commonStyles.colors.neutralAccent,
+		backgroundColor: colors.neutralAccent,
 		borderBottomLeftRadius: 0,
 		alignSelf: "flex-start",
 	},
 	text: {
 		fontSize: responsiveFontSize(7),
-		color: commonStyles.colors.neutral,
+		color: colors.neutral,
 	},
 	time: {
-		color: commonStyles.colors.textSecondary,
+		color: colors.textSecondary,
 		fontSize: responsiveFontSize(5),
 		textAlign: "right",
 		marginTop: 5 * scaleFactor,
 	},
 });
+
+export default MessageBox;

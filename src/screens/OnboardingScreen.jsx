@@ -1,5 +1,12 @@
 import React, { useRef, useEffect } from "react";
-import { View, SafeAreaView, StyleSheet, Dimensions, Text } from "react-native";
+import {
+	View,
+	SafeAreaView,
+	StyleSheet,
+	Dimensions,
+	Text,
+	TouchableOpacity,
+} from "react-native";
 import Onboarding from "react-native-onboarding-swiper";
 import LottieView from "lottie-react-native";
 import { useNavigation } from "@react-navigation/native";
@@ -27,6 +34,17 @@ export default function OnboardingScreen({ onComplete }) {
 		navigation.navigate("Auth");
 	};
 
+	const handleNext = () => {
+		if (onboardingRef.current) {
+			const nextPageIndex = (onboardingRef.current.state.currentPage + 1) % 3;
+			onboardingRef.current.goToPage(nextPageIndex);
+		}
+	};
+
+	const handleSkip = () => {
+		handleDone();
+	};
+
 	const dotButtons = ({ selected }) => (
 		<View
 			style={{
@@ -38,6 +56,23 @@ export default function OnboardingScreen({ onComplete }) {
 			}}
 		/>
 	);
+
+	const SkipButton = () => (
+		<TouchableOpacity onPress={handleSkip} style={styles.button}>
+			<Text style={{ color: commonStyles.colors.neutral, paddingLeft: 20 }}>
+				Skip
+			</Text>
+		</TouchableOpacity>
+	);
+
+	const NextButton = () => (
+		<TouchableOpacity onPress={handleNext} style={styles.button}>
+			<Text style={{ color: commonStyles.colors.neutral, paddingRight: 20 }}>
+				Next
+			</Text>
+		</TouchableOpacity>
+	);
+
 	return (
 		<SafeAreaView style={styles.container}>
 			<Onboarding
@@ -46,17 +81,8 @@ export default function OnboardingScreen({ onComplete }) {
 				onSkip={handleDone}
 				DotComponent={dotButtons}
 				bottomBarColor={commonStyles.colors.primary}
-				SkipButtonComponent={() => (
-					<Text style={{ color: commonStyles.colors.neutral, paddingLeft: 20 }}>
-						Skip
-					</Text>
-				)}
-				NextButtonComponent={() => (
-					<Text
-						style={{ color: commonStyles.colors.neutral, paddingRight: 20 }}>
-						Next
-					</Text>
-				)}
+				SkipButtonComponent={SkipButton}
+				NextButtonComponent={NextButton}
 				pages={[
 					{
 						backgroundColor: commonStyles.colors.background,
@@ -78,7 +104,7 @@ export default function OnboardingScreen({ onComplete }) {
 						subtitle: (
 							<Text style={styles.subtitle}>
 								Go into your exam hall with confidence and the knowledge you
-								need to excel.Be the best version of yourself
+								need to excel. Be the best version of yourself
 							</Text>
 						),
 					},
@@ -99,7 +125,6 @@ export default function OnboardingScreen({ onComplete }) {
 								Build your confidence with the right knowledge
 							</Text>
 						),
-
 						subtitle: (
 							<Text style={styles.subtitle}>
 								Gain the knowledge you need to ace your examinations and test
@@ -155,5 +180,8 @@ const styles = StyleSheet.create({
 		fontSize: 16,
 		textAlign: "center",
 		color: commonStyles.colors.textSecondary,
+	},
+	button: {
+		padding: 10,
 	},
 });

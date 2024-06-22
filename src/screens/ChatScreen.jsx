@@ -31,7 +31,7 @@ export default function ChatScreen() {
 	return (
 		<FlatList
 			data={chatRooms}
-			keyExtractor={(item) => item.id}
+			keyExtractor={(item) => item.createdAt}
 			renderItem={({ item }) => <ChatCard chatRoom={item} />}
 		/>
 	);

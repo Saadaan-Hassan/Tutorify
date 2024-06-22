@@ -180,7 +180,7 @@ export default function ProfileInfo() {
 			preferredMode: preferredMode,
 		};
 
-		if (user?.role === "tutor") {
+		if (user?.role === "Teacher") {
 			updateUserDocument.experience = experience;
 			updateUserDocument.rate = rate;
 		}

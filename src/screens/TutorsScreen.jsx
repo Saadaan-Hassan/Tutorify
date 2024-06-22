@@ -150,9 +150,7 @@ const styles = StyleSheet.create({
 		paddingTop: 10 * scaleFactor,
 		paddingBottom: 20 * scaleFactor,
 		display: "flex",
-		alignItems: "center",
 		justifyContent: "space-between",
-		gap: 10 * scaleFactor,
 	},
 	filter: {
 		flexDirection: "row",

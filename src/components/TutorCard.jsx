@@ -27,12 +27,12 @@ export default function TutorCard({ userData }) {
 	const navigation = useNavigation();
 	const { loading } = useAuth();
 
-	const cardWidth = (width - 40) / 2;
+	const cardWidth = (width - 50) / 2;
 
 	if (loading) {
 		return (
 			<Placeholder Animation={Fade} style={styles.placeholder}>
-				<View style={styles.placeholderContent}>
+				<View style={[styles.placeholderContent, { width: cardWidth }]}>
 					<PlaceholderMedia style={styles.placeholderAvatar} />
 					<PlaceholderLine style={styles.placeholderLine} />
 					<PlaceholderLine style={styles.placeholderLine} />
@@ -91,7 +91,7 @@ export default function TutorCard({ userData }) {
 
 const styles = StyleSheet.create({
 	card: {
-		margin: 10 * scaleFactor,
+		margin: 7 * scaleFactor,
 		backgroundColor: "transparent",
 		paddingTop: 30 * scaleFactor,
 		height: 230 * scaleFactor,
@@ -166,7 +166,6 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		margin: 10 * scaleFactor,
 		marginTop: 40 * scaleFactor,
-		width: width / 2 - 20 * scaleFactor,
 		height: 230 * scaleFactor,
 	},
 	placeholderContent: {

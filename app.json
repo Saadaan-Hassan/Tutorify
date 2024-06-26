@@ -31,6 +31,12 @@
         "projectId": "f64d5985-a124-4674-91f9-ebaf69a28fa3"
       }
     },
-    "owner": "coding-nerd"
+    "owner": "coding-nerd",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/f64d5985-a124-4674-91f9-ebaf69a28fa3"
+    }
   }
 }

@@ -19,11 +19,13 @@ import {
 	responsiveFontSize,
 } from "../styles/commonStyles";
 import useAuth from "../utils/hooks/useAuth.js";
+import { useUser } from "../utils/context/UserContext";
 
 const { width } = Dimensions.get("window");
 
 export default function AuthScreen() {
-	const { signUp, signIn, error, loading } = useAuth();
+	const { signUp, signIn, error } = useAuth();
+	const { loading } = useUser();
 
 	const [isSignup, setIsSignup] = useState(false);
 	const [checked, setChecked] = useState(false);
@@ -98,7 +100,7 @@ export default function AuthScreen() {
 				contentContainerStyle={styles.contentContainer}
 				showsVerticalScrollIndicator={false}>
 				{loading && (
-					<View style={styles.loadingOverlay}>
+					<View style={commonStyles.loadingOverlay}>
 						<ActivityIndicator
 							size='large'
 							color={commonStyles.colors.primary}
@@ -253,13 +255,6 @@ const styles = StyleSheet.create({
 		color: "red",
 		marginTop: scaleFactor * 10,
 		fontSize: responsiveFontSize(4),
-	},
-	loadingOverlay: {
-		...StyleSheet.absoluteFillObject,
-		backgroundColor: "rgba(255, 255, 255, 0.8)",
-		justifyContent: "center",
-		alignItems: "center",
-		zIndex: 1,
 	},
 	logo: {
 		width: width * 0.4,

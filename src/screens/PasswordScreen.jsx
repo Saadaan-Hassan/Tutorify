@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { View, StyleSheet } from "react-native";
-import { Text } from "react-native-paper";
+import { Text, ActivityIndicator } from "react-native-paper";
 import {
 	commonStyles,
 	scaleFactor,
@@ -9,9 +9,11 @@ import {
 import CustomButton from "../components/CustomButton";
 import CustomInput from "../components/CustomInput";
 import useAuth from "../utils/hooks/useAuth";
+import { useUser } from "../utils/context/UserContext";
 
 export default function ProfilePassword() {
 	const { resetPassword, error } = useAuth();
+	const { loading } = useUser();
 	const [newPassword, setNewPassword] = useState("");
 	const [confirmPassword, setConfirmPassword] = useState("");
 	const [errorText, setErrorText] = useState("");
@@ -35,6 +37,11 @@ export default function ProfilePassword() {
 
 	return (
 		<View style={styles.container}>
+			{loading && (
+				<View style={commonStyles.loadingOverlay}>
+					<ActivityIndicator size='large' color={commonStyles.colors.primary} />
+				</View>
+			)}
 			<View style={styles.centered}>
 				<Text style={styles.title}>Setup New Password</Text>
 			</View>

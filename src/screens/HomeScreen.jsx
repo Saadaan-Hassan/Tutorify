@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
 	View,
 	Text,
@@ -6,10 +6,11 @@ import {
 	Image,
 	ScrollView,
 	FlatList,
+	ActivityIndicator,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useUser } from "../utils/context/UserContext";
-import useRoleBasedUser from "../utils/hooks/useRoleBasedUser";
+// import useRoleBasedUser from "../utils/hooks/useRoleBasedUser";
 import SearchBar from "../components/SearchBar";
 import CustomButton from "../components/CustomButton";
 import CustomLink from "../components/CustomLink";
@@ -36,22 +37,21 @@ const filterUsersByMode = (users, mode) => {
 
 export default function HomeScreen() {
 	const navigation = useNavigation();
-	const { user, setOtherUsers } = useUser();
-	const topTutors = useRoleBasedUser("Student");
+	const { user, otherUsers, loading } = useUser();
+	// const topTutors = useRoleBasedUser("Student");
 
-	const users = useRoleBasedUser(user?.role);
-
-	useEffect(() => {
-		setOtherUsers(users);
-	}, [users]);
-
-	const onlineUsers = filterUsersByMode(users, "Online");
-	const inPersonUsers = filterUsersByMode(users, "In-person");
+	const onlineUsers = filterUsersByMode(otherUsers, "Online");
+	const inPersonUsers = filterUsersByMode(otherUsers, "In-person");
 
 	return (
 		<ScrollView contentContainerStyle={styles.scrollContainer}>
+			{loading && (
+				<View style={commonStyles.loadingOverlay}>
+					<ActivityIndicator size='large' color={commonStyles.colors.primary} />
+				</View>
+			)}
 			<View style={commonStyles.container}>
-				<SearchBar users={users} />
+				<SearchBar users={otherUsers} />
 				<View style={[styles.section, styles.flex, styles.bannerSection]}>
 					<View style={styles.leftContent}>
 						<View>
@@ -93,14 +93,14 @@ export default function HomeScreen() {
 						<Text style={commonStyles.header}>Recommended for you</Text>
 					</View>
 					<FlatList
-						data={recommendedUsers(users, user)}
+						data={recommendedUsers(otherUsers, user)}
 						keyExtractor={(item) => item.id}
 						renderItem={({ item }) => <TutorCard userData={item} />}
 						horizontal
 						showsHorizontalScrollIndicator={false}
 					/>
 				</View>
-				<View style={styles.section}>
+				{/* <View style={styles.section}>
 					<View style={styles.sectionHeader}>
 						<Text style={commonStyles.header}>Top tutors</Text>
 						{user.role === "Student" && (
@@ -119,7 +119,8 @@ export default function HomeScreen() {
 						horizontal
 						showsHorizontalScrollIndicator={false}
 					/>
-				</View>
+				</View> */}
+
 				{onlineUsers.length > 0 && (
 					<View style={styles.section}>
 						<View style={styles.sectionHeader}>

@@ -19,14 +19,20 @@ export default function ChatScreen() {
 		const chatRoomsRef = collection(db, "chatRooms");
 		const q = query(chatRoomsRef, where("users", "array-contains", user.uid));
 
-		const unsubscribe = onSnapshot(q, (querySnapshot) => {
-			const fetchedChatRooms = [];
-			querySnapshot.forEach((doc) => {
-				fetchedChatRooms.push({ ...doc.data() });
-			});
+		const unsubscribe = onSnapshot(
+			q,
+			(querySnapshot) => {
+				const fetchedChatRooms = [];
+				querySnapshot.forEach((doc) => {
+					fetchedChatRooms.push({ ...doc.data() });
+				});
 
-			setChatRooms(fetchedChatRooms);
-		});
+				setChatRooms(fetchedChatRooms);
+			},
+			(error) => {
+				console.error("Error fetching chat rooms: ", error);
+			}
+		);
 
 		return () => {
 			unsubscribe();

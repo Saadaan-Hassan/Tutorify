@@ -35,20 +35,26 @@ export const UserProvider = ({ children }) => {
 		if (user) {
 			fetchStoredUsers();
 
-			const unsubscribe = onSnapshot(collection(db, "users"), (snapshot) => {
-				const updatedUsers = snapshot.docs
-					.map((doc) => ({ id: doc.id, ...doc.data() }))
-					.filter((userData) => {
-						if (user.role === "Student") {
-							return userData.role === "Teacher";
-						} else if (user.role === "Teacher") {
-							return userData.role === "Student";
-						}
-					});
+			const unsubscribe = onSnapshot(
+				collection(db, "users"),
+				(snapshot) => {
+					const updatedUsers = snapshot.docs
+						.map((doc) => ({ id: doc.id, ...doc.data() }))
+						.filter((userData) => {
+							if (user.role === "Student") {
+								return userData.role === "Teacher";
+							} else if (user.role === "Teacher") {
+								return userData.role === "Student";
+							}
+						});
 
-				setOtherUsers(updatedUsers);
-				AsyncStorage.setItem("otherUsers", JSON.stringify(updatedUsers));
-			});
+					setOtherUsers(updatedUsers);
+					AsyncStorage.setItem("otherUsers", JSON.stringify(updatedUsers));
+				},
+				(error) => {
+					console.error("Error fetching users: ", error);
+				}
+			);
 
 			return () => unsubscribe();
 		}

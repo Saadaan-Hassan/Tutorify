@@ -28,11 +28,17 @@ export default function ChatDetailScreen({ route }) {
 	// Listen for new messages in the chat room
 	useEffect(() => {
 		const chatRoomRef = doc(db, "chatRooms", chatRoomId);
-		const unsubscribe = onSnapshot(chatRoomRef, (doc) => {
-			if (doc.exists()) {
-				setMessages(doc.data().messages || []);
+		const unsubscribe = onSnapshot(
+			chatRoomRef,
+			(doc) => {
+				if (doc.exists()) {
+					setMessages(doc.data().messages || []);
+				}
+			},
+			(error) => {
+				console.error("Error fetching chat room messages: ", error);
 			}
-		});
+		);
 
 		return () => {
 			unsubscribe();

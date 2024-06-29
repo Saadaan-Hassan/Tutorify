@@ -76,4 +76,12 @@ export const commonStyles = StyleSheet.create({
 		fontSize: baseFontSize * 0.725 * scaleFactor,
 		color: theme.colors.neutral,
 	},
+
+	loadingOverlay: {
+		...StyleSheet.absoluteFillObject,
+		backgroundColor: "rgba(255, 255, 255, 0.8)",
+		justifyContent: "center",
+		alignItems: "center",
+		zIndex: 1,
+	},
 });

@@ -205,7 +205,7 @@ export default function ProfileInfo() {
 	return (
 		<ScrollView contentContainerStyle={styles.container}>
 			{isLoading && (
-				<View style={styles.loadingOverlay}>
+				<View style={commonStyles.loadingOverlay}>
 					<ActivityIndicator size='large' color={commonStyles.colors.primary} />
 				</View>
 			)}
@@ -392,12 +392,5 @@ const styles = StyleSheet.create({
 		// width: "100%",
 		gap: 10 * scaleFactor,
 		marginTop: 20 * scaleFactor,
-	},
-	loadingOverlay: {
-		...StyleSheet.absoluteFillObject,
-		backgroundColor: "rgba(255, 255, 255, 0.8)",
-		justifyContent: "center",
-		alignItems: "center",
-		zIndex: 1,
 	},
 });

@@ -19,14 +19,13 @@ import {
 	PlaceholderLine,
 	Fade,
 } from "rn-placeholder";
-import useAuth from "../utils/hooks/useAuth";
+import { useUser } from "../utils/context/UserContext";
 
 const { width } = Dimensions.get("window");
 
 export default function TutorCard({ userData }) {
 	const navigation = useNavigation();
-	const { loading } = useAuth();
-
+	const { loading } = useUser();
 	const cardWidth = (width - 50) / 2;
 
 	if (loading) {

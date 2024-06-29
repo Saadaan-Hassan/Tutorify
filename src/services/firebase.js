@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
+import { getFirestore, initializeFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 import { initializeAuth, getReactNativePersistence } from "firebase/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -33,7 +33,12 @@ const auth = initializeAuth(app, {
 });
 
 // Firestore
-const db = getFirestore(app);
+// const db = getFirestore(app);
+
+// Firestore with experimentalAutoDetectLongPolling
+const db = initializeFirestore(app, {
+	experimentalAutoDetectLongPolling: true,
+});
 
 // Firebase Storage
 const storage = getStorage(app);

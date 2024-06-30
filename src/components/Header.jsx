@@ -29,6 +29,7 @@ export default function Header() {
 			navigation.goBack();
 		}
 	};
+
 	const handleAccount = () => navigation.navigate("Profile");
 	const handleMore = () => console.log("Shown more");
 
@@ -41,35 +42,24 @@ export default function Header() {
 		/>
 	);
 
-	const renderProfileHeader = () => (
+	const renderHeaderContent = (title, actionIcon, actionHandler) => (
 		<View style={styles.headerContainer}>
 			{renderBackButton()}
-			<Appbar.Content title='Profile' style={styles.profileTitle} />
-		</View>
-	);
-
-	const renderTutorDetailHeader = () => (
-		<View style={styles.headerContainer}>
-			{renderBackButton()}
-			<Appbar.Action
-				icon='heart-outline'
-				onPress={handleMore}
-				iconColor={commonStyles.colors.primary}
-				style={{ backgroundColor: commonStyles.colors.secondary }}
+			<Appbar.Content
+				title={title}
+				style={[
+					styles.profileTitle,
+					actionIcon ? {} : { marginLeft: -45 * scaleFactor },
+				]}
 			/>
-		</View>
-	);
-
-	const renderChatHeader = () => (
-		<View style={styles.headerContainer}>
-			{renderBackButton()}
-			<Appbar.Content title='Chat' style={styles.profileTitle} />
-			<Appbar.Action
-				icon='phone-outline'
-				onPress={handleMore}
-				iconColor={commonStyles.colors.primary}
-				style={{ backgroundColor: commonStyles.colors.secondary }}
-			/>
+			{actionIcon && (
+				<Appbar.Action
+					icon={actionIcon}
+					onPress={actionHandler}
+					iconColor={commonStyles.colors.primary}
+					style={{ backgroundColor: commonStyles.colors.secondary }}
+				/>
+			)}
 		</View>
 	);
 
@@ -97,27 +87,39 @@ export default function Header() {
 		</View>
 	);
 
+	const getHeaderContent = () => {
+		switch (route.name) {
+			case "TutorDetail":
+				return renderHeaderContent(null, "heart-outline", handleMore);
+			case "Profile":
+			case "Account":
+				return renderHeaderContent("Profile");
+			case "Password":
+				return renderHeaderContent("Password");
+			case "PrivacyScreen":
+				return renderHeaderContent("Privacy Policy");
+			case "ChatDetail":
+				return renderHeaderContent(
+					route.params.user.username,
+					"phone-outline",
+					handleMore
+				);
+			default:
+				return renderDefaultHeader();
+		}
+	};
+
 	return (
-		<Appbar.Header
-			mode='small'
-			style={{ backgroundColor: commonStyles.colors.background }}>
-			{route.name === "TutorDetail" && renderTutorDetailHeader()}
-			{(route.name === "Profile" ||
-				route.name === "Account" ||
-				route.name === "Password") &&
-				renderProfileHeader()}
-			{route.name === "ChatDetail" && renderChatHeader()}
-			{route.name !== "TutorDetail" &&
-				route.name !== "Profile" &&
-				route.name !== "Account" &&
-				route.name !== "Password" &&
-				route.name !== "ChatDetail" &&
-				renderDefaultHeader()}
+		<Appbar.Header mode='small' style={styles.appbarHeader}>
+			{getHeaderContent()}
 		</Appbar.Header>
 	);
 }
 
 const styles = StyleSheet.create({
+	appbarHeader: {
+		backgroundColor: commonStyles.colors.background,
+	},
 	headerContainer: {
 		flex: 1,
 		flexDirection: "row",
@@ -125,7 +127,8 @@ const styles = StyleSheet.create({
 		justifyContent: "space-between",
 	},
 	profileTitle: {
-		marginHorizontal: windowWidth * 0.3,
+		alignItems: "center",
+		justifyContent: "center",
 	},
 	welcomeText: {
 		fontSize: responsiveFontSize(8.5),

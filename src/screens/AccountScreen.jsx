@@ -39,7 +39,9 @@ export default function ProfileInfo() {
 	const [experience, setExperience] = useState(user?.experience);
 	const [rate, setRate] = useState(user?.rate);
 	const [selectedCity, setSelectedCity] = useState(user?.location?.city);
-	const selectedCountry = user?.location?.country || "Pakistan";
+	const [selectedCountry, setSelectedCountry] = useState(
+		user?.location?.country
+	);
 	const [coordinates, setCoordinates] = useState(user?.location?.coordinates);
 	const [preferredMode, setPreferredMode] = useState(user?.preferredMode);
 	const [image, setImage] = useState(user?.profileImage);
@@ -310,6 +312,8 @@ export default function ProfileInfo() {
 					setCoordinates={setCoordinates}
 					selectedCity={selectedCity}
 					setSelectedCity={setSelectedCity}
+					selectedCountry={selectedCountry}
+					setSelectedCountry={setSelectedCountry}
 				/>
 
 				<Text style={styles.label}>Preferred Mode: </Text>

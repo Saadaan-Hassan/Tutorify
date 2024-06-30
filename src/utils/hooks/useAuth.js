@@ -73,6 +73,16 @@ const useAuth = () => {
 				"accessToken",
 				userCredential.user.accessToken
 			);
+			// Store the new user in AsyncStorage
+			await AsyncStorage.setItem(
+				"user",
+				JSON.stringify({
+					uid: userCredential.user.uid,
+					email,
+					createdAt: new Date(),
+					token,
+				})
+			);
 			navigation.navigate("Registration");
 		} catch (error) {
 			setError(error.message);

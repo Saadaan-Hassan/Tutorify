@@ -28,6 +28,10 @@ const LeftContent = ({ profileImage }) => (
 				: require("../../assets/img/avatar/avatar.jpg")
 		}
 		size={80 * scaleFactor}
+		style={{
+			borderWidth: 3 * scaleFactor,
+			borderColor: commonStyles.colors.primary,
+		}}
 	/>
 );
 

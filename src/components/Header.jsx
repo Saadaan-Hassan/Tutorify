@@ -118,7 +118,7 @@ export default function Header() {
 
 const styles = StyleSheet.create({
 	appbarHeader: {
-		backgroundColor: commonStyles.colors.background,
+		backgroundColor: commonStyles.colors.neutral,
 	},
 	headerContainer: {
 		flex: 1,

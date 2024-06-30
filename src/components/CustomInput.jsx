@@ -35,6 +35,7 @@ export default function CustomInput({
 				onChangeText={onChangeText}
 				inputMode={type}
 				secureTextEntry={type === "password"}
+				spellCheck={true}
 			/>
 		</View>
 	);

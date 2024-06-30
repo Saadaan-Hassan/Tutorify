@@ -3,6 +3,7 @@ import { View, StyleSheet, Dimensions } from "react-native";
 import { commonStyles } from "../styles/commonStyles";
 import { IconButton } from "react-native-paper";
 import CustomInput from "./CustomInput";
+import { scaleFactor } from "../styles/commonStyles";
 
 const { width } = Dimensions.get("window");
 
@@ -22,8 +23,10 @@ export default function MessageInput({ onSend }) {
 				placeholder='Type a message'
 				containerStyle={styles.inputContainer}
 				inputStyle={styles.input}
+				outlineStyle={styles.outlineStyle}
 				value={message}
 				onChangeText={setMessage}
+				multiline={true}
 			/>
 			<IconButton
 				icon='send'
@@ -52,5 +55,6 @@ const styles = StyleSheet.create({
 	},
 	input: {
 		width: "100%",
+		height: 55 * scaleFactor,
 	},
 });

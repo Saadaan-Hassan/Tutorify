@@ -96,9 +96,9 @@ const RegistrationScreen = () => {
 	const currentQuestion = questions[currentQuestionIndex];
 	const [userDetails, setUserDetails] = useState({});
 	const [username, setUsername] = useState("");
-	const selectedCountry = "Pakistan";
 	const [coordinates, setCoordinates] = useState(null);
 	const [selectedCity, setSelectedCity] = useState("");
+	const [selectedCountry, setSelectedCountry] = useState("");
 
 	useEffect(() => {
 		setIsDisabled(
@@ -252,6 +252,8 @@ const RegistrationScreen = () => {
 					setCoordinates={setCoordinates}
 					selectedCity={selectedCity}
 					setSelectedCity={setSelectedCity}
+					selectedCountry={selectedCountry}
+					setSelectedCountry={setSelectedCountry}
 				/>
 			)}
 			{currentQuestion.input && (

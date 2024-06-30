@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
+import { Text } from "react-native-paper";
 import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
 import {
@@ -8,6 +9,9 @@ import {
 	responsiveFontSize,
 } from "../styles/commonStyles";
 
+const MAX_RETRIES = 3;
+const RETRY_DELAY = 2000; // 2 seconds
+
 export default function LocationSelector({
 	title,
 	subtitle,
@@ -15,6 +19,8 @@ export default function LocationSelector({
 	setCoordinates,
 	selectedCity,
 	setSelectedCity,
+	selectedCountry,
+	setSelectedCountry,
 	titleStyle,
 }) {
 	const getCurrentLocation = async () => {
@@ -24,6 +30,7 @@ export default function LocationSelector({
 			return;
 		}
 
+		if (coordinates) return;
 		let location = await Location.getCurrentPositionAsync({});
 		setCoordinates(location.coords);
 	};
@@ -32,40 +39,34 @@ export default function LocationSelector({
 		getCurrentLocation();
 	}, []);
 
+	const reverseGeocodeWithRetry = async (coords, retries = 0) => {
+		try {
+			const reverseGeocode = await Location.reverseGeocodeAsync(coords);
+			if (reverseGeocode && reverseGeocode.length > 0) {
+				setSelectedCity(reverseGeocode[0].city);
+				setSelectedCountry(reverseGeocode[0].country);
+			}
+		} catch (error) {
+			if (retries < MAX_RETRIES) {
+				setTimeout(() => {
+					reverseGeocodeWithRetry(coords, retries + 1);
+				}, RETRY_DELAY);
+			} else {
+				console.error("Error getting city from coordinates:", error);
+			}
+		}
+	};
+
 	useEffect(() => {
 		if (coordinates) {
-			(async () => {
-				try {
-					const reverseGeocode = await Location.reverseGeocodeAsync({
-						latitude: coordinates.latitude,
-						longitude: coordinates.longitude,
-					});
-					if (reverseGeocode && reverseGeocode.length > 0) {
-						setSelectedCity(reverseGeocode[0].city);
-					}
-				} catch (error) {
-					console.error("Error getting city from coordinates:", error);
-				}
-			})();
+			reverseGeocodeWithRetry(coordinates);
 		}
 	}, [coordinates]);
 
 	const handleMarkerDrag = async (e) => {
 		const newMarkerCoordinates = e.nativeEvent.coordinate;
 		setCoordinates(newMarkerCoordinates);
-
-		try {
-			const reverseGeocode = await Location.reverseGeocodeAsync({
-				latitude: newMarkerCoordinates.latitude,
-				longitude: newMarkerCoordinates.longitude,
-			});
-			if (reverseGeocode && reverseGeocode.length > 0) {
-				const city = reverseGeocode[0].city;
-				setSelectedCity(city);
-			}
-		} catch (error) {
-			console.error("Error getting city from coordinates:", error);
-		}
+		reverseGeocodeWithRetry(newMarkerCoordinates);
 	};
 
 	return (
@@ -90,7 +91,9 @@ export default function LocationSelector({
 					</MapView>
 				)}
 			</View>
-			<Text style={styles.selectedCity}>City {selectedCity || "Unknown"}</Text>
+			<Text style={styles.selectedLocation}>
+				{selectedCity || "Unknown"}, {selectedCountry || "Unknown"}
+			</Text>
 		</View>
 	);
 }
@@ -123,9 +126,9 @@ const styles = StyleSheet.create({
 	map: {
 		flex: 1,
 	},
-
-	selectedCity: {
+	selectedLocation: {
 		fontSize: responsiveFontSize(6),
 		color: commonStyles.colors.primary,
+		textAlign: "center",
 	},
 });

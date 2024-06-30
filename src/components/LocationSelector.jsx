@@ -29,6 +29,8 @@ export default function LocationSelector({
 			console.error("Permission to access location was denied");
 			return;
 		}
+		console.log("Getting current location...");
+		console.log(status);
 
 		if (coordinates) return;
 		let location = await Location.getCurrentPositionAsync({});
@@ -115,6 +117,7 @@ const styles = StyleSheet.create({
 		color: commonStyles.colors.primary,
 		textAlign: "center",
 		marginBottom: scaleFactor * 20,
+		paddingHorizontal: 20 * scaleFactor,
 	},
 	mapContainer: {
 		height: 170 * scaleFactor,

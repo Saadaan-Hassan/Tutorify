@@ -7,11 +7,12 @@ import {
 	TouchableOpacity,
 } from "react-native";
 import {
-	Card,
 	SegmentedButtons,
 	Avatar,
 	Icon,
 	ActivityIndicator,
+	Menu,
+	Button,
 } from "react-native-paper";
 import {
 	commonStyles,
@@ -28,14 +29,17 @@ import { useNavigation } from "@react-navigation/native";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { storage } from "../services/firebase";
 import * as ImagePicker from "expo-image-picker";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function ProfileInfo() {
 	const { user, setUser } = useUser();
 	const navigation = useNavigation();
 
+	const [image, setImage] = useState(user?.profileImage);
 	const [username, setUsername] = useState(user?.username);
 	const [level, setLevel] = useState(user?.level);
 	const [bio, setBio] = useState(user?.bio);
+	const [subjects, setSubjects] = useState(user?.subjects || []);
 	const [experience, setExperience] = useState(user?.experience);
 	const [rate, setRate] = useState(user?.rate);
 	const [selectedCity, setSelectedCity] = useState(user?.location?.city);
@@ -44,10 +48,13 @@ export default function ProfileInfo() {
 	);
 	const [coordinates, setCoordinates] = useState(user?.location?.coordinates);
 	const [preferredMode, setPreferredMode] = useState(user?.preferredMode);
-	const [image, setImage] = useState(user?.profileImage);
+
+	const [visible, setVisible] = useState(false);
+	const openMenu = () => setVisible(true);
+	const closeMenu = () => setVisible(false);
 
 	const question = {
-		question: "Select your level of education",
+		question: "Preffered Level of Education:",
 		options: [
 			{
 				value: "Primary School (1-5)",
@@ -118,6 +125,11 @@ export default function ProfileInfo() {
 			...user,
 			profileImage: downloadURL,
 		});
+
+		await AsyncStorage.setItem(
+			"user",
+			JSON.stringify({ ...user, profileImage: downloadURL })
+		);
 
 		setUser({
 			...user,
@@ -192,6 +204,11 @@ export default function ProfileInfo() {
 			...updateUserDocument,
 		});
 
+		await AsyncStorage.setItem(
+			"user",
+			JSON.stringify({ ...user, ...updateUserDocument })
+		);
+
 		setUser({
 			...user,
 			...updateUserDocument,
@@ -224,6 +241,8 @@ export default function ProfileInfo() {
 							alignSelf: "center",
 							marginTop: 20 * scaleFactor,
 							marginBottom: -10 * scaleFactor,
+							borderWidth: 4 * scaleFactor,
+							borderColor: commonStyles.colors.primary,
 						}}
 					/>
 					<TouchableOpacity
@@ -240,7 +259,10 @@ export default function ProfileInfo() {
 						/>
 					</TouchableOpacity>
 				</View>
-				<Card.Title subtitle={user?.email} subtitleStyle={styles.email} />
+				<Text style={styles.email}>{user?.email}</Text>
+				<Text style={styles.role}>
+					{user?.role === "Teacher" ? "Tutor" : "Student"}
+				</Text>
 
 				<CustomInput
 					label='Username:'
@@ -251,12 +273,51 @@ export default function ProfileInfo() {
 
 				{/* Education Level */}
 				<Text style={styles.label}>{question.question}</Text>
-				<SegmentedButtons
-					multiSelect={question.multiSelect}
-					buttons={question.options}
-					value={level}
-					onValueChange={setLevel}
-				/>
+				<Menu
+					visible={visible}
+					// anchorPosition='bottom'
+					contentStyle={styles.menuContent}
+					onDismiss={closeMenu}
+					anchor={
+						<CustomButton
+							// styleReverse
+							icon={visible ? "chevron-up" : "chevron-down"}
+							mode='outlined'
+							onPress={openMenu}
+							title={level ? level : "Select"}
+							style={{
+								width: 300 * scaleFactor,
+								marginBottom: 0,
+							}}
+						/>
+					}>
+					{question.options.map((option) => (
+						<Menu.Item
+							key={option.value}
+							onPress={() => {
+								setLevel(option.value);
+								closeMenu();
+							}}
+							title={option.label}
+							style={{
+								backgroundColor:
+									option.value === level
+										? commonStyles.colors.primary
+										: commonStyles.colors.background,
+								padding: 0,
+								marginHorizontal: 20,
+								borderRadius: 20 * scaleFactor,
+								alignItems: "center",
+							}}
+							titleStyle={{
+								color:
+									option.value === level
+										? commonStyles.colors.background
+										: commonStyles.colors.primary,
+							}}
+						/>
+					))}
+				</Menu>
 
 				<CustomInput
 					label='Bio:'
@@ -368,7 +429,14 @@ const styles = StyleSheet.create({
 	email: {
 		color: commonStyles.colors.textSecondary,
 		textAlign: "center",
-		marginTop: 0,
+		marginTop: 20 * scaleFactor,
+		fontSize: responsiveFontSize(6),
+	},
+	role: {
+		color: commonStyles.colors.primary,
+		textAlign: "center",
+		marginTop: 5 * scaleFactor,
+		marginBottom: 20 * scaleFactor,
 		fontSize: responsiveFontSize(6),
 	},
 	avatarContainer: {
@@ -396,5 +464,10 @@ const styles = StyleSheet.create({
 		// width: "100%",
 		gap: 10 * scaleFactor,
 		marginTop: 20 * scaleFactor,
+	},
+	menuContent: {
+		width: 300 * scaleFactor,
+		backgroundColor: commonStyles.colors.background,
+		borderRadius: 20 * scaleFactor,
 	},
 });

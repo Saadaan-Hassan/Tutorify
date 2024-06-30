@@ -146,6 +146,7 @@ const MainNavigator = () => {
 					<Stack.Screen name='UserSearch' component={UserSearch} />
 					<Stack.Screen name='ChatDetail' component={ChatDetailScreen} />
 
+					{/* Ensure Registration screen is only used if user is not already logged in */}
 					<Stack.Screen
 						name='Registration'
 						component={RegistrationScreen}

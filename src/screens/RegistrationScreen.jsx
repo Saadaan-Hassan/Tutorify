@@ -1,34 +1,34 @@
 import React, { useState, useEffect } from "react";
-import {
-	View,
-	Text,
-	TouchableOpacity,
-	TextInput,
-	StyleSheet,
-	Dimensions,
-} from "react-native";
+import { View, Text, StyleSheet, Dimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { doc, updateDoc, getDoc } from "firebase/firestore";
 import { db } from "../services/firebase";
 import { useUser } from "../utils/context/UserContext";
 import LocationSelector from "../components/LocationSelector";
+import CustomOption from "../components/custom/CustomOption";
+import CustomInput from "../components/CustomInput";
+import CustomButton from "../components/CustomButton";
 import {
 	commonStyles,
 	scaleFactor,
 	responsiveFontSize,
 } from "../styles/commonStyles";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Icon } from "react-native-paper";
 
 const { width } = Dimensions.get("window");
 
 const questions = [
 	{
 		id: 1,
+		icon: "account-tie",
 		question: "Are you a student or a teacher?",
 		options: ["Student", "Teacher"],
 		multiSelect: false,
 	},
 	{
 		id: 2,
+		icon: "school",
 		question: "Select your level of education",
 		options: [
 			"Primary School (1-5)",
@@ -40,6 +40,7 @@ const questions = [
 	},
 	{
 		id: 3,
+		icon: "book",
 		question: "Select the subjects you need the tutor for",
 		options: [
 			"Maths",
@@ -54,36 +55,22 @@ const questions = [
 	},
 	{
 		id: 4,
+		icon: "laptop",
 		question: "Preferred Mode of Study",
 		options: ["Online", "In-person"],
 	},
 	{
 		id: 5,
+		icon: "map",
 		component: true,
 	},
 	{
 		id: 6,
+		icon: "account",
 		question: "Username",
 		input: true,
 	},
 ];
-
-const Option = ({ option, selected, onPress }) => (
-	<TouchableOpacity
-		onPress={onPress}
-		style={[styles.choice, selected && styles.selectedChoice]}>
-		<Text style={styles.text}>{option}</Text>
-	</TouchableOpacity>
-);
-
-const InputField = ({ value, onChangeText, placeholder }) => (
-	<TextInput
-		style={styles.input}
-		value={value}
-		onChangeText={onChangeText}
-		placeholder={placeholder}
-	/>
-);
 
 const RegistrationScreen = () => {
 	const { user } = useUser();
@@ -172,7 +159,6 @@ const RegistrationScreen = () => {
 			} else {
 				const selectedOption = getSelectedOption();
 
-				// Assign the selected option to the appropriate attribute based on the question
 				switch (currentQuestionIndex) {
 					case 0:
 						updatedUserDetails.role = selectedOption;
@@ -196,7 +182,14 @@ const RegistrationScreen = () => {
 			} else {
 				const userDocSnapshot = await getDoc(doc(db, "users", user.uid));
 				const userDocRef = userDocSnapshot.ref;
-				await updateDoc(userDocRef, updatedUserDetails);
+				await updateDoc(userDocRef, userDetails);
+
+				const updatedUserDetails = { ...user, ...userDetails };
+
+				// Store the updated user details in AsyncStorage
+				await AsyncStorage.setItem("user", JSON.stringify(updatedUserDetails));
+
+				// Navigate to Profile screen after completing registration
 				navigation.reset({
 					index: 0,
 					routes: [{ name: "TabNavigator" }],
@@ -229,10 +222,31 @@ const RegistrationScreen = () => {
 
 	return (
 		<View style={styles.container}>
-			<Text style={styles.title}>{currentQuestion.question}</Text>
+			<View
+				style={{
+					alignItems: "center",
+					justifyContent: "center",
+				}}>
+				<View
+					style={{
+						backgroundColor: commonStyles.colors.secondary,
+						borderRadius: 50 * scaleFactor,
+						padding: 15 * scaleFactor,
+						marginBottom: 10 * scaleFactor,
+					}}>
+					<Icon
+						source={currentQuestion.icon}
+						size={responsiveFontSize(35)}
+						color={commonStyles.colors.primary}
+					/>
+				</View>
+				{(currentQuestion.options || currentQuestion.input) && (
+					<Text style={styles.title}>{currentQuestion.question}</Text>
+				)}
+			</View>
 			{currentQuestion.options &&
 				currentQuestion.options.map((option, index) => (
-					<Option
+					<CustomOption
 						key={index}
 						option={option}
 						selected={
@@ -247,7 +261,7 @@ const RegistrationScreen = () => {
 				<LocationSelector
 					subtitle={`Select your location to find ${
 						user.role === "Teacher" ? "students" : "tutors"
-					} in your area`}
+					} in your area. Press and hold the marker to drag it to your location.`}
 					coordinates={coordinates}
 					setCoordinates={setCoordinates}
 					selectedCity={selectedCity}
@@ -257,7 +271,7 @@ const RegistrationScreen = () => {
 				/>
 			)}
 			{currentQuestion.input && (
-				<InputField
+				<CustomInput
 					value={username}
 					onChangeText={handleUsernameChange}
 					placeholder='Enter your username'
@@ -265,28 +279,19 @@ const RegistrationScreen = () => {
 			)}
 			<View style={styles.buttonContainer}>
 				{currentQuestionIndex > 0 && (
-					<TouchableOpacity
+					<CustomButton
 						onPress={handleBackQuestion}
-						style={[
-							styles.button,
-							{ backgroundColor: commonStyles.colors.secondary },
-						]}>
-						<Text style={styles.buttonText}>Back</Text>
-					</TouchableOpacity>
+						title='Back'
+						disabled={false}
+						style={{ backgroundColor: commonStyles.colors.inactivePrimary }}
+						styleReverse
+					/>
 				)}
-				<TouchableOpacity
-					disabled={isDisabled}
+				<CustomButton
 					onPress={handleQuestionSelect}
-					style={[
-						styles.button,
-						{
-							backgroundColor: isDisabled
-								? commonStyles.colors.secondary
-								: commonStyles.colors.primary,
-						},
-					]}>
-					<Text style={styles.buttonText}>Continue</Text>
-				</TouchableOpacity>
+					title='Continue'
+					disabled={isDisabled}
+				/>
 			</View>
 		</View>
 	);
@@ -295,31 +300,9 @@ const RegistrationScreen = () => {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		padding: 20 * scaleFactor,
-		justifyContent: "center",
-		alignItems: "center",
-	},
-	choice: {
-		width: width - 40 * scaleFactor,
-		height: 50 * scaleFactor,
-		backgroundColor: "white",
-		borderRadius: 16 * scaleFactor,
-		marginBottom: 15 * scaleFactor,
-		alignItems: "center",
-		justifyContent: "center",
-		borderWidth: 1 * scaleFactor,
-		borderColor: "transparent",
-	},
-	selectedChoice: {
-		borderColor: commonStyles.colors.primary,
-		borderWidth: 2 * scaleFactor,
-	},
-	text: {
-		color: commonStyles.colors.primary,
-		textAlign: "center",
 		padding: 15 * scaleFactor,
-		fontSize: responsiveFontSize(6),
-		fontWeight: "400",
+		justifyContent: "center",
+		alignItems: "center",
 	},
 	title: {
 		fontSize: responsiveFontSize(8),
@@ -328,35 +311,12 @@ const styles = StyleSheet.create({
 		marginBottom: 20 * scaleFactor,
 		textAlign: "center",
 	},
-	input: {
-		width: width - 40 * scaleFactor,
-		height: 50 * scaleFactor,
-		backgroundColor: "white",
-		borderRadius: 16 * scaleFactor,
-		marginBottom: 15 * scaleFactor,
-		paddingHorizontal: 15 * scaleFactor,
-		borderWidth: 1 * scaleFactor,
-		borderColor: "transparent",
-		fontSize: responsiveFontSize(6),
-	},
 	buttonContainer: {
 		flexDirection: "row",
 		gap: 20 * scaleFactor,
 		justifyContent: "space-between",
 		marginTop: 10 * scaleFactor,
 		marginHorizontal: 10 * scaleFactor,
-	},
-	button: {
-		width: "50%",
-		height: 50 * scaleFactor,
-		borderRadius: 16 * scaleFactor,
-		marginTop: 20 * scaleFactor,
-		alignItems: "center",
-		justifyContent: "center",
-	},
-	buttonText: {
-		color: "white",
-		fontWeight: "bold",
 	},
 });
 

@@ -13,7 +13,7 @@ const LeftContent = (props) => (
 		source={
 			props.avatar
 				? { uri: props.avatar }
-				: require("../../assets/img/avatar/user1.png")
+				: require("../../assets/img/avatar/avatar.jpg")
 		}
 		size={50 * scaleFactor}
 	/>

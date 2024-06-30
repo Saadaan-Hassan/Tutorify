@@ -9,8 +9,8 @@ import {
 	HomeScreen,
 	AuthScreen,
 	OnboardingScreen,
-	TutorsScreen,
-	TutorDetailScreen,
+	UsersScreen,
+	UserDetailScreen,
 	ProfileScreen,
 	ChatScreen,
 	ChatDetailScreen,
@@ -58,7 +58,7 @@ const TabNavigator = () => {
 			/>
 			<Tab.Screen
 				name={user.role === "Teacher" ? "Students" : "Tutors"}
-				component={TutorsScreen}
+				component={UsersScreen}
 				options={{
 					tabBarLabel: user.role === "Teacher" ? "Students" : "Tutors",
 					tabBarIcon: ({ color }) => (
@@ -138,7 +138,7 @@ const MainNavigator = () => {
 			<Stack.Screen name='TabNavigator' component={TabNavigator} />
 			{user ? (
 				<>
-					<Stack.Screen name='TutorDetail' component={TutorDetailScreen} />
+					<Stack.Screen name='TutorDetail' component={UserDetailScreen} />
 					<Stack.Screen name='Profile' component={ProfileScreen} />
 					<Stack.Screen name='Account' component={AccountScreen} />
 					<Stack.Screen name='Password' component={PasswordScreen} />

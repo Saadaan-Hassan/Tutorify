@@ -14,7 +14,7 @@ import { useUser } from "../utils/context/UserContext";
 import SearchBar from "../components/SearchBar";
 import CustomButton from "../components/CustomButton";
 import CustomLink from "../components/CustomLink";
-import TutorCard from "../components/TutorCard";
+import UserCard from "../components/UserCard";
 import {
 	commonStyles,
 	scaleFactor,
@@ -95,7 +95,7 @@ export default function HomeScreen() {
 					<FlatList
 						data={recommendedUsers(otherUsers, user)}
 						keyExtractor={(item) => item.id}
-						renderItem={({ item }) => <TutorCard userData={item} />}
+						renderItem={({ item }) => <UserCard userData={item} />}
 						horizontal
 						showsHorizontalScrollIndicator={false}
 					/>
@@ -115,7 +115,7 @@ export default function HomeScreen() {
 					<FlatList
 						data={topTutors.slice(0, 5).sort(() => Math.random() - 0.5)}
 						keyExtractor={(item) => item.id}
-						renderItem={({ item }) => <TutorCard userData={item} />}
+						renderItem={({ item }) => <UserCard userData={item} />}
 						horizontal
 						showsHorizontalScrollIndicator={false}
 					/>
@@ -139,7 +139,7 @@ export default function HomeScreen() {
 						<FlatList
 							data={onlineUsers.slice(0, 5).sort(() => Math.random() - 0.5)}
 							keyExtractor={(item) => item.id}
-							renderItem={({ item }) => <TutorCard userData={item} />}
+							renderItem={({ item }) => <UserCard userData={item} />}
 							horizontal
 							showsHorizontalScrollIndicator={false}
 						/>
@@ -164,7 +164,7 @@ export default function HomeScreen() {
 						<FlatList
 							data={inPersonUsers.slice(0, 5).sort(() => Math.random() - 0.5)}
 							keyExtractor={(item) => item.id}
-							renderItem={({ item }) => <TutorCard userData={item} />}
+							renderItem={({ item }) => <UserCard userData={item} />}
 							horizontal
 							showsHorizontalScrollIndicator={false}
 						/>

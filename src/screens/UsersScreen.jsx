@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, FlatList, StyleSheet, Dimensions } from "react-native";
 import SearchBar from "../components/SearchBar";
-import TutorCard from "../components/TutorCard";
+import UserCard from "../components/UserCard";
 import { useUser } from "../utils/context/UserContext";
 import CustomButton from "../components/CustomButton";
 import { Picker } from "@react-native-picker/picker";
@@ -12,7 +12,7 @@ import {
 } from "../styles/commonStyles";
 
 export default function TutorsScreen() {
-	const { otherUsers } = useUser();
+	const { otherUsers, user } = useUser();
 
 	const [searchedUsers, setSearchedUsers] = useState(otherUsers);
 	const [filters, setFilters] = useState([]);
@@ -121,15 +121,27 @@ export default function TutorsScreen() {
 				}}
 				style={{ width: width - 20, marginVertical: 10 }}
 			/>
-
-			<Text style={styles.heading}>All Tutors</Text>
+			<View
+				style={{
+					flexDirection: "row",
+					flexWrap: "wrap",
+					alignItems: "center",
+					justifyContent: "space-between",
+				}}>
+				<Text style={styles.heading}>
+					{user.role === "Teacher" ? "Students" : "Tutors"}
+				</Text>
+				<Text style={[styles.heading, { marginRight: 10 * scaleFactor }]}>
+					Available: {searchedUsers.length}
+				</Text>
+			</View>
 
 			<FlatList
 				data={searchedUsers}
 				keyExtractor={(item) => item.id}
 				numColumns={2}
 				contentContainerStyle={styles.flatListContainer}
-				renderItem={({ item }) => <TutorCard userData={item} />}
+				renderItem={({ item }) => <UserCard userData={item} />}
 			/>
 		</View>
 	);

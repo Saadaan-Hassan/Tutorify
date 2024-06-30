@@ -70,7 +70,7 @@ export default function ChatDetailScreen({ route }) {
 		const chatRoomRef = doc(db, "chatRooms", chatRoomId);
 		const timestamp = Timestamp.now();
 		const newMessage = {
-			message: messageText,
+			message: messageText.trim(),
 			senderId: user.uid,
 			timestamp: timestamp,
 		};

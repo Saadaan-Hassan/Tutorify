@@ -47,3 +47,24 @@ export const getDateString = (timestamp) => {
 		return dateString;
 	}
 };
+
+// Function to calculate the distance between two coordinates using the Haversine formula
+export const haversineDistance = (coords1, coords2) => {
+	const toRad = (x) => (x * Math.PI) / 180;
+	const R = 6371; // Radius of the Earth in km
+
+	const dLat = toRad(coords2.latitude - coords1.latitude);
+	const dLon = toRad(coords2.longitude - coords1.longitude);
+
+	const a =
+		Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+		Math.cos(toRad(coords1.latitude)) *
+			Math.cos(toRad(coords2.latitude)) *
+			Math.sin(dLon / 2) *
+			Math.sin(dLon / 2);
+
+	const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+	const distance = R * c;
+
+	return distance; // distance in km
+};

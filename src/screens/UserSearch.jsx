@@ -1,48 +1,21 @@
 import React, { useEffect, useState, useRef, useMemo } from "react";
-import { StyleSheet, View, FlatList, Image, Dimensions } from "react-native";
+import { StyleSheet, View, Image, Dimensions } from "react-native";
 import MapView, { Marker } from "react-native-maps";
-import * as Location from "expo-location";
-import {
-	Text,
-	Button,
-	Divider,
-	List,
-	ActivityIndicator,
-	Avatar,
-} from "react-native-paper";
-import { Picker } from "@react-native-picker/picker";
-import BottomSheet from "@gorhom/bottom-sheet";
+import { Text, ActivityIndicator, Divider } from "react-native-paper";
+import BottomSheet, { BottomSheetFlatList } from "@gorhom/bottom-sheet";
 import { useUser } from "../utils/context/UserContext";
 import UserDetailModal from "../components/UserDetailModal";
 import { commonStyles } from "../styles/commonStyles";
-
-const haversineDistance = (coords1, coords2) => {
-	const toRad = (x) => (x * Math.PI) / 180;
-	const R = 6371; // Radius of the Earth in km
-
-	const dLat = toRad(coords2.latitude - coords1.latitude);
-	const dLon = toRad(coords2.longitude - coords1.longitude);
-
-	const a =
-		Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-		Math.cos(toRad(coords1.latitude)) *
-			Math.cos(toRad(coords2.latitude)) *
-			Math.sin(dLon / 2) *
-			Math.sin(dLon / 2);
-
-	const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-	const distance = R * c;
-
-	return distance; // distance in km
-};
+import { haversineDistance } from "../utils/helpers";
+import UserListItem from "../components/UserListItem";
+import { Picker } from "@react-native-picker/picker";
 
 const { width } = Dimensions.get("window");
 const markerSize = width * 0.1;
 
 const UserSearch = () => {
 	const { otherUsers, user } = useUser();
-	const [location, setLocation] = useState(null);
-	const [errorMsg, setErrorMsg] = useState(null);
+	const location = user?.location?.coordinates || null;
 	const [nearbyUsers, setNearbyUsers] = useState([]);
 	const [filter, setFilter] = useState("all");
 	const [selectedUser, setSelectedUser] = useState(null);
@@ -51,40 +24,23 @@ const UserSearch = () => {
 	const mapRef = useRef(null);
 	const bottomSheetRef = useRef(null);
 	const snapPoints = useMemo(() => ["10%", "48%"], []);
-	useEffect(() => {
-		(async () => {
-			let { status } = await Location.requestForegroundPermissionsAsync();
-			if (status !== "granted") {
-				setErrorMsg("Permission to access location was denied");
-				return;
-			}
 
-			let location = await Location.getCurrentPositionAsync({});
-			setLocation(location);
-			// Fetch nearby users here based on location.coords.latitude and location.coords.longitude
+	useEffect(() => {
+		if (location) {
 			setNearbyUsers(
 				otherUsers
-					.filter((user) => user?.location?.coordinates)
-					.map((user) => ({
-						...user,
+					.filter((otherUser) => otherUser?.location?.coordinates)
+					.map((otherUser) => ({
+						...otherUser,
 						distance: haversineDistance(
-							location.coords,
-							user?.location?.coordinates
+							location,
+							otherUser?.location?.coordinates
 						),
 					}))
+					.sort((a, b) => a.distance - b.distance)
 			);
-		})();
-	}, []);
-
-	const applyFilter = (filterOption) => {
-		setFilter(filterOption);
-	};
-
-	const filterUsers = (users, filter) => {
-		if (filter === "all") return users;
-		const distanceLimit = parseInt(filter);
-		return users.filter((user) => user.distance <= distanceLimit);
-	};
+		}
+	}, [location, otherUsers]);
 
 	const handleUserPress = (user) => {
 		setSelectedUser(user);
@@ -101,6 +57,12 @@ const UserSearch = () => {
 		setModalVisible(true);
 	};
 
+	const filterUsers = (users, filter) => {
+		if (filter === "all") return users;
+		const distanceLimit = parseInt(filter);
+		return users.filter((user) => user.distance <= distanceLimit);
+	};
+
 	if (!location) {
 		return (
 			<View style={styles.loadingContainer}>
@@ -109,7 +71,7 @@ const UserSearch = () => {
 					color={commonStyles.colors.primary}
 					size='large'
 				/>
-				{errorMsg ? <Text>{errorMsg}</Text> : null}
+				<Text>Loading...</Text>
 			</View>
 		);
 	}
@@ -120,19 +82,19 @@ const UserSearch = () => {
 				ref={mapRef}
 				style={styles.map}
 				initialRegion={{
-					latitude: location.coords.latitude,
-					longitude: location.coords.longitude,
+					latitude: location.latitude,
+					longitude: location.longitude,
 					latitudeDelta: 0.0922,
 					longitudeDelta: 0.0421,
 				}}>
 				<Marker
 					coordinate={{
-						latitude: location.coords.latitude,
-						longitude: location.coords.longitude,
+						latitude: location.latitude,
+						longitude: location.longitude,
 					}}
 					title='You'
 				/>
-				{filterUsers(nearbyUsers, filter).map((user) => (
+				{nearbyUsers.map((user) => (
 					<Marker
 						key={user.id}
 						coordinate={{
@@ -166,47 +128,32 @@ const UserSearch = () => {
 				index={1}
 				snapPoints={snapPoints}
 				style={styles.bottomSheet}>
-				<View style={styles.sheetContent}>
-					<Text variant='headlineMedium' style={styles.drawerTitle}>
-						📍 Nearby {user?.role === "tutor" ? "Students" : "Tutors"} within{" "}
-						{filter} km radius
-					</Text>
-					<Picker
-						selectedValue={filter}
-						onValueChange={(itemValue) => applyFilter(itemValue)}
-						style={styles.picker}>
-						<Picker.Item label='Anywhere' value='all' />
-						<Picker.Item label='Within 5 km' value='5' />
-						<Picker.Item label='Within 10 km' value='10' />
-						<Picker.Item label='Within 15 km' value='15' />
-					</Picker>
+				<View style={styles.contentContainer}>
+					<View style={styles.header}>
+						<Text variant='headlineMedium' style={styles.drawerTitle}>
+							📍 Nearby Users within {filter} km radius
+						</Text>
+						<Picker
+							selectedValue={filter}
+							onValueChange={(itemValue) => setFilter(itemValue)}
+							style={styles.picker}>
+							<Picker.Item label='Anywhere' value='all' />
+							<Picker.Item label='Within 5 km' value='5' />
+							<Picker.Item label='Within 10 km' value='10' />
+							<Picker.Item label='Within 15 km' value='15' />
+						</Picker>
+					</View>
+
 					<Divider />
-					<FlatList
+
+					<BottomSheetFlatList
 						data={filterUsers(nearbyUsers, filter)}
 						keyExtractor={(item) => item.id}
 						renderItem={({ item }) => (
-							<List.Item
-								title={item.username}
-								description={`${item.distance.toFixed(2)} km`}
-								left={(props) => (
-									<Avatar.Image
-										{...props}
-										source={{ uri: item.profileImage }}
-										size={40}
-									/>
-								)}
-								onPress={() => handleUserPress(item)}
-							/>
+							<UserListItem user={item} onPress={() => handleUserPress(item)} />
 						)}
-						ItemSeparatorComponent={() => <Divider />}
 						contentContainerStyle={styles.listContent}
 					/>
-					{/* <Button
-                        onPress={() => bottomSheetRef.current.close()}
-                        mode='contained'
-                        style={styles.closeButton}>
-                        Close
-                    </Button> */}
 				</View>
 			</BottomSheet>
 			<UserDetailModal
@@ -240,24 +187,23 @@ const styles = StyleSheet.create({
 	bottomSheet: {
 		flex: 1,
 	},
-	sheetContent: {
-		flexGrow: 1,
-		padding: 16,
+	contentContainer: {
+		flex: 1,
 	},
-	drawerTitle: {
-		fontSize: 18,
-		fontWeight: "bold",
-		marginBottom: 16,
+	listContent: {
+		paddingBottom: 16,
+	},
+	header: {
+		paddingHorizontal: 16,
 	},
 	picker: {
 		height: 50,
 		width: "100%",
 	},
-	closeButton: {
-		marginTop: 16,
-	},
-	listContent: {
-		paddingBottom: 16,
+	drawerTitle: {
+		fontSize: 18,
+		fontWeight: "bold",
+		paddingVertical: 8,
 	},
 });
 

@@ -4,7 +4,7 @@ import {
 	Avatar,
 	Button,
 	Card,
-	Divider,
+	ActivityIndicator,
 	Dialog,
 	Portal,
 	Text,
@@ -36,7 +36,7 @@ const LeftContent = ({ profileImage }) => (
 );
 
 export default function ProfileScreen() {
-	const { user } = useUser();
+	const { user, loading } = useUser();
 	const { logOut, confirmPassword, error } = useAuth();
 	const navigation = useNavigation();
 
@@ -56,6 +56,11 @@ export default function ProfileScreen() {
 
 	return (
 		<ScrollView contentContainerStyle={styles.container}>
+			{loading && (
+				<View style={commonStyles.loadingOverlay}>
+					<ActivityIndicator size='large' color={commonStyles.colors.primary} />
+				</View>
+			)}
 			<Image
 				source={require("../../assets/img/blob1.png")}
 				style={{

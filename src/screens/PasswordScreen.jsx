@@ -35,8 +35,16 @@ export default function ProfilePassword() {
 		setConfirmPassword("");
 	};
 
+	console.log("error", error);
+	console.log("loading", loading);
+
 	return (
 		<View style={styles.container}>
+			{loading && (
+				<View style={commonStyles.loadingOverlay}>
+					<ActivityIndicator size='large' color={commonStyles.colors.primary} />
+				</View>
+			)}
 			<Image
 				source={require("../../assets/img/blob1.png")}
 				style={{
@@ -47,11 +55,6 @@ export default function ProfilePassword() {
 				}}
 				resizeMode='contain'
 			/>
-			{loading && (
-				<View style={commonStyles.loadingOverlay}>
-					<ActivityIndicator size='large' color={commonStyles.colors.primary} />
-				</View>
-			)}
 			<View style={styles.centered}>
 				<Text style={styles.title}>Setup New Password</Text>
 			</View>

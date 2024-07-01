@@ -18,7 +18,7 @@ import {
 } from "../../services/notifications";
 
 const useAuth = () => {
-	const { user, setUser, setOtherUsers, setLoading } = useUser();
+	const { user, setUser, setOtherUsers, loading, setLoading } = useUser();
 	const [error, setError] = useState(null);
 	const navigation = useNavigation();
 
@@ -55,6 +55,7 @@ const useAuth = () => {
 
 	const signUp = async (email, password) => {
 		try {
+			setLoading(true);
 			const userCredential = await createUserWithEmailAndPassword(
 				auth,
 				email,
@@ -86,6 +87,8 @@ const useAuth = () => {
 			navigation.navigate("Registration");
 		} catch (error) {
 			setError(error.message);
+		} finally {
+			setLoading(false);
 		}
 	};
 
@@ -106,6 +109,7 @@ const useAuth = () => {
 	};
 
 	const signIn = async (email, password) => {
+		setLoading(true);
 		try {
 			const userCredential = await signInWithEmailAndPassword(
 				auth,
@@ -119,11 +123,14 @@ const useAuth = () => {
 			navigation.navigate("TabNavigator");
 		} catch (error) {
 			setError(error.message);
+		} finally {
+			setLoading(false);
 		}
 	};
 
 	const logOut = async () => {
 		try {
+			setLoading(true);
 			await signOut(auth);
 			setUser(null);
 			setOtherUsers([]);
@@ -133,11 +140,14 @@ const useAuth = () => {
 			navigation.navigate("Auth");
 		} catch (error) {
 			setError(error.message);
+		} finally {
+			setLoading(false);
 		}
 	};
 
 	const confirmPassword = async (password) => {
 		try {
+			setLoading(true);
 			const user = auth.currentUser;
 			const credential = EmailAuthProvider.credential(user.email, password);
 			await reauthenticateWithCredential(user, credential);
@@ -145,6 +155,8 @@ const useAuth = () => {
 			navigation.navigate("Password");
 		} catch (error) {
 			setError("Incorrect password");
+		} finally {
+			setLoading(false);
 		}
 	};
 
@@ -152,7 +164,7 @@ const useAuth = () => {
 		try {
 			const user = auth.currentUser;
 			await updatePassword(user, newPassword);
-			navigation.navigate("Profile");
+			logOut();
 		} catch (error) {
 			setError(error.message);
 		}
@@ -161,6 +173,7 @@ const useAuth = () => {
 	return {
 		user,
 		error,
+		loading,
 		signUp,
 		signIn,
 		logOut,

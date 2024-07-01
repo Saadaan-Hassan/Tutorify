@@ -1,4 +1,4 @@
-import { DefaultTheme } from "react-native-paper";
+import { DefaultTheme, overlay } from "react-native-paper";
 
 export const theme = {
 	...DefaultTheme,
@@ -14,6 +14,7 @@ export const theme = {
 		inactivePrimary: "#D4C5ED",
 
 		rippleColor: "#E1D1FA00",
+		overlay: "#E1D1FA50",
 
 		neutral: "#FAF6FD",
 		neutralLight: "#E1D1FA50",

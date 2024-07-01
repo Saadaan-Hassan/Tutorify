@@ -24,6 +24,7 @@ export const commonStyles = StyleSheet.create({
 		textSecondary: theme.colors.textSecondary,
 		inactivePrimary: theme.colors.inactivePrimary,
 		rippleColor: theme.colors.rippleColor,
+		overlay: theme.colors.overlay,
 		neutral: theme.colors.neutral,
 		neutralLight: theme.colors.neutralLight,
 		neutralAccent: theme.colors.neutralAccent,

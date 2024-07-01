@@ -18,7 +18,7 @@ import {
 	AccountScreen,
 	PasswordScreen,
 	PrivacyScreen,
-	UserSearch,
+	UserSearchScreen,
 } from "../screens";
 import Header from "../components/Header";
 import { Icon } from "react-native-paper";
@@ -72,7 +72,7 @@ const TabNavigator = () => {
 			/>
 			<Tab.Screen
 				name='Search'
-				component={UserSearch}
+				component={UserSearchScreen}
 				options={{
 					tabBarLabel: "Search",
 					tabBarIcon: ({ color }) => (
@@ -143,7 +143,7 @@ const MainNavigator = () => {
 					<Stack.Screen name='Account' component={AccountScreen} />
 					<Stack.Screen name='Password' component={PasswordScreen} />
 					<Stack.Screen name='PrivacyScreen' component={PrivacyScreen} />
-					<Stack.Screen name='UserSearch' component={UserSearch} />
+					<Stack.Screen name='UserSearchScreen' component={UserSearchScreen} />
 					<Stack.Screen name='ChatDetail' component={ChatDetailScreen} />
 
 					{/* Ensure Registration screen is only used if user is not already logged in */}

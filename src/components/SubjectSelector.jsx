@@ -61,7 +61,7 @@ const SubjectSelector = ({ subjects, setSubjects }) => {
 
 const styles = StyleSheet.create({
 	container: {
-		width: "100%",
+		width: 300 * scaleFactor,
 		marginBottom: 20 * scaleFactor,
 	},
 	label: {

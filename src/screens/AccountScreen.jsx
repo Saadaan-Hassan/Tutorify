@@ -19,8 +19,8 @@ import {
 	scaleFactor,
 	responsiveFontSize,
 } from "../styles/commonStyles";
-import CustomButton from "../components/CustomButton";
-import CustomInput from "../components/CustomInput";
+import CustomButton from "../components/custom/CustomButton";
+import CustomInput from "../components/custom/CustomInput";
 import LocationSelector from "../components/LocationSelector";
 import { useUser } from "../utils/context/UserContext";
 import { db } from "../services/firebase";

@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, Image, StyleSheet, Dimensions } from "react-native";
 import LottieView from "lottie-react-native";
-import CustomButton from "../components/CustomButton";
+import CustomButton from "../components/custom/CustomButton";
 import {
 	commonStyles,
 	scaleFactor,

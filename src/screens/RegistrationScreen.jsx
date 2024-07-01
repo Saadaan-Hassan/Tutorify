@@ -6,8 +6,8 @@ import { db } from "../services/firebase";
 import { useUser } from "../utils/context/UserContext";
 import LocationSelector from "../components/LocationSelector";
 import CustomOption from "../components/custom/CustomOption";
-import CustomInput from "../components/CustomInput";
-import CustomButton from "../components/CustomButton";
+import CustomInput from "../components/custom/CustomInput";
+import CustomButton from "../components/custom/CustomButton";
 import {
 	commonStyles,
 	scaleFactor,

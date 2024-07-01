@@ -12,8 +12,8 @@ import { useNavigation } from "@react-navigation/native";
 import { useUser } from "../utils/context/UserContext";
 // import useRoleBasedUser from "../utils/hooks/useRoleBasedUser";
 import SearchBar from "../components/SearchBar";
-import CustomButton from "../components/CustomButton";
-import CustomLink from "../components/CustomLink";
+import CustomButton from "../components/custom/CustomButton";
+import CustomLink from "../components/custom/CustomLink";
 import UserCard from "../components/UserCard";
 import {
 	commonStyles,

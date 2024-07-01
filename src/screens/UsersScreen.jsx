@@ -3,7 +3,7 @@ import { View, Text, FlatList, StyleSheet, Dimensions } from "react-native";
 import SearchBar from "../components/SearchBar";
 import UserCard from "../components/UserCard";
 import { useUser } from "../utils/context/UserContext";
-import CustomButton from "../components/CustomButton";
+import CustomButton from "../components/custom/CustomButton";
 import { Picker } from "@react-native-picker/picker";
 import {
 	commonStyles,

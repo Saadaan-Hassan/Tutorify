@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, StyleSheet, Dimensions } from "react-native";
 import { commonStyles } from "../styles/commonStyles";
 import { IconButton } from "react-native-paper";
-import CustomInput from "./CustomInput";
+import CustomInput from "./custom/CustomInput";
 import { scaleFactor } from "../styles/commonStyles";
 
 const { width } = Dimensions.get("window");

@@ -7,7 +7,7 @@ import {
 	Image,
 	Dimensions,
 } from "react-native";
-import CustomButton from "../components/CustomButton";
+import CustomButton from "../components/custom/CustomButton";
 import { Icon } from "react-native-paper";
 import {
 	commonStyles,

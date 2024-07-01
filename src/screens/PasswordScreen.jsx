@@ -6,8 +6,8 @@ import {
 	scaleFactor,
 	responsiveFontSize,
 } from "../styles/commonStyles";
-import CustomButton from "../components/CustomButton";
-import CustomInput from "../components/CustomInput";
+import CustomButton from "../components/custom/CustomButton";
+import CustomInput from "../components/custom/CustomInput";
 import useAuth from "../utils/hooks/useAuth";
 import { useUser } from "../utils/context/UserContext";
 

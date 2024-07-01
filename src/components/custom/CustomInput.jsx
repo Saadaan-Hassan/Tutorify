@@ -15,6 +15,7 @@ export default function CustomInput({
 	containerStyle,
 	inputStyle,
 	onChangeText,
+	onSubmitEditing,
 	outlineStyle,
 	error = false,
 	multiline = false,
@@ -36,6 +37,7 @@ export default function CustomInput({
 				inputMode={type}
 				secureTextEntry={type === "password"}
 				spellCheck={true}
+				onSubmitEditing={onSubmitEditing}
 			/>
 		</View>
 	);

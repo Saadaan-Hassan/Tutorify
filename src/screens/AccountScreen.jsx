@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
 	View,
 	StyleSheet,
@@ -30,8 +30,9 @@ import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { storage } from "../services/firebase";
 import * as ImagePicker from "expo-image-picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import SubjectSelector from "../components/SubjectSelector";
 
-export default function ProfileInfo() {
+export default function AccountScreen() {
 	const { user, setUser } = useUser();
 	const navigation = useNavigation();
 
@@ -49,9 +50,36 @@ export default function ProfileInfo() {
 	const [coordinates, setCoordinates] = useState(user?.location?.coordinates);
 	const [preferredMode, setPreferredMode] = useState(user?.preferredMode);
 
+	const [infoNotEdited, setInfoNotEdited] = useState(true);
 	const [visible, setVisible] = useState(false);
 	const openMenu = () => setVisible(true);
 	const closeMenu = () => setVisible(false);
+
+	useEffect(() => {
+		if (
+			username !== user?.username ||
+			level !== user?.level ||
+			bio !== user?.bio ||
+			subjects !== user?.subjects ||
+			selectedCity !== user?.location?.city ||
+			selectedCountry !== user?.location?.country ||
+			coordinates !== user?.location?.coordinates ||
+			preferredMode !== user?.preferredMode
+		) {
+			setInfoNotEdited(false);
+		} else {
+			setInfoNotEdited(true);
+		}
+	}, [
+		username,
+		level,
+		bio,
+		subjects,
+		selectedCity,
+		selectedCountry,
+		coordinates,
+		preferredMode,
+	]);
 
 	const question = {
 		question: "Preffered Level of Education:",
@@ -158,7 +186,8 @@ export default function ProfileInfo() {
 			!selectedCity ||
 			!selectedCountry ||
 			!preferredMode ||
-			!coordinates
+			!coordinates ||
+			subjects.length === 0
 		) {
 			alert("Please fill in all the fields");
 
@@ -192,6 +221,7 @@ export default function ProfileInfo() {
 				coordinates: coordinates,
 			},
 			preferredMode: preferredMode,
+			subjects: subjects,
 		};
 
 		if (user?.role === "Teacher") {
@@ -355,6 +385,20 @@ export default function ProfileInfo() {
 					</View>
 				)}
 
+				{/* Subjects */}
+				<SubjectSelector
+					title={"Subjects:"}
+					subtitle={""}
+					titleStyle={[
+						styles.label,
+						{
+							alignSelf: "flex-start",
+						},
+					]}
+					subjects={subjects}
+					setSubjects={setSubjects}
+				/>
+
 				<LocationSelector
 					title={"Location:"}
 					subtitle={""}
@@ -364,11 +408,6 @@ export default function ProfileInfo() {
 							alignSelf: "flex-start",
 						},
 					]}
-					dropdownStyle={{
-						width: 300 * scaleFactor,
-						height: 40 * scaleFactor,
-						marginTop: 10 * scaleFactor,
-					}}
 					coordinates={coordinates}
 					setCoordinates={setCoordinates}
 					selectedCity={selectedCity}
@@ -399,21 +438,10 @@ export default function ProfileInfo() {
 
 			<View style={styles.buttonsContainer}>
 				<CustomButton
-					title='Cancel'
-					labelStyle={{ color: commonStyles.colors.primary }}
-					mode='outlined'
-					onPress={() => {
-						setUsername(user?.username);
-						setBio(user?.bio);
-						setExperience(user?.experience);
-						setRate(user?.rate);
-						setSelectedCity(user?.location.city);
-						setPreferredMode(user?.preferredMode);
-						navigation.goBack();
-					}}
+					title='Update Profile'
+					onPress={handleUpdateProfile}
+					disabled={infoNotEdited}
 				/>
-
-				<CustomButton title='Update Profile' onPress={handleUpdateProfile} />
 			</View>
 		</ScrollView>
 	);
@@ -463,7 +491,7 @@ const styles = StyleSheet.create({
 		justifyContent: "space-around",
 		// width: "100%",
 		gap: 10 * scaleFactor,
-		marginTop: 20 * scaleFactor,
+		marginTop: 30 * scaleFactor,
 	},
 	menuContent: {
 		width: 300 * scaleFactor,

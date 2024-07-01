@@ -5,7 +5,7 @@ import {
 	commonStyles,
 	scaleFactor,
 	responsiveFontSize,
-} from "../styles/commonStyles";
+} from "../../styles/commonStyles";
 
 export default function CustomInput({
 	label,

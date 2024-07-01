@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { Text, Avatar, IconButton } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
-import CustomButton from "./CustomButton";
+import CustomButton from "./custom/CustomButton";
 import {
 	commonStyles,
 	responsiveFontSize,

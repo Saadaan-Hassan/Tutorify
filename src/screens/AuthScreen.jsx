@@ -9,9 +9,9 @@ import {
 	ScrollView,
 	KeyboardAvoidingView,
 } from "react-native";
-import CustomButton from "../components/CustomButton";
-import CustomLink from "../components/CustomLink";
-import CustomInput from "../components/CustomInput";
+import CustomButton from "../components/custom/CustomButton";
+import CustomLink from "../components/custom/CustomLink";
+import CustomInput from "../components/custom/CustomInput";
 import { Checkbox, ActivityIndicator } from "react-native-paper";
 import {
 	commonStyles,

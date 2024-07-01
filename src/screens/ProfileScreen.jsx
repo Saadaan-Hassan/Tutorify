@@ -10,7 +10,7 @@ import {
 	Text,
 	TextInput,
 } from "react-native-paper";
-import CustomButton from "../components/CustomButton";
+import CustomButton from "../components/custom/CustomButton";
 import {
 	commonStyles,
 	scaleFactor,

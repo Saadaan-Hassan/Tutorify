@@ -4,7 +4,7 @@ import {
 	commonStyles,
 	scaleFactor,
 	responsiveFontSize,
-} from "../styles/commonStyles";
+} from "../../styles/commonStyles";
 
 export default function CustomLink({ buttonStyle, labelStyle, text, onPress }) {
 	return (

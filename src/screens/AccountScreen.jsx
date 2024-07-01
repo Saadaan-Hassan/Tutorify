@@ -5,6 +5,7 @@ import {
 	Text,
 	ScrollView,
 	TouchableOpacity,
+	Image,
 } from "react-native";
 import {
 	SegmentedButtons,
@@ -258,7 +259,17 @@ export default function AccountScreen() {
 					<ActivityIndicator size='large' color={commonStyles.colors.primary} />
 				</View>
 			)}
-			<View>
+			<View style={{ position: "relative" }}>
+				<Image
+					source={require("../../assets/img/blob1.png")}
+					style={{
+						alignSelf: "center",
+						position: "absolute",
+						top: 0,
+						zIndex: -1,
+					}}
+					resizeMode='contain'
+				/>
 				<View style={styles.avatarContainer}>
 					<Avatar.Image
 						size={120 * scaleFactor}
@@ -443,6 +454,17 @@ export default function AccountScreen() {
 					disabled={infoNotEdited}
 				/>
 			</View>
+
+			<Image
+				source={require("../../assets/img/blob2.png")}
+				style={{
+					alignSelf: "center",
+					position: "absolute",
+					bottom: 0,
+					zIndex: -1,
+				}}
+				resizeMode='contain'
+			/>
 		</ScrollView>
 	);
 }

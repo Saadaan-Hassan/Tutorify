@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Image } from "react-native";
 import { Text, ActivityIndicator } from "react-native-paper";
 import {
 	commonStyles,
@@ -37,6 +37,16 @@ export default function ProfilePassword() {
 
 	return (
 		<View style={styles.container}>
+			<Image
+				source={require("../../assets/img/blob1.png")}
+				style={{
+					alignSelf: "center",
+					position: "absolute",
+					top: 0,
+					zIndex: -1,
+				}}
+				resizeMode='contain'
+			/>
 			{loading && (
 				<View style={commonStyles.loadingOverlay}>
 					<ActivityIndicator size='large' color={commonStyles.colors.primary} />
@@ -70,6 +80,16 @@ export default function ProfilePassword() {
 			<View style={styles.centered}>
 				<Text style={styles.errorText}>{error || errorText}</Text>
 			</View>
+			<Image
+				source={require("../../assets/img/blob2.png")}
+				style={{
+					alignSelf: "center",
+					position: "absolute",
+					bottom: 0,
+					zIndex: -1,
+				}}
+				resizeMode='contain'
+			/>
 		</View>
 	);
 }
@@ -80,6 +100,7 @@ const styles = StyleSheet.create({
 		backgroundColor: commonStyles.colors.background,
 		alignItems: "center",
 		paddingTop: 50 * scaleFactor,
+		position: "relative",
 	},
 	title: {
 		fontSize: responsiveFontSize(10),

@@ -80,7 +80,7 @@ export default function HomeScreen() {
 								title={user.role === "Teacher" ? "Find Student" : "Find Tutor"}
 								styleReverse={true}
 								style={styles.bannerButton}
-								onPress={() => navigation.navigate("UserSearch")}
+								onPress={() => navigation.navigate("UserSearchScreen")}
 							/>
 						</View>
 					</View>

@@ -29,8 +29,6 @@ export default function LocationSelector({
 			console.error("Permission to access location was denied");
 			return;
 		}
-		console.log("Getting current location...");
-		console.log(status);
 
 		if (coordinates) return;
 		let location = await Location.getCurrentPositionAsync({});

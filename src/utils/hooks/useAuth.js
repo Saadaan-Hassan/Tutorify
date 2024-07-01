@@ -137,6 +137,10 @@ const useAuth = () => {
 			await AsyncStorage.removeItem("accessToken");
 			await AsyncStorage.removeItem("user");
 			await AsyncStorage.removeItem("otherUsers");
+			navigation.reset({
+				index: 0,
+				routes: [{ name: "Auth" }],
+			});
 			navigation.navigate("Auth");
 		} catch (error) {
 			setError(error.message);

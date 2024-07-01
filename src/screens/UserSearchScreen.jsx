@@ -13,7 +13,7 @@ import { Picker } from "@react-native-picker/picker";
 const { width } = Dimensions.get("window");
 const markerSize = width * 0.1;
 
-const UserSearch = () => {
+const UserSearchScreen = () => {
 	const { otherUsers, user } = useUser();
 	const location = user?.location?.coordinates || null;
 	const [nearbyUsers, setNearbyUsers] = useState([]);
@@ -207,4 +207,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default UserSearch;
+export default UserSearchScreen;

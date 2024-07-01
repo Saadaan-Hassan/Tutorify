@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: "center",
 		alignItems: "center",
-		backgroundColor: "rgba(0, 0, 0, 0.3)",
+		backgroundColor: commonStyles.colors.overlay,
 	},
 	modalView: {
 		width: width * 0.9,
@@ -152,9 +152,6 @@ const styles = StyleSheet.create({
 		justifyContent: "space-between",
 		marginBottom: 10 * scaleFactor,
 		width: "100%",
-	},
-	infoItem: {
-		// flexDirection: "row",
 	},
 	infoLabel: {
 		fontWeight: "bold",

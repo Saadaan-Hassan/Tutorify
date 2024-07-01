@@ -186,6 +186,7 @@ const styles = StyleSheet.create({
 		backgroundColor: commonStyles.colors.neutral,
 		borderWidth: 0,
 		borderBottomWidth: 1,
+		borderColor: commonStyles.colors.secondary,
 	},
 	buttonContentStyle: {
 		justifyContent: "flex-start",

@@ -108,7 +108,7 @@ export default function AuthScreen() {
 					</View>
 				)}
 				<Image
-					source={require("../../assets/img/logo.webp")}
+					source={require("../../assets/img/beta-logo.png")}
 					style={[commonStyles.logo, styles.logo]}
 				/>
 				<View>

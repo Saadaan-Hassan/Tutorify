@@ -20,6 +20,7 @@ import {
 	Fade,
 } from "rn-placeholder";
 import { useUser } from "../utils/context/UserContext";
+import { getCurrencySymbol } from "../utils/helpers";
 
 const { width } = Dimensions.get("window");
 
@@ -80,7 +81,11 @@ export default function TutorCard({ userData }) {
 						)}
 					</View>
 					{userData?.role === "Teacher" && (
-						<Text style={styles.rate}>Rs. {userData?.rate} / Month</Text>
+						<Text style={styles.rate}>
+							{" "}
+							{getCurrencySymbol(userData?.location?.country)} {userData?.rate}{" "}
+							/ Month
+						</Text>
 					)}
 				</Card.Content>
 			</Card>

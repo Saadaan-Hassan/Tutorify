@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import { View, Text, StyleSheet, ScrollView, Image } from "react-native";
 import React from "react";
 import {
 	commonStyles,
@@ -10,6 +10,16 @@ import { version } from "../../package.json";
 export default function ProfilePrivacy() {
 	return (
 		<ScrollView contentContainerStyle={styles.contentContainer}>
+			<Image
+				source={require("../../assets/img/blob1.png")}
+				style={{
+					alignSelf: "center",
+					position: "absolute",
+					top: 0,
+					zIndex: -1,
+				}}
+				resizeMode='contain'
+			/>
 			<View style={styles.container}>
 				<View style={styles.sectionHeader}>
 					<Text style={{ fontSize: responsiveFontSize(5) }}>
@@ -77,6 +87,16 @@ export default function ProfilePrivacy() {
 					</Text>
 				</View>
 			</View>
+			<Image
+				source={require("../../assets/img/blob2.png")}
+				style={{
+					alignSelf: "center",
+					position: "absolute",
+					bottom: 0,
+					zIndex: -1,
+				}}
+				resizeMode='contain'
+			/>
 		</ScrollView>
 	);
 }
@@ -86,6 +106,7 @@ const styles = StyleSheet.create({
 		flexGrow: 1,
 		paddingBottom: 20 * scaleFactor,
 		backgroundColor: commonStyles.colors.neutral,
+		position: "relative",
 	},
 
 	container: {

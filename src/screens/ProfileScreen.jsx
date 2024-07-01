@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, ScrollView, StyleSheet } from "react-native";
+import { View, ScrollView, StyleSheet, Image } from "react-native";
 import {
 	Avatar,
 	Button,
@@ -27,7 +27,7 @@ const LeftContent = ({ profileImage }) => (
 				? { uri: profileImage }
 				: require("../../assets/img/avatar/avatar.jpg")
 		}
-		size={80 * scaleFactor}
+		size={100 * scaleFactor}
 		style={{
 			borderWidth: 3 * scaleFactor,
 			borderColor: commonStyles.colors.primary,
@@ -56,17 +56,27 @@ export default function ProfileScreen() {
 
 	return (
 		<ScrollView contentContainerStyle={styles.container}>
+			<Image
+				source={require("../../assets/img/blob1.png")}
+				style={{
+					alignSelf: "center",
+					position: "absolute",
+					top: 0,
+					zIndex: -1,
+				}}
+				resizeMode='contain'
+			/>
 			<Card.Title
 				title={user?.username}
 				subtitle={user?.level}
 				style={{
-					marginVertical: 20 * scaleFactor,
+					marginVertical: 70 * scaleFactor,
 				}}
 				titleStyle={{
-					fontSize: responsiveFontSize(8),
+					fontSize: responsiveFontSize(10),
 					fontWeight: "bold",
 					minHeight: 20 * scaleFactor,
-					color: commonStyles.colors.textPrimary,
+					color: commonStyles.colors.primary,
 				}}
 				subtitleStyle={{
 					fontSize: responsiveFontSize(6),
@@ -77,47 +87,47 @@ export default function ProfileScreen() {
 						profileImage={user?.profileImage ? user?.profileImage : null}
 					/>
 				)}
-				leftStyle={{ marginRight: 60 * scaleFactor }}
+				leftStyle={{ marginRight: 80 * scaleFactor }}
 			/>
 
-			<View style={{ marginTop: 20 * scaleFactor }}>
+			<View style={{ marginTop: 50 * scaleFactor }}>
 				<CustomButton
+					mode='outline'
 					icon={"account"}
 					title='Account'
 					style={styles.button}
-					contentStyle={{ justifyContent: "flex-start" }}
+					contentStyle={styles.buttonContentStyle}
 					labelStyle={{ fontSize: responsiveFontSize(7) }}
 					textColor={commonStyles.colors.primary}
 					onPress={() => navigation.navigate("Account")}
 				/>
-				<Divider />
 				<CustomButton
+					mode='outline'
 					icon={"lock"}
 					title='Password'
 					style={styles.button}
-					contentStyle={{ justifyContent: "flex-start" }}
+					contentStyle={styles.buttonContentStyle}
 					labelStyle={{ fontSize: responsiveFontSize(7) }}
 					textColor={commonStyles.colors.primary}
 					onPress={showDialog}
 				/>
-				<Divider />
 				<CustomButton
+					mode='outline'
 					icon={"shield-account"}
 					title='Privacy Policy'
 					style={styles.button}
-					contentStyle={{ justifyContent: "flex-start" }}
+					contentStyle={styles.buttonContentStyle}
 					labelStyle={{ fontSize: responsiveFontSize(7) }}
 					textColor={commonStyles.colors.primary}
 					onPress={() => {
 						navigation.navigate("PrivacyScreen");
 					}}
 				/>
-				<Divider />
 				<CustomButton
 					icon={"power"}
 					title='Logout'
 					style={styles.button}
-					contentStyle={{ justifyContent: "flex-start" }}
+					contentStyle={styles.buttonContentStyle}
 					labelStyle={{ fontSize: responsiveFontSize(7) }}
 					textColor={commonStyles.colors.tertiary}
 					onPress={logOut}
@@ -143,6 +153,16 @@ export default function ProfileScreen() {
 					</Dialog.Actions>
 				</Dialog>
 			</Portal>
+			<Image
+				source={require("../../assets/img/blob2.png")}
+				style={{
+					alignSelf: "center",
+					position: "absolute",
+					bottom: 0,
+					zIndex: -1,
+				}}
+				resizeMode='contain'
+			/>
 		</ScrollView>
 	);
 }
@@ -151,14 +171,19 @@ const styles = StyleSheet.create({
 	container: {
 		flexGrow: 1,
 		backgroundColor: commonStyles.colors.neutral,
+		position: "relative",
 	},
 	button: {
 		width: "100%",
 		borderRadius: 0,
-		marginTop: 10 * scaleFactor,
-		paddingTop: 5 * scaleFactor,
 		marginBottom: 0,
 		height: 50 * scaleFactor,
 		backgroundColor: commonStyles.colors.neutral,
+		borderWidth: 0,
+		borderBottomWidth: 1,
+	},
+	buttonContentStyle: {
+		justifyContent: "flex-start",
+		paddingVertical: 7,
 	},
 });

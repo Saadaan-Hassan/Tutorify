@@ -1,5 +1,11 @@
 import React, { useEffect, useState, useRef, useMemo } from "react";
-import { StyleSheet, View, Image, Dimensions } from "react-native";
+import {
+	StyleSheet,
+	View,
+	Image,
+	Dimensions,
+	TouchableOpacity,
+} from "react-native";
 import Mapbox from "@rnmapbox/maps";
 import { Text, ActivityIndicator, Divider } from "react-native-paper";
 import BottomSheet, { BottomSheetFlatList } from "@gorhom/bottom-sheet";
@@ -24,22 +30,22 @@ const UserSearchScreen = () => {
 	const mapRef = useRef(null);
 	const cameraRef = useRef(null);
 	const bottomSheetRef = useRef(null);
-	const snapPoints = useMemo(() => ["10%", "48%"], []);
+	const snapPoints = useMemo(() => ["10%", "45%"], []);
 
 	useEffect(() => {
 		if (location) {
-			setNearbyUsers(
-				otherUsers
-					.filter((otherUser) => otherUser?.location?.coordinates)
-					.map((otherUser) => ({
-						...otherUser,
-						distance: haversineDistance(
-							location,
-							otherUser?.location?.coordinates
-						),
-					}))
-					.sort((a, b) => a.distance - b.distance)
-			);
+			const updatedNearbyUsers = otherUsers
+				.filter((otherUser) => otherUser?.location?.coordinates)
+				.map((otherUser) => ({
+					...otherUser,
+					distance: haversineDistance(
+						location,
+						otherUser?.location?.coordinates
+					),
+				}))
+				.sort((a, b) => a.distance - b.distance);
+
+			setNearbyUsers(updatedNearbyUsers);
 		}
 	}, [location, otherUsers]);
 
@@ -82,6 +88,7 @@ const UserSearchScreen = () => {
 	return (
 		<View style={styles.container}>
 			<Mapbox.MapView
+				key={nearbyUsers.length} // Force re-render on nearbyUsers change
 				ref={mapRef}
 				style={styles.map}
 				styleURL={Mapbox.StyleURL.Street}
@@ -100,33 +107,32 @@ const UserSearchScreen = () => {
 					coordinate={[location.longitude, location.latitude]}
 				/>
 				{nearbyUsers.map((user) => (
-					<Mapbox.PointAnnotation
+					<Mapbox.MarkerView
 						key={user.id}
-						id={user.id}
-						title={user.username}
 						coordinate={[
 							user.location.coordinates.longitude,
 							user.location.coordinates.latitude,
-						]}
-						onSelected={() => handleMarkerPress(user)}>
-						<View
-							style={[
-								styles.markerContainer,
-								{ width: markerSize, height: markerSize },
-							]}>
-							<Image
+						]}>
+						<TouchableOpacity onPress={() => handleMarkerPress(user)}>
+							<View
 								style={[
-									styles.markerImage,
+									styles.markerContainer,
 									{ width: markerSize, height: markerSize },
-								]}
-								source={
-									user.profileImage
-										? { uri: user.profileImage }
-										: require("../../assets/img/avatar/avatar.jpg")
-								}
-							/>
-						</View>
-					</Mapbox.PointAnnotation>
+								]}>
+								<Image
+									style={[
+										styles.markerImage,
+										{ width: markerSize, height: markerSize },
+									]}
+									source={
+										user.profileImage
+											? { uri: user.profileImage }
+											: require("../../assets/img/avatar/avatar.jpg")
+									}
+								/>
+							</View>
+						</TouchableOpacity>
+					</Mapbox.MarkerView>
 				))}
 			</Mapbox.MapView>
 			<BottomSheet

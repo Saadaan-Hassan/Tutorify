@@ -1,6 +1,8 @@
+// This component uses the google maps API to display a map with markers for nearby users in the production mode. But google maps API is not available right now. So i have created a new compoenet using the rnmapbox/maps that uses the mapbox API to display a map with markers for nearby users. The new component is UserSearchScreen.jsx. The new component is similar to the UserSearchScreen2.jsx but uses the mapbox API instead of the google maps API.
+
 import React, { useEffect, useState, useRef, useMemo } from "react";
 import { StyleSheet, View, Image, Dimensions } from "react-native";
-import Mapbox from "@rnmapbox/maps";
+import MapView, { Marker } from "react-native-maps";
 import { Text, ActivityIndicator, Divider } from "react-native-paper";
 import BottomSheet, { BottomSheetFlatList } from "@gorhom/bottom-sheet";
 import { useUser } from "../utils/context/UserContext";
@@ -22,7 +24,6 @@ const UserSearchScreen = () => {
 	const [modalVisible, setModalVisible] = useState(false);
 
 	const mapRef = useRef(null);
-	const cameraRef = useRef(null);
 	const bottomSheetRef = useRef(null);
 	const snapPoints = useMemo(() => ["10%", "48%"], []);
 
@@ -45,13 +46,11 @@ const UserSearchScreen = () => {
 
 	const handleUserPress = (user) => {
 		setSelectedUser(user);
-		cameraRef.current.setCamera({
-			centerCoordinate: [
-				user.location.coordinates.longitude,
-				user.location.coordinates.latitude,
-			],
-			zoomLevel: 10,
-			animationDuration: 2000,
+		mapRef.current.animateToRegion({
+			latitude: user.location.coordinates.latitude,
+			longitude: user.location.coordinates.longitude,
+			latitudeDelta: 0.005,
+			longitudeDelta: 0.005,
 		});
 	};
 
@@ -81,34 +80,31 @@ const UserSearchScreen = () => {
 
 	return (
 		<View style={styles.container}>
-			<Mapbox.MapView
+			<MapView
 				ref={mapRef}
 				style={styles.map}
-				styleURL={Mapbox.StyleURL.Street}
-				logoEnabled={false}
-				attributionEnabled={false}
-				compassEnabled={true}
-				compassViewPosition={3}>
-				<Mapbox.Camera
-					ref={cameraRef}
-					centerCoordinate={[location.longitude, location.latitude]}
-					zoomLevel={8}
-				/>
-				<Mapbox.PointAnnotation
-					id='userLocation'
+				initialRegion={{
+					latitude: location.latitude,
+					longitude: location.longitude,
+					latitudeDelta: 0.0922,
+					longitudeDelta: 0.0421,
+				}}>
+				<Marker
+					coordinate={{
+						latitude: location.latitude,
+						longitude: location.longitude,
+					}}
 					title='You'
-					coordinate={[location.longitude, location.latitude]}
 				/>
 				{nearbyUsers.map((user) => (
-					<Mapbox.PointAnnotation
+					<Marker
 						key={user.id}
-						id={user.id}
+						coordinate={{
+							latitude: user.location.coordinates.latitude,
+							longitude: user.location.coordinates.longitude,
+						}}
 						title={user.username}
-						coordinate={[
-							user.location.coordinates.longitude,
-							user.location.coordinates.latitude,
-						]}
-						onSelected={() => handleMarkerPress(user)}>
+						onPress={() => handleMarkerPress(user)}>
 						<View
 							style={[
 								styles.markerContainer,
@@ -126,9 +122,9 @@ const UserSearchScreen = () => {
 								}
 							/>
 						</View>
-					</Mapbox.PointAnnotation>
+					</Marker>
 				))}
-			</Mapbox.MapView>
+			</MapView>
 			<BottomSheet
 				ref={bottomSheetRef}
 				index={1}

@@ -35,9 +35,6 @@ export default function ProfilePassword() {
 		setConfirmPassword("");
 	};
 
-	console.log("error", error);
-	console.log("loading", loading);
-
 	return (
 		<View style={styles.container}>
 			{loading && (

@@ -11,3 +11,4 @@ export { default as AccountScreen } from "./AccountScreen";
 export { default as PasswordScreen } from "./PasswordScreen";
 export { default as PrivacyScreen } from "./PrivacyScreen";
 export { default as UserSearchScreen } from "./UserSearchScreen";
+export { default as SettingsScreen } from "./SettingsScreen";

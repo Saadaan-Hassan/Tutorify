@@ -19,6 +19,7 @@ import {
 	PasswordScreen,
 	PrivacyScreen,
 	UserSearchScreen,
+	SettingsScreen,
 } from "../screens";
 import Header from "../components/Header";
 import { Icon } from "react-native-paper";
@@ -139,12 +140,13 @@ const MainNavigator = () => {
 			{user ? (
 				<>
 					<Stack.Screen name='TutorDetail' component={UserDetailScreen} />
-					<Stack.Screen name='Profile' component={ProfileScreen} />
-					<Stack.Screen name='Account' component={AccountScreen} />
-					<Stack.Screen name='Password' component={PasswordScreen} />
-					<Stack.Screen name='PrivacyScreen' component={PrivacyScreen} />
 					<Stack.Screen name='UserSearchScreen' component={UserSearchScreen} />
 					<Stack.Screen name='ChatDetail' component={ChatDetailScreen} />
+					<Stack.Screen name='Profile' component={ProfileScreen} />
+					<Stack.Screen name='Account' component={AccountScreen} />
+					<Stack.Screen name='Settings' component={SettingsScreen} />
+					<Stack.Screen name='Password' component={PasswordScreen} />
+					<Stack.Screen name='PrivacyScreen' component={PrivacyScreen} />
 
 					{/* Ensure Registration screen is only used if user is not already logged in */}
 					<Stack.Screen

@@ -32,6 +32,7 @@ import { storage } from "../services/firebase";
 import * as ImagePicker from "expo-image-picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import SubjectSelector from "../components/SubjectSelector";
+import { useLocation } from "../utils/context/LocationContext";
 
 export default function AccountScreen() {
 	const { user, setUser } = useUser();
@@ -55,6 +56,8 @@ export default function AccountScreen() {
 	const [visible, setVisible] = useState(false);
 	const openMenu = () => setVisible(true);
 	const closeMenu = () => setVisible(false);
+
+	const { locationEnabled } = useLocation();
 
 	useEffect(() => {
 		if (
@@ -451,7 +454,7 @@ export default function AccountScreen() {
 				<CustomButton
 					title='Update Profile'
 					onPress={handleUpdateProfile}
-					disabled={infoNotEdited}
+					disabled={infoNotEdited || !locationEnabled}
 				/>
 			</View>
 

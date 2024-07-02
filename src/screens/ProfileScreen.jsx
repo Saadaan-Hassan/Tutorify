@@ -18,6 +18,7 @@ import {
 } from "../styles/commonStyles";
 import useAuth from "../utils/hooks/useAuth";
 import { useUser } from "../utils/context/UserContext";
+import { useLocation } from "../utils/context/LocationContext";
 import { useNavigation } from "@react-navigation/native";
 
 const LeftContent = ({ profileImage }) => (
@@ -105,6 +106,16 @@ export default function ProfileScreen() {
 					labelStyle={{ fontSize: responsiveFontSize(7) }}
 					textColor={commonStyles.colors.primary}
 					onPress={() => navigation.navigate("Account")}
+				/>
+				<CustomButton
+					mode='outline'
+					icon={"cog"}
+					title='Settings'
+					style={styles.button}
+					contentStyle={styles.buttonContentStyle}
+					labelStyle={{ fontSize: responsiveFontSize(7) }}
+					textColor={commonStyles.colors.primary}
+					onPress={() => navigation.navigate("Settings")}
 				/>
 				<CustomButton
 					mode='outline'

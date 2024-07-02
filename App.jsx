@@ -1,3 +1,4 @@
+import "expo-dev-client";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import "./src/services/firebase.js";
 import React, { useState, useEffect } from "react";
@@ -9,6 +10,11 @@ import { UserProvider } from "./src/utils/context/UserContext.js";
 import NoInternet from "./src/screens/NoInternetScreen";
 // import AsyncStorage from "@react-native-async-storage/async-storage";
 import NetInfo from "@react-native-community/netinfo";
+import Mapbox from "@rnmapbox/maps";
+
+Mapbox.setAccessToken(
+	"pk.eyJ1Ijoic2FhZGFhbi1oYXNzYW4iLCJhIjoiY2x5MzFyZmg3MDMzZTJqczdhY2xydjc3eiJ9.tMsFRe3duBTeqeI8lwbugw"
+);
 
 export default function App() {
 	const [isConnected, setIsConnected] = useState(true);

@@ -1,8 +1,10 @@
+// This component uses the google maps API to display a map with markers for nearby users in the production mode. But google maps API is not available right now. So i have created a new compoenet using the rnmapbox/maps that uses the mapbox API to display a map with markers for nearby users. The new component is LocationSelector.jsx. The new component is similar to the LocationSelector2.jsx but uses the mapbox API instead of the google maps API.
+
 import React, { useEffect } from "react";
 import { View, StyleSheet } from "react-native";
-import Mapbox from "@rnmapbox/maps";
-import * as Location from "expo-location";
 import { Text } from "react-native-paper";
+import MapView, { Marker } from "react-native-maps";
+import * as Location from "expo-location";
 import {
 	commonStyles,
 	scaleFactor,
@@ -63,11 +65,8 @@ export default function LocationSelector({
 		}
 	}, [coordinates]);
 
-	const handleMarkerDragEnd = async (e) => {
-		const newMarkerCoordinates = {
-			latitude: e.geometry.coordinates[1],
-			longitude: e.geometry.coordinates[0],
-		};
+	const handleMarkerDrag = async (e) => {
+		const newMarkerCoordinates = e.nativeEvent.coordinate;
 		setCoordinates(newMarkerCoordinates);
 		reverseGeocodeWithRetry(newMarkerCoordinates);
 	};
@@ -78,27 +77,20 @@ export default function LocationSelector({
 			{subtitle && <Text style={styles.subtitle}>{subtitle}</Text>}
 			<View style={styles.mapContainer}>
 				{coordinates && (
-					<Mapbox.MapView
+					<MapView
 						style={styles.map}
-						styleURL={Mapbox.StyleURL.Street}
-						logoEnabled={false}
-						attributionEnabled={false}
-						compassEnabled={true}
-						compassViewPosition={3}>
-						<Mapbox.Camera
-							zoomLevel={11}
-							centerCoordinate={[coordinates.longitude, coordinates.latitude]}
-							animationMode='flyTo'
-							animationDuration={2000}
-						/>
-						<Mapbox.PointAnnotation
-							id='userLocation'
-							title='Your Location'
-							coordinate={[coordinates.longitude, coordinates.latitude]}
+						initialRegion={{
+							latitude: coordinates.latitude,
+							longitude: coordinates.longitude,
+							latitudeDelta: 0.0922,
+							longitudeDelta: 0.0421,
+						}}>
+						<Marker
+							coordinate={coordinates}
 							draggable
-							onDragEnd={handleMarkerDragEnd}
+							onDragEnd={handleMarkerDrag}
 						/>
-					</Mapbox.MapView>
+					</MapView>
 				)}
 			</View>
 			<Text style={styles.selectedLocation}>
@@ -128,7 +120,7 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 20 * scaleFactor,
 	},
 	mapContainer: {
-		height: 290 * scaleFactor,
+		height: 170 * scaleFactor,
 		width: 290 * scaleFactor,
 		marginBottom: scaleFactor * 20,
 		borderWidth: 1 * scaleFactor,

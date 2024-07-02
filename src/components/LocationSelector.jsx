@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
-import { View, StyleSheet } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, StyleSheet, Alert } from "react-native";
 import Mapbox from "@rnmapbox/maps";
 import * as Location from "expo-location";
-import { Text } from "react-native-paper";
+import { Text, Button } from "react-native-paper";
 import {
 	commonStyles,
 	scaleFactor,
@@ -23,16 +23,29 @@ export default function LocationSelector({
 	setSelectedCountry,
 	titleStyle,
 }) {
-	const getCurrentLocation = async () => {
-		let { status } = await Location.requestForegroundPermissionsAsync();
-		if (status !== "granted") {
-			console.error("Permission to access location was denied");
-			return;
-		}
+	const [permissionStatus, setPermissionStatus] = useState(null);
 
-		if (coordinates) return;
-		let location = await Location.getCurrentPositionAsync({});
-		setCoordinates(location.coords);
+	// Function to request location permission
+	const requestLocationPermission = async () => {
+		let { status } = await Location.requestForegroundPermissionsAsync();
+		setPermissionStatus(status);
+		if (status !== "granted") {
+			Alert.alert(
+				"Location Permission Required",
+				"Please enable location services to select a location from the settings.",
+				[{ text: "OK" }]
+			);
+			return false;
+		}
+		return true;
+	};
+
+	const getCurrentLocation = async () => {
+		if (await requestLocationPermission()) {
+			if (coordinates) return;
+			let location = await Location.getCurrentPositionAsync({});
+			setCoordinates(location.coords);
+		}
 	};
 
 	useEffect(() => {
@@ -52,7 +65,11 @@ export default function LocationSelector({
 					reverseGeocodeWithRetry(coords, retries + 1);
 				}, RETRY_DELAY);
 			} else {
-				console.error("Error getting city from coordinates:", error);
+				Alert.alert(
+					"Error",
+					"Failed to retrieve location details. Please try again later.",
+					[{ text: "OK" }]
+				);
 			}
 		}
 	};
@@ -86,7 +103,7 @@ export default function LocationSelector({
 						compassEnabled={true}
 						compassViewPosition={3}>
 						<Mapbox.Camera
-							zoomLevel={11}
+							zoomLevel={8}
 							centerCoordinate={[coordinates.longitude, coordinates.latitude]}
 							animationMode='flyTo'
 							animationDuration={2000}
@@ -104,6 +121,12 @@ export default function LocationSelector({
 			<Text style={styles.selectedLocation}>
 				{selectedCity || "Unknown"}, {selectedCountry || "Unknown"}
 			</Text>
+			<Button
+				mode='contained'
+				onPress={getCurrentLocation}
+				style={styles.refreshButton}>
+				Refresh Location
+			</Button>
 		</View>
 	);
 }
@@ -141,5 +164,9 @@ const styles = StyleSheet.create({
 		fontSize: responsiveFontSize(6),
 		color: commonStyles.colors.primary,
 		textAlign: "center",
+	},
+	refreshButton: {
+		marginTop: scaleFactor * 10,
+		backgroundColor: commonStyles.colors.primary,
 	},
 });

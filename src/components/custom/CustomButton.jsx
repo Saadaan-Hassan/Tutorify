@@ -74,6 +74,6 @@ const styles = StyleSheet.create({
 		borderWidth: 1,
 	},
 	label: {
-		fontSize: responsiveFontSize(6), // Example of responsive font size
+		fontSize: responsiveFontSize(0.5),
 	},
 });

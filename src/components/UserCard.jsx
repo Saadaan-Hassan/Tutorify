@@ -124,19 +124,19 @@ const styles = StyleSheet.create({
 		position: "relative",
 	},
 	username: {
-		fontWeight: "bold",
+		fontWeight: "600",
 		color: commonStyles.colors.textPrimary,
 		marginTop: 10 * scaleFactor,
-		fontSize: responsiveFontSize(7.5),
+		fontSize: responsiveFontSize(0.6),
 	},
 	level: {
 		color: commonStyles.colors.textSecondary,
-		fontSize: responsiveFontSize(6),
+		fontSize: responsiveFontSize(0.45),
 	},
 	mode: {
 		color: commonStyles.colors.tertiary,
 		marginBottom: 10 * scaleFactor,
-		fontSize: responsiveFontSize(5),
+		fontSize: responsiveFontSize(0.4),
 	},
 	subjectsContainer: {
 		flexDirection: "row",
@@ -155,14 +155,14 @@ const styles = StyleSheet.create({
 	},
 	subjectText: {
 		color: commonStyles.colors.primary,
-		fontSize: responsiveFontSize(4),
+		fontSize: responsiveFontSize(0.3),
 	},
 	rate: {
 		color: commonStyles.colors.primary,
 		position: "absolute",
 		bottom: 10 * scaleFactor,
 		right: 10 * scaleFactor,
-		fontSize: responsiveFontSize(4),
+		fontSize: responsiveFontSize(0.3),
 	},
 	placeholder: {
 		flex: 1,

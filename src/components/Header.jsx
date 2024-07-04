@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 	},
 	welcomeText: {
-		fontSize: responsiveFontSize(8.5),
+		fontSize: responsiveFontSize(0.65),
 		fontWeight: "500",
 		color: commonStyles.colors.textSecondary,
 	},

@@ -53,7 +53,7 @@ export default function ProfilePassword() {
 				resizeMode='contain'
 			/>
 			<View style={styles.centered}>
-				<Text style={styles.title}>Setup New Password</Text>
+				<Text style={commonStyles.title}>Setup New Password</Text>
 			</View>
 
 			<View>
@@ -101,12 +101,6 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		paddingTop: 50 * scaleFactor,
 		position: "relative",
-	},
-	title: {
-		fontSize: responsiveFontSize(10),
-		fontWeight: "bold",
-		marginBottom: 20 * scaleFactor,
-		color: commonStyles.colors.primary,
 	},
 	centered: {
 		marginVertical: 10 * scaleFactor,

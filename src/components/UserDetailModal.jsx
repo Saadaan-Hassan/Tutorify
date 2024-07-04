@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
 	},
 	username: {
 		marginTop: 50 * scaleFactor,
-		fontSize: responsiveFontSize(8),
+		fontSize: responsiveFontSize(0.5),
 		fontWeight: "bold",
 	},
 	infoContainer: {
@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
 		marginRight: 10 * scaleFactor,
 	},
 	subjectText: {
-		fontSize: responsiveFontSize(5),
+		fontSize: responsiveFontSize(0.3),
 		color: commonStyles.colors.primary,
 	},
 	buttonContainer: {

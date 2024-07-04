@@ -13,7 +13,6 @@ import {
 	Icon,
 	ActivityIndicator,
 	Menu,
-	Button,
 } from "react-native-paper";
 import {
 	commonStyles,
@@ -484,14 +483,14 @@ const styles = StyleSheet.create({
 		color: commonStyles.colors.textSecondary,
 		textAlign: "center",
 		marginTop: 20 * scaleFactor,
-		fontSize: responsiveFontSize(6),
+		fontSize: responsiveFontSize(0.5),
 	},
 	role: {
 		color: commonStyles.colors.primary,
 		textAlign: "center",
 		marginTop: 5 * scaleFactor,
 		marginBottom: 20 * scaleFactor,
-		fontSize: responsiveFontSize(6),
+		fontSize: responsiveFontSize(0.4),
 	},
 	avatarContainer: {
 		position: "relative",
@@ -507,7 +506,7 @@ const styles = StyleSheet.create({
 		padding: 5 * scaleFactor,
 	},
 	label: {
-		fontSize: responsiveFontSize(7),
+		fontSize: responsiveFontSize(0.5),
 		fontWeight: "bold",
 		marginBottom: 5 * scaleFactor,
 		color: commonStyles.colors.primary,
@@ -515,7 +514,6 @@ const styles = StyleSheet.create({
 	buttonsContainer: {
 		flexDirection: "row",
 		justifyContent: "space-around",
-		// width: "100%",
 		gap: 10 * scaleFactor,
 		marginTop: 30 * scaleFactor,
 	},

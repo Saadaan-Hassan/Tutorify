@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
 		marginBottom: 20 * scaleFactor,
 	},
 	label: {
-		fontSize: responsiveFontSize(7),
+		fontSize: responsiveFontSize(0.5),
 		fontWeight: "bold",
 		marginBottom: 5 * scaleFactor,
 		color: commonStyles.colors.primary,
@@ -58,6 +58,6 @@ const styles = StyleSheet.create({
 		height: 40 * scaleFactor,
 		lineHeight: 20 * scaleFactor,
 		color: commonStyles.colors.textPrimary,
-		fontSize: responsiveFontSize(6.3),
+		fontSize: responsiveFontSize(0.4),
 	},
 });

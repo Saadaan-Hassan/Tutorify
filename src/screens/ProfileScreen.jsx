@@ -79,13 +79,13 @@ export default function ProfileScreen() {
 					marginVertical: 70 * scaleFactor,
 				}}
 				titleStyle={{
-					fontSize: responsiveFontSize(10),
+					fontSize: responsiveFontSize(0.65),
 					fontWeight: "bold",
 					minHeight: 20 * scaleFactor,
 					color: commonStyles.colors.primary,
 				}}
 				subtitleStyle={{
-					fontSize: responsiveFontSize(6),
+					fontSize: responsiveFontSize(0.4),
 					color: commonStyles.colors.textSecondary,
 				}}
 				left={() => (
@@ -103,7 +103,7 @@ export default function ProfileScreen() {
 					title='Account'
 					style={styles.button}
 					contentStyle={styles.buttonContentStyle}
-					labelStyle={{ fontSize: responsiveFontSize(7) }}
+					labelStyle={{ fontSize: responsiveFontSize(0.5) }}
 					textColor={commonStyles.colors.primary}
 					onPress={() => navigation.navigate("Account")}
 				/>
@@ -113,7 +113,7 @@ export default function ProfileScreen() {
 					title='Settings'
 					style={styles.button}
 					contentStyle={styles.buttonContentStyle}
-					labelStyle={{ fontSize: responsiveFontSize(7) }}
+					labelStyle={{ fontSize: responsiveFontSize(0.5) }}
 					textColor={commonStyles.colors.primary}
 					onPress={() => navigation.navigate("Settings")}
 				/>
@@ -123,7 +123,7 @@ export default function ProfileScreen() {
 					title='Password'
 					style={styles.button}
 					contentStyle={styles.buttonContentStyle}
-					labelStyle={{ fontSize: responsiveFontSize(7) }}
+					labelStyle={{ fontSize: responsiveFontSize(0.5) }}
 					textColor={commonStyles.colors.primary}
 					onPress={showDialog}
 				/>
@@ -133,7 +133,7 @@ export default function ProfileScreen() {
 					title='Privacy Policy'
 					style={styles.button}
 					contentStyle={styles.buttonContentStyle}
-					labelStyle={{ fontSize: responsiveFontSize(7) }}
+					labelStyle={{ fontSize: responsiveFontSize(0.5) }}
 					textColor={commonStyles.colors.primary}
 					onPress={() => {
 						navigation.navigate("PrivacyScreen");
@@ -144,7 +144,7 @@ export default function ProfileScreen() {
 					title='Logout'
 					style={styles.button}
 					contentStyle={styles.buttonContentStyle}
-					labelStyle={{ fontSize: responsiveFontSize(7) }}
+					labelStyle={{ fontSize: responsiveFontSize(0.5) }}
 					textColor={commonStyles.colors.tertiary}
 					onPress={logOut}
 				/>
@@ -152,7 +152,14 @@ export default function ProfileScreen() {
 
 			<Portal>
 				<Dialog visible={visible} onDismiss={hideDialog}>
-					<Dialog.Title>Confirm Password</Dialog.Title>
+					<Dialog.Title
+						style={{
+							color: commonStyles.colors.primary,
+							fontSize: responsiveFontSize(0.7),
+							fontWeight: "semibold",
+						}}>
+						Confirm Password
+					</Dialog.Title>
 					<Dialog.Content>
 						<TextInput
 							label='Password'
@@ -164,8 +171,20 @@ export default function ProfileScreen() {
 						<Text style={{ color: "red" }}>{error}</Text>
 					</Dialog.Content>
 					<Dialog.Actions>
-						<Button onPress={hideDialog}>Cancel</Button>
-						<Button onPress={checkPassword}>Confirm</Button>
+						<Button
+							onPress={hideDialog}
+							labelStyle={{ fontSize: responsiveFontSize(0.45) }}>
+							Cancel
+						</Button>
+						<Button
+							mode='contained'
+							onPress={checkPassword}
+							labelStyle={{
+								fontSize: responsiveFontSize(0.45),
+								paddingHorizontal: 10 * scaleFactor,
+							}}>
+							Confirm
+						</Button>
 					</Dialog.Actions>
 				</Dialog>
 			</Portal>

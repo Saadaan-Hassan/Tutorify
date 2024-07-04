@@ -87,7 +87,8 @@ const LocationSelector = ({
 			<Button
 				mode='contained'
 				onPress={getCurrentLocation}
-				style={styles.refreshButton}>
+				style={styles.refreshButton}
+				labelStyle={{ fontSize: responsiveFontSize(0.38) }}>
 				Refresh Location
 			</Button>
 		</View>
@@ -100,14 +101,14 @@ const styles = StyleSheet.create({
 		marginBottom: scaleFactor * 20,
 	},
 	title: {
-		fontSize: responsiveFontSize(10),
+		fontSize: responsiveFontSize(0.5),
 		fontWeight: "700",
 		color: commonStyles.colors.primary,
 		marginBottom: scaleFactor * 20,
 		textAlign: "center",
 	},
 	subtitle: {
-		fontSize: responsiveFontSize(6),
+		fontSize: responsiveFontSize(0.4),
 		color: commonStyles.colors.primary,
 		textAlign: "center",
 		marginBottom: scaleFactor * 20,
@@ -124,7 +125,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 	},
 	selectedLocation: {
-		fontSize: responsiveFontSize(6),
+		fontSize: responsiveFontSize(0.4),
 		color: commonStyles.colors.primary,
 		textAlign: "center",
 	},
@@ -134,7 +135,7 @@ const styles = StyleSheet.create({
 		marginBottom: scaleFactor * 5,
 	},
 	switchLabel: {
-		fontSize: responsiveFontSize(6),
+		fontSize: responsiveFontSize(0.45),
 		color: commonStyles.colors.primary,
 		marginRight: scaleFactor * 10,
 	},

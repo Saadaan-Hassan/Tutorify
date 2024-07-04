@@ -28,6 +28,17 @@ const recommendedUsers = (users, user) => {
 		)
 		.slice(0, 5)
 		.sort(() => Math.random() - 0.5);
+
+	if (recommended.length < 5) {
+		const remaining = 5 - recommended.length;
+		const otherUsers = users.filter(
+			(u) => !recommended.map((r) => r.id).includes(u.id)
+		);
+		const randomUsers = otherUsers
+			.slice(0, remaining)
+			.sort(() => Math.random() - 0.5);
+		recommended.push(...randomUsers);
+	}
 	return recommended;
 };
 
@@ -80,6 +91,7 @@ export default function HomeScreen() {
 								title={user.role === "Teacher" ? "Find Student" : "Find Tutor"}
 								styleReverse={true}
 								style={styles.bannerButton}
+								labelStyle={{ fontSize: responsiveFontSize(0.4) }}
 								onPress={() => navigation.navigate("UserSearchScreen")}
 							/>
 						</View>
@@ -209,11 +221,12 @@ const styles = StyleSheet.create({
 	},
 	bannerText: {
 		color: commonStyles.colors.neutral,
-		fontSize: responsiveFontSize(8),
+		fontSize: responsiveFontSize(0.65),
 	},
 	bannerButton: {
 		width: 150 * scaleFactor,
 		borderRadius: 20 * scaleFactor,
 		marginTop: 20 * scaleFactor,
+		fontSize: responsiveFontSize(0.5),
 	},
 });

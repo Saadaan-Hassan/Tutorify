@@ -37,7 +37,7 @@ export default function SearchBar({ users, setSearchedUsers }) {
 			inputStyle={{
 				color: commonStyles.colors.primary,
 				minHeight: 20 * scaleFactor,
-				fontSize: responsiveFontSize(6),
+				fontSize: responsiveFontSize(0.5),
 			}}
 			icon='microphone-outline'
 			iconColor={commonStyles.colors.primary}

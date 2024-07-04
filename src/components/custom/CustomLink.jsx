@@ -19,7 +19,7 @@ export default function CustomLink({ buttonStyle, labelStyle, text, onPress }) {
 			labelStyle={{
 				color: commonStyles.colors.primary,
 				fontWeight: "bold",
-				fontSize: responsiveFontSize(5.5),
+				fontSize: responsiveFontSize(0.4),
 				...labelStyle,
 			}}>
 			{text}

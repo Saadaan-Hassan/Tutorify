@@ -112,10 +112,10 @@ export default function AuthScreen() {
 					style={[commonStyles.logo, styles.logo]}
 				/>
 				<View>
-					<Text style={styles.title}>
+					<Text style={commonStyles.title}>
 						{isSignup ? "Create an account" : "Welcome back"}
 					</Text>
-					<Text style={styles.subtitle}>
+					<Text style={commonStyles.subtitle}>
 						{isSignup
 							? "Enter the required details to create an account and find the right tutor for you"
 							: "Enter your credentials to access your account and find the right tutor for you"}
@@ -191,7 +191,7 @@ export default function AuthScreen() {
 					style={{ width: 290 * scaleFactor }}
 				/>
 
-				<Text style={styles.orText}>OR</Text>
+				<Text style={commonStyles.orText}>OR</Text>
 
 				<CustomButton
 					title={"Continue with Google"}
@@ -232,29 +232,10 @@ const styles = StyleSheet.create({
 		paddingHorizontal: scaleFactor * 20,
 		position: "relative",
 	},
-	title: {
-		fontSize: responsiveFontSize(9),
-		fontWeight: "bold",
-		marginBottom: scaleFactor * 10,
-		textAlign: "center",
-		color: commonStyles.colors.primary,
-	},
-	subtitle: {
-		fontSize: responsiveFontSize(6),
-		textAlign: "center",
-		marginBottom: scaleFactor * 20,
-		marginHorizontal: scaleFactor * 20,
-		color: commonStyles.colors.textSecondary,
-	},
-	orText: {
-		textAlign: "center",
-		fontSize: responsiveFontSize(6),
-		color: commonStyles.colors.textSecondary,
-	},
 	errorText: {
 		color: "red",
 		marginTop: scaleFactor * 10,
-		fontSize: responsiveFontSize(4),
+		fontSize: responsiveFontSize(0.5),
 	},
 	logo: {
 		width: width * 0.4,
@@ -269,7 +250,7 @@ const styles = StyleSheet.create({
 	},
 	checkboxText: {
 		color: commonStyles.colors.textSecondary,
-		fontSize: responsiveFontSize(5),
+		fontSize: responsiveFontSize(0.42),
 		width: "80%",
 		paddingLeft: scaleFactor * 10,
 	},

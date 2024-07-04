@@ -13,7 +13,7 @@ const Question = ({ question, icon }) => {
 			<View style={styles.iconContainer}>
 				<Icon
 					source={icon}
-					size={responsiveFontSize(35)}
+					size={responsiveFontSize(2.5)}
 					color={commonStyles.colors.primary}
 				/>
 			</View>
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
 		marginBottom: 10 * scaleFactor,
 	},
 	title: {
-		fontSize: responsiveFontSize(8),
+		fontSize: responsiveFontSize(0.6),
 		fontWeight: "700",
 		color: commonStyles.colors.primary,
 		marginBottom: 20 * scaleFactor,

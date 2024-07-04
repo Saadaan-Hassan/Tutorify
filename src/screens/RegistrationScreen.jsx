@@ -186,11 +186,14 @@ const RegistrationScreen = () => {
 				setSelectedOptions([]);
 			} else {
 				const updatedUserDetails = {
+					...user,
 					...userDetails,
 					...updatedUserDetails,
 					isProfileComplete: true,
 				};
+
 				await updateDoc(doc(db, "users", user.uid), updatedUserDetails);
+
 				await AsyncStorage.setItem("user", JSON.stringify(updatedUserDetails));
 
 				// Fetch other users based on the new user's role and notify them

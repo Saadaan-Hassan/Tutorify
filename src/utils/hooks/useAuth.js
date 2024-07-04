@@ -70,8 +70,6 @@ const useAuth = () => {
 					}
 				});
 
-			console.log("Other users: ", otherUsers);
-
 			await notifyOtherUsers(
 				newUserDetails.uid,
 				newUserDetails.role,

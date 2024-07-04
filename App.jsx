@@ -15,7 +15,7 @@ import { LocationProvider } from "./src/utils/context/LocationContext";
 import { NotificationProvider } from "./src/utils/context/NotificationContext.js";
 import Constants from "expo-constants";
 
-// AsyncStorage.clear();
+AsyncStorage.clear();
 
 Mapbox.setAccessToken(
 	Constants.expoConfig.extra.RN_MAPBOX_ACCESS_TOKEN ??
@@ -56,16 +56,16 @@ export default function App() {
 
 	return (
 		<UserProvider>
-			<GestureHandlerRootView style={{ flex: 1 }}>
-				<PaperProvider theme={theme}>
-					<NotificationProvider>
-						<LocationProvider>
+			<NotificationProvider>
+				<LocationProvider>
+					<GestureHandlerRootView style={{ flex: 1 }}>
+						<PaperProvider theme={theme}>
 							<StatusBar style='light' />
 							<AppNavigator />
-						</LocationProvider>
-					</NotificationProvider>
-				</PaperProvider>
-			</GestureHandlerRootView>
+						</PaperProvider>
+					</GestureHandlerRootView>
+				</LocationProvider>
+			</NotificationProvider>
 		</UserProvider>
 	);
 }

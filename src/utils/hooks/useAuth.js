@@ -12,11 +12,8 @@ import { doc, getDoc, setDoc, collection, getDocs } from "firebase/firestore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { useUser } from "../context/UserContext";
-import {
-	getFCMRegistrationToken,
-	sendNotification,
-} from "../../services/notifications2";
 import { removeUserPushToken } from "../helpers";
+import { notifyOtherUsers } from "../helpers"; // Make sure this helper function exists
 
 const useAuth = () => {
 	const { user, setUser, setOtherUsers, loading, setLoading } = useUser();
@@ -27,7 +24,11 @@ const useAuth = () => {
 		const fetchUser = async () => {
 			const cachedUser = await AsyncStorage.getItem("user");
 			if (cachedUser) {
-				setUser(JSON.parse(cachedUser));
+				const parsedUser = JSON.parse(cachedUser);
+				setUser(parsedUser);
+				if (!parsedUser.isProfileComplete) {
+					navigation.navigate("Registration");
+				}
 			} else {
 				setLoading(true);
 				auth.onAuthStateChanged(async (currentUser) => {
@@ -54,6 +55,33 @@ const useAuth = () => {
 		fetchUser();
 	}, []);
 
+	const fetchOtherUsersAndNotify = async (newUserDetails) => {
+		console.log("Fetching and notifying other users...");
+		console.log("New user details: ", newUserDetails);
+		try {
+			const otherUsersSnapshot = await getDocs(collection(db, "users"));
+			const otherUsers = otherUsersSnapshot.docs
+				.map((doc) => ({ id: doc.id, ...doc.data() }))
+				.filter((userData) => {
+					if (newUserDetails.role === "Student") {
+						return userData.role === "Teacher";
+					} else if (newUserDetails.role === "Teacher") {
+						return userData.role === "Student";
+					}
+				});
+
+			console.log("Other users: ", otherUsers);
+
+			await notifyOtherUsers(
+				newUserDetails.uid,
+				newUserDetails.role,
+				otherUsers
+			);
+		} catch (error) {
+			console.error("Error fetching and notifying other users: ", error);
+		}
+	};
+
 	const signUp = async (email, password) => {
 		try {
 			setLoading(true);
@@ -63,50 +91,22 @@ const useAuth = () => {
 				password
 			);
 			const userDoc = doc(collection(db, "users"), userCredential.user.uid);
-			const token = await getFCMRegistrationToken();
-			await setDoc(userDoc, {
+			const newUserDetails = {
 				uid: userCredential.user.uid,
 				email,
 				createdAt: new Date(),
-				token,
-			});
-			await notifyOtherUsers(userCredential.user.uid);
-			await AsyncStorage.setItem(
-				"accessToken",
-				userCredential.user.accessToken
-			);
-			// Store the new user in AsyncStorage
-			await AsyncStorage.setItem(
-				"user",
-				JSON.stringify({
-					uid: userCredential.user.uid,
-					email,
-					createdAt: new Date(),
-					token,
-				})
-			);
+				isProfileComplete: false,
+			};
+			await setDoc(userDoc, newUserDetails);
+			await AsyncStorage.setItem("user", JSON.stringify(newUserDetails));
+			setUser(newUserDetails);
+			navigation.reset({ index: 0, routes: [{ name: "Registration" }] });
 			navigation.navigate("Registration");
 		} catch (error) {
 			setError(error.message);
 		} finally {
 			setLoading(false);
 		}
-	};
-
-	const notifyOtherUsers = async (newUserId) => {
-		const usersSnapshot = await getDocs(collection(db, "users"));
-		const users = usersSnapshot.docs.map((doc) => doc.data());
-		await Promise.all(
-			users.map(async (user) => {
-				if (user.uid !== newUserId && user.token) {
-					await sendNotification(
-						user.token,
-						"New User",
-						"A new user has signed up"
-					);
-				}
-			})
-		);
 	};
 
 	const signIn = async (email, password) => {
@@ -117,11 +117,16 @@ const useAuth = () => {
 				email,
 				password
 			);
-			await AsyncStorage.setItem(
-				"accessToken",
-				userCredential.user.accessToken
-			);
-			navigation.navigate("TabNavigator");
+			const userRef = doc(db, "users", userCredential.user.uid);
+			const userDoc = await getDoc(userRef);
+			const userData = userDoc.data();
+			await AsyncStorage.setItem("user", JSON.stringify(userData));
+			setUser(userData);
+			if (!userData.isProfileComplete) {
+				navigation.navigate("Registration");
+			} else {
+				navigation.navigate("TabNavigator");
+			}
 		} catch (error) {
 			setError(error.message);
 		} finally {
@@ -136,13 +141,8 @@ const useAuth = () => {
 			await signOut(auth);
 			setUser(null);
 			setOtherUsers([]);
-			await AsyncStorage.removeItem("accessToken");
 			await AsyncStorage.removeItem("user");
-			await AsyncStorage.removeItem("otherUsers");
-			navigation.reset({
-				index: 0,
-				routes: [{ name: "Auth" }],
-			});
+			navigation.reset({ index: 0, routes: [{ name: "Auth" }] });
 			navigation.navigate("Auth");
 		} catch (error) {
 			setError(error.message);
@@ -185,6 +185,7 @@ const useAuth = () => {
 		logOut,
 		confirmPassword,
 		resetPassword,
+		fetchOtherUsersAndNotify,
 	};
 };
 

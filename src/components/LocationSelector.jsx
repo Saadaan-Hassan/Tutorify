@@ -1,84 +1,32 @@
-import React, { useEffect, useState } from "react";
-import { View, StyleSheet, Alert } from "react-native";
+import React from "react";
+import { View, StyleSheet } from "react-native";
 import Mapbox from "@rnmapbox/maps";
-import * as Location from "expo-location";
-import { Text, Button } from "react-native-paper";
+import { Text, Button, Switch } from "react-native-paper";
+import useLocation from "../utils/hooks/useLocation";
 import {
 	commonStyles,
 	scaleFactor,
 	responsiveFontSize,
 } from "../styles/commonStyles";
 
-const MAX_RETRIES = 3;
-const RETRY_DELAY = 2000; // 2 seconds
-
-export default function LocationSelector({
+const LocationSelector = ({
 	title,
 	subtitle,
-	coordinates,
-	setCoordinates,
 	selectedCity,
-	setSelectedCity,
 	selectedCountry,
+	setSelectedCity,
 	setSelectedCountry,
 	titleStyle,
-}) {
-	const [permissionStatus, setPermissionStatus] = useState(null);
-
-	// Function to request location permission
-	const requestLocationPermission = async () => {
-		let { status } = await Location.requestForegroundPermissionsAsync();
-		setPermissionStatus(status);
-		if (status !== "granted") {
-			Alert.alert(
-				"Location Permission Required",
-				"Please enable location services to select a location from the settings.",
-				[{ text: "OK" }]
-			);
-			return false;
-		}
-		return true;
-	};
-
-	const getCurrentLocation = async () => {
-		if (await requestLocationPermission()) {
-			if (coordinates) return;
-			let location = await Location.getCurrentPositionAsync({});
-			setCoordinates(location.coords);
-		}
-	};
-
-	useEffect(() => {
-		getCurrentLocation();
-	}, []);
-
-	const reverseGeocodeWithRetry = async (coords, retries = 0) => {
-		try {
-			const reverseGeocode = await Location.reverseGeocodeAsync(coords);
-			if (reverseGeocode && reverseGeocode.length > 0) {
-				setSelectedCity(reverseGeocode[0].city);
-				setSelectedCountry(reverseGeocode[0].country);
-			}
-		} catch (error) {
-			if (retries < MAX_RETRIES) {
-				setTimeout(() => {
-					reverseGeocodeWithRetry(coords, retries + 1);
-				}, RETRY_DELAY);
-			} else {
-				Alert.alert(
-					"Error",
-					"Failed to retrieve location details. Please try again later.",
-					[{ text: "OK" }]
-				);
-			}
-		}
-	};
-
-	useEffect(() => {
-		if (coordinates) {
-			reverseGeocodeWithRetry(coordinates);
-		}
-	}, [coordinates]);
+	hasSwitch = true,
+}) => {
+	const {
+		coordinates,
+		locationEnabled,
+		setCoordinates,
+		getCurrentLocation,
+		reverseGeocodeWithRetry,
+		handleLocationToggle,
+	} = useLocation(setSelectedCity, setSelectedCountry);
 
 	const handleMarkerDragEnd = async (e) => {
 		const newMarkerCoordinates = {
@@ -93,6 +41,20 @@ export default function LocationSelector({
 		<View style={styles.container}>
 			<Text style={[styles.title, titleStyle]}>{title || "Add Location"}</Text>
 			{subtitle && <Text style={styles.subtitle}>{subtitle}</Text>}
+
+			{hasSwitch && (
+				<View style={styles.switchContainer}>
+					<Text style={styles.switchLabel}>
+						Location Services: {locationEnabled ? "On" : "Off"}
+					</Text>
+					<Switch
+						value={locationEnabled}
+						onValueChange={handleLocationToggle}
+						color={commonStyles.colors.primary}
+					/>
+				</View>
+			)}
+
 			<View style={styles.mapContainer}>
 				{coordinates && (
 					<Mapbox.MapView
@@ -121,6 +83,7 @@ export default function LocationSelector({
 			<Text style={styles.selectedLocation}>
 				{selectedCity || "Unknown"}, {selectedCountry || "Unknown"}
 			</Text>
+
 			<Button
 				mode='contained'
 				onPress={getCurrentLocation}
@@ -129,7 +92,7 @@ export default function LocationSelector({
 			</Button>
 		</View>
 	);
-}
+};
 
 const styles = StyleSheet.create({
 	container: {
@@ -165,8 +128,20 @@ const styles = StyleSheet.create({
 		color: commonStyles.colors.primary,
 		textAlign: "center",
 	},
+	switchContainer: {
+		flexDirection: "row",
+		alignItems: "center",
+		marginBottom: scaleFactor * 5,
+	},
+	switchLabel: {
+		fontSize: responsiveFontSize(6),
+		color: commonStyles.colors.primary,
+		marginRight: scaleFactor * 10,
+	},
 	refreshButton: {
 		marginTop: scaleFactor * 10,
 		backgroundColor: commonStyles.colors.primary,
 	},
 });
+
+export default LocationSelector;

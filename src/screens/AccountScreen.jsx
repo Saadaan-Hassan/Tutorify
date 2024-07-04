@@ -428,6 +428,7 @@ export default function AccountScreen() {
 					setSelectedCity={setSelectedCity}
 					selectedCountry={selectedCountry}
 					setSelectedCountry={setSelectedCountry}
+					hasSwitch={false}
 				/>
 
 				<Text style={styles.label}>Preferred Mode: </Text>

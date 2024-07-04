@@ -7,16 +7,16 @@ import React, {
 } from "react";
 import { AppState } from "react-native";
 import * as Notifications from "expo-notifications";
-import { useUser } from "../context/UserContext";
+import { useUser } from "./UserContext";
 import { updateUserPushToken, removeUserPushToken } from "../helpers";
 import useNotificationPermissions from "../hooks/useNotificationPermissions";
 import usePushToken from "../hooks/usePushToken";
-import useNotificationListeners from "../hooks/useNotificationListeners";
 
 const NotificationContext = createContext();
 
 export const NotificationProvider = ({ children }) => {
 	const { user } = useUser();
+	const [notification, setNotification] = useState(null);
 	const {
 		notificationsEnabled,
 		toggleNotifications,
@@ -25,9 +25,21 @@ export const NotificationProvider = ({ children }) => {
 	} = useNotificationPermissions();
 	const { expoPushToken, registerForPushNotificationsAsync } = usePushToken();
 	const notificationListener = useRef();
-	const responseListener = useRef();
 
-	useNotificationListeners(notificationListener, responseListener);
+	useEffect(() => {
+		notificationListener.current =
+			Notifications.addNotificationReceivedListener((notification) => {
+				setNotification(notification);
+			});
+
+		return () => {
+			if (notificationListener.current) {
+				Notifications.removeNotificationSubscription(
+					notificationListener.current
+				);
+			}
+		};
+	}, [notification]);
 
 	useEffect(() => {
 		const setupNotifications = async () => {
@@ -41,11 +53,6 @@ export const NotificationProvider = ({ children }) => {
 				if (notificationListener.current) {
 					Notifications.removeNotificationSubscription(
 						notificationListener.current
-					);
-				}
-				if (responseListener.current) {
-					Notifications.removeNotificationSubscription(
-						responseListener.current
 					);
 				}
 			}
@@ -78,9 +85,6 @@ export const NotificationProvider = ({ children }) => {
 					notificationListener.current
 				);
 			}
-			if (responseListener.current) {
-				Notifications.removeNotificationSubscription(responseListener.current);
-			}
 			appStateSubscription.remove();
 		};
 	}, [notificationsPermission]);
@@ -103,7 +107,9 @@ export const NotificationProvider = ({ children }) => {
 		<NotificationContext.Provider
 			value={{
 				expoPushToken,
+				notification,
 				notificationsEnabled,
+				setNotification,
 				toggleNotifications,
 				registerForPushNotificationsAsync,
 			}}>

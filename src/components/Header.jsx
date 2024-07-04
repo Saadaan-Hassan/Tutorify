@@ -24,7 +24,7 @@ export default function Header() {
 
 	const goBack = () => {
 		if (route.name === "Profile") {
-			navigation.navigate("Home");
+			navigation.navigate("TabNavigator");
 		} else {
 			navigation.goBack();
 		}

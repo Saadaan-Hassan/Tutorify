@@ -5,100 +5,38 @@ import React, {
 	useEffect,
 	useRef,
 } from "react";
-import * as Device from "expo-device";
+import { Platform, Alert, Linking, AppState } from "react-native";
 import * as Notifications from "expo-notifications";
-import Constants from "expo-constants";
 import { useUser } from "../context/UserContext";
 import { updateUserPushToken, removeUserPushToken } from "../helpers";
-import { Platform, Alert, Linking, AppState } from "react-native";
+import useNotificationPermissions from "../hooks/useNotificationPermissions";
+import usePushToken from "../hooks/usePushToken";
+import useNotificationListeners from "../hooks/useNotificationListeners";
 
 const NotificationContext = createContext();
 
 export const NotificationProvider = ({ children }) => {
-	const [expoPushToken, setExpoPushToken] = useState("");
 	const [notification, setNotification] = useState(null);
-	const [notificationsEnabled, setNotificationsEnabled] = useState(false);
-	const [notificationsPermission, setNotificationsPermission] = useState(null);
+	const { user } = useUser();
+	const {
+		notificationsEnabled,
+		toggleNotifications,
+		handleNotificationPermission,
+		notificationsPermission,
+	} = useNotificationPermissions();
+	const { expoPushToken, registerForPushNotificationsAsync } = usePushToken();
 	const notificationListener = useRef();
 	const responseListener = useRef();
-	const { user } = useUser();
 
-	const registerForPushNotificationsAsync = async () => {
-		const projectId =
-			Constants.expoConfig.extra.EAS_PROJECT_ID ?? process.env.EAS_PROJECT_ID;
-		if (!projectId) {
-			console.error("Project ID not found");
-			return;
-		}
-		try {
-			const { data } = await Notifications.getExpoPushTokenAsync({ projectId });
-			setExpoPushToken(data);
-			return data;
-		} catch (e) {
-			console.error(e);
-		}
-	};
-
-	const checkNotificationsPermission = async () => {
-		if (Platform.OS === "android") {
-			await Notifications.setNotificationChannelAsync("default", {
-				name: "default",
-				importance: Notifications.AndroidImportance.MAX,
-				vibrationPattern: [0, 250, 250, 250],
-				lightColor: "#FF231F7C",
-				sound: "notification.wav",
-				enableLights: true,
-			});
-		}
-
-		if (Device.isDevice) {
-			const { status: existingStatus } =
-				await Notifications.getPermissionsAsync();
-			let finalStatus = existingStatus;
-
-			if (existingStatus === "undetermined") {
-				const { status } = await Notifications.requestPermissionsAsync();
-				finalStatus = status;
-			}
-
-			if (finalStatus !== "granted") {
-				console.error(
-					"Permission not granted to get push token for push notification!"
-				);
-				return false;
-			}
-		} else {
-			console.error("Must use physical device for push notifications");
-			return false;
-		}
-
-		return true;
-	};
-
-	const handleNotificationPermission = async () => {
-		const permission = await checkNotificationsPermission();
-		setNotificationsPermission(permission);
-		if (permission) {
-			const token = await registerForPushNotificationsAsync();
-			if (token) {
-				setNotificationsEnabled(true);
-			}
-		} else {
-			setNotificationsEnabled(false);
-		}
-	};
+	useNotificationListeners(notificationListener, responseListener);
 
 	useEffect(() => {
 		const setupNotifications = async () => {
-			if (notificationsPermission === null) {
-				const permission = await checkNotificationsPermission();
-				setNotificationsPermission(permission);
-			}
-
-			if (notificationsPermission) {
+			const permission = await handleNotificationPermission();
+			if (permission) {
 				const token = await registerForPushNotificationsAsync();
 				if (token) {
-					setNotificationsEnabled(true);
+					toggleNotifications(true);
 				}
 			} else {
 				if (notificationListener.current) {
@@ -118,15 +56,14 @@ export const NotificationProvider = ({ children }) => {
 
 		const handleAppStateChange = async (nextAppState) => {
 			if (nextAppState === "active") {
-				const permission = await checkNotificationsPermission();
-				setNotificationsPermission(permission);
+				const permission = await handleNotificationPermission();
 				if (permission) {
 					const token = await registerForPushNotificationsAsync();
 					if (token) {
-						setNotificationsEnabled(true);
+						toggleNotifications(true);
 					}
 				} else {
-					setNotificationsEnabled(false);
+					toggleNotifications(false);
 				}
 			}
 		};
@@ -162,45 +99,6 @@ export const NotificationProvider = ({ children }) => {
 			updatePushToken();
 		}
 	}, [expoPushToken, notificationsEnabled, user, notificationsPermission]);
-
-	const toggleNotifications = async (enabled) => {
-		if (notificationsPermission === null) {
-			await handleNotificationPermission();
-		} else if (notificationsPermission) {
-			if (enabled) {
-				const token = await registerForPushNotificationsAsync();
-				if (token) {
-					setNotificationsEnabled(true);
-				}
-			} else {
-				if (user) {
-					await removeUserPushToken(user.uid);
-					setNotificationsEnabled(false);
-				}
-			}
-		} else {
-			Alert.alert(
-				"Notifications Disabled",
-				"Please enable notifications from the device settings.",
-				[
-					{
-						text: "Open Settings",
-						onPress: () => {
-							if (Platform.OS === "ios") {
-								Linking.openURL("app-settings:"); // Open iOS app settings
-							} else {
-								Linking.openSettings();
-							}
-						},
-					},
-					{
-						text: "Cancel",
-						style: "cancel",
-					},
-				]
-			);
-		}
-	};
 
 	return (
 		<NotificationContext.Provider

@@ -13,9 +13,11 @@ import NetInfo from "@react-native-community/netinfo";
 import Mapbox from "@rnmapbox/maps";
 import { LocationProvider } from "./src/utils/context/LocationContext";
 import { NotificationProvider } from "./src/utils/context/NotificationContext.js";
+import Constants from "expo-constants";
 
 Mapbox.setAccessToken(
-	"pk.eyJ1Ijoic2FhZGFhbi1oYXNzYW4iLCJhIjoiY2x5MzFyZmg3MDMzZTJqczdhY2xydjc3eiJ9.tMsFRe3duBTeqeI8lwbugw"
+	Constants.expoConfig.extra.MAPBOX_ACCESS_TOKEN ??
+		process.env.MAPBOX_ACCESS_TOKEN
 );
 
 export default function App() {

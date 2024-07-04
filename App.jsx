@@ -12,6 +12,7 @@ import NoInternet from "./src/screens/NoInternetScreen";
 import NetInfo from "@react-native-community/netinfo";
 import Mapbox from "@rnmapbox/maps";
 import { LocationProvider } from "./src/utils/context/LocationContext";
+import { NotificationProvider } from "./src/utils/context/NotificationContext.js";
 
 Mapbox.setAccessToken(
 	"pk.eyJ1Ijoic2FhZGFhbi1oYXNzYW4iLCJhIjoiY2x5MzFyZmg3MDMzZTJqczdhY2xydjc3eiJ9.tMsFRe3duBTeqeI8lwbugw"
@@ -53,10 +54,12 @@ export default function App() {
 		<UserProvider>
 			<GestureHandlerRootView style={{ flex: 1 }}>
 				<PaperProvider theme={theme}>
-					<LocationProvider>
-						<StatusBar style='light' />
-						<AppNavigator />
-					</LocationProvider>
+					<NotificationProvider>
+						<LocationProvider>
+							<StatusBar style='light' />
+							<AppNavigator />
+						</LocationProvider>
+					</NotificationProvider>
 				</PaperProvider>
 			</GestureHandlerRootView>
 		</UserProvider>

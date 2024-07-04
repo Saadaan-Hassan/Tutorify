@@ -15,7 +15,7 @@ import {
 } from "firebase/firestore";
 import { useUser } from "../utils/context/UserContext";
 import { getDateString, getTimeString } from "../utils/helpers";
-import { sendNotification } from "../services/notifications";
+import { sendNotification } from "../services/notifications2";
 
 export default function ChatDetailScreen({ route }) {
 	const { user, otherUsers } = useUser();

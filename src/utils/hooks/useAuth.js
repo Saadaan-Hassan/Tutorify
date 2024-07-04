@@ -15,7 +15,8 @@ import { useUser } from "../context/UserContext";
 import {
 	getFCMRegistrationToken,
 	sendNotification,
-} from "../../services/notifications";
+} from "../../services/notifications2";
+import { removeUserPushToken } from "../helpers";
 
 const useAuth = () => {
 	const { user, setUser, setOtherUsers, loading, setLoading } = useUser();
@@ -131,6 +132,7 @@ const useAuth = () => {
 	const logOut = async () => {
 		try {
 			setLoading(true);
+			removeUserPushToken(user.uid);
 			await signOut(auth);
 			setUser(null);
 			setOtherUsers([]);

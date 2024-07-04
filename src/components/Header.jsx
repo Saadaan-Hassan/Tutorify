@@ -96,6 +96,8 @@ export default function Header() {
 				return renderHeaderContent("Profile");
 			case "Password":
 				return renderHeaderContent("Password");
+			case "Settings":
+				return renderHeaderContent("Settings");
 			case "PrivacyScreen":
 				return renderHeaderContent("Privacy Policy");
 			case "ChatDetail":

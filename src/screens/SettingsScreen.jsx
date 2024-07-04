@@ -8,10 +8,11 @@ import {
 	responsiveFontSize,
 } from "../styles/commonStyles";
 import { useLocation } from "../utils/context/LocationContext";
+import { useNotification } from "../utils/context/NotificationContext";
 
 export default function SettingsScreen() {
 	const { locationEnabled, setLocationEnabled } = useLocation();
-	const [notificationsEnabled, setNotificationsEnabled] = useState(true);
+	const { notificationsEnabled, toggleNotifications } = useNotification();
 
 	const handleLocationToggle = async () => {
 		if (locationEnabled) {
@@ -49,7 +50,7 @@ export default function SettingsScreen() {
 	};
 
 	const handleNotificationsToggle = () => {
-		setNotificationsEnabled(!notificationsEnabled);
+		toggleNotifications(!notificationsEnabled);
 	};
 
 	return (

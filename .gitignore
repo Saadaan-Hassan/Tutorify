@@ -8,6 +8,7 @@ node_modules/
 dist/
 web-build/
 eas.json
+google-services.json
 
 # Native
 *.orig.*

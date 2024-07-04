@@ -5,7 +5,6 @@ const LocationContext = createContext();
 
 export const LocationProvider = ({ children }) => {
 	const [locationEnabled, setLocationEnabled] = useState(false);
-	console.log(locationEnabled);
 
 	useEffect(() => {
 		const checkLocationPermission = async () => {

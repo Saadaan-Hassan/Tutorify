@@ -20,6 +20,7 @@ import {
 	PrivacyScreen,
 	UserSearchScreen,
 	SettingsScreen,
+	Push,
 } from "../screens";
 import Header from "../components/Header";
 import { Icon } from "react-native-paper";
@@ -78,6 +79,16 @@ const TabNavigator = () => {
 					tabBarLabel: "Search",
 					tabBarIcon: ({ color }) => (
 						<Icon source='compass-outline' color={color} size={26} />
+					),
+				}}
+			/>
+			<Tab.Screen
+				name='Push'
+				component={Push}
+				options={{
+					tabBarLabel: "Push",
+					tabBarIcon: ({ color }) => (
+						<Icon source='bell' color={color} size={26} />
 					),
 				}}
 			/>

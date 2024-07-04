@@ -20,7 +20,7 @@ import {
 	PrivacyScreen,
 	UserSearchScreen,
 	SettingsScreen,
-	Push,
+	NotificationsScreen,
 } from "../screens";
 import Header from "../components/Header";
 import { Icon } from "react-native-paper";
@@ -83,10 +83,10 @@ const TabNavigator = () => {
 				}}
 			/>
 			<Tab.Screen
-				name='Push'
-				component={Push}
+				name='Notifications'
+				component={NotificationsScreen}
 				options={{
-					tabBarLabel: "Push",
+					tabBarLabel: "Notifications",
 					tabBarIcon: ({ color }) => (
 						<Icon source='bell' color={color} size={26} />
 					),

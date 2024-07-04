@@ -268,10 +268,12 @@ const currencySymbols = {
 	Zimbabwe: "Z$",
 };
 
+// Function to get the currency symbol for a country
 export const getCurrencySymbol = (country) => {
 	return currencySymbols[country];
 };
 
+// Function to update the user's push token in the database and AsyncStorage
 export const updateUserPushToken = async (userId, pushToken) => {
 	try {
 		const userRef = doc(db, "users", userId);
@@ -291,6 +293,7 @@ export const updateUserPushToken = async (userId, pushToken) => {
 	}
 };
 
+// Function to remove the user's push token in the database and AsyncStorage
 export const removeUserPushToken = async (userId) => {
 	try {
 		const userRef = doc(db, "users", userId);
@@ -308,4 +311,25 @@ export const removeUserPushToken = async (userId) => {
 	} catch (error) {
 		console.error("Error removing push token: ", error);
 	}
+};
+
+// Function to send a push notification to a user
+export const notifyOtherUsers = async (newUserId, newUserRole, otherUsers) => {
+	await Promise.all(
+		otherUsers.map(async (user) => {
+			if (
+				user.role !== newUserRole &&
+				user.pushToken &&
+				user.id !== newUserId
+			) {
+				await sendNotification(
+					user.pushToken,
+					"New User Alert",
+					`A new ${
+						newUserRole === "Student" ? "student" : "tutor"
+					} has joined the app!`
+				);
+			}
+		})
+	);
 };

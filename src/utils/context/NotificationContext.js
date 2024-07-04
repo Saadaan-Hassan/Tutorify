@@ -5,7 +5,7 @@ import React, {
 	useEffect,
 	useRef,
 } from "react";
-import { Platform, Alert, Linking, AppState } from "react-native";
+import { AppState } from "react-native";
 import * as Notifications from "expo-notifications";
 import { useUser } from "../context/UserContext";
 import { updateUserPushToken, removeUserPushToken } from "../helpers";
@@ -16,7 +16,6 @@ import useNotificationListeners from "../hooks/useNotificationListeners";
 const NotificationContext = createContext();
 
 export const NotificationProvider = ({ children }) => {
-	const [notification, setNotification] = useState(null);
 	const { user } = useUser();
 	const {
 		notificationsEnabled,
@@ -104,7 +103,6 @@ export const NotificationProvider = ({ children }) => {
 		<NotificationContext.Provider
 			value={{
 				expoPushToken,
-				notification,
 				notificationsEnabled,
 				toggleNotifications,
 				registerForPushNotificationsAsync,

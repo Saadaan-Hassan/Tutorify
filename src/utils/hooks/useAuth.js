@@ -56,8 +56,6 @@ const useAuth = () => {
 	}, []);
 
 	const fetchOtherUsersAndNotify = async (newUserDetails) => {
-		console.log("Fetching and notifying other users...");
-		console.log("New user details: ", newUserDetails);
 		try {
 			const otherUsersSnapshot = await getDocs(collection(db, "users"));
 			const otherUsers = otherUsersSnapshot.docs

@@ -8,14 +8,14 @@ import { AppNavigator } from "./src/navigation/Navigation";
 import { theme } from "./src/styles/theme";
 import { UserProvider } from "./src/utils/context/UserContext.js";
 import NoInternet from "./src/screens/NoInternetScreen";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+// import AsyncStorage from "@react-native-async-storage/async-storage";
 import NetInfo from "@react-native-community/netinfo";
 import Mapbox from "@rnmapbox/maps";
 import { LocationProvider } from "./src/utils/context/LocationContext";
 import { NotificationProvider } from "./src/utils/context/NotificationContext.js";
 import Constants from "expo-constants";
 
-AsyncStorage.clear();
+// AsyncStorage.clear();
 
 Mapbox.setAccessToken(
 	Constants.expoConfig.extra.RN_MAPBOX_ACCESS_TOKEN ??

@@ -92,7 +92,6 @@ export default function TutorDetailsScreen() {
 					</View>
 
 					{/* Subjects & Location Section */}
-
 					<View style={styles.row}>
 						<View style={styles.section}>
 							<View style={styles.titleWithIcon}>
@@ -106,6 +105,7 @@ export default function TutorDetailsScreen() {
 								<Text style={styles.title}>Subjects</Text>
 							</View>
 
+							{/* Subjects in a horizontal scroll view */}
 							<ScrollView horizontal showsHorizontalScrollIndicator={false}>
 								{user?.subjects.map((subject, index) => (
 									<Text

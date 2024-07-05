@@ -1,11 +1,7 @@
 import React, { useState } from "react";
 import { View, StyleSheet, Image } from "react-native";
 import { Text, ActivityIndicator } from "react-native-paper";
-import {
-	commonStyles,
-	scaleFactor,
-	responsiveFontSize,
-} from "../styles/commonStyles";
+import { commonStyles, scaleFactor } from "../styles/commonStyles";
 import CustomButton from "../components/custom/CustomButton";
 import CustomInput from "../components/custom/CustomInput";
 import useAuth from "../utils/hooks/useAuth";

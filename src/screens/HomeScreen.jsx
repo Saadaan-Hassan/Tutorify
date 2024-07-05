@@ -21,6 +21,7 @@ import {
 	responsiveFontSize,
 } from "../styles/commonStyles";
 
+// Function to recommend users based on subjects
 const recommendedUsers = (users, user) => {
 	const recommended = users
 		.filter((u) =>
@@ -61,6 +62,7 @@ export default function HomeScreen() {
 					<ActivityIndicator size='large' color={commonStyles.colors.primary} />
 				</View>
 			)}
+
 			<View style={commonStyles.container}>
 				<SearchBar users={otherUsers} />
 				<View style={[styles.section, styles.flex, styles.bannerSection]}>
@@ -100,6 +102,8 @@ export default function HomeScreen() {
 						<Image source={require("../../assets/img/home.png")} />
 					</View>
 				</View>
+
+				{/* Recommended for you section*/}
 				<View style={styles.section}>
 					<View style={styles.sectionHeader}>
 						<Text style={commonStyles.header}>Recommended for you</Text>
@@ -112,6 +116,7 @@ export default function HomeScreen() {
 						showsHorizontalScrollIndicator={false}
 					/>
 				</View>
+
 				{/* <View style={styles.section}>
 					<View style={styles.sectionHeader}>
 						<Text style={commonStyles.header}>Top tutors</Text>
@@ -133,6 +138,7 @@ export default function HomeScreen() {
 					/>
 				</View> */}
 
+				{/* Online users section */}
 				{onlineUsers.length > 0 && (
 					<View style={styles.section}>
 						<View style={styles.sectionHeader}>
@@ -157,6 +163,8 @@ export default function HomeScreen() {
 						/>
 					</View>
 				)}
+
+				{/* In-person users section */}
 				{inPersonUsers.length > 0 && (
 					<View style={styles.section}>
 						<View style={styles.sectionHeader}>

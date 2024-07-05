@@ -275,9 +275,6 @@ export const getCurrencySymbol = (country) => {
 
 // Function to update the user's push token in the database and AsyncStorage
 export const updateUserPushToken = async (userId, pushToken) => {
-	console.log("Updating push token...");
-	console.log("User ID: ", userId);
-	console.log("Push token: ", pushToken);
 	try {
 		const userRef = doc(db, "users", userId);
 		await updateDoc(userRef, {

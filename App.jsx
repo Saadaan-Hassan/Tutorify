@@ -12,9 +12,14 @@ import NoInternet from "./src/screens/NoInternetScreen";
 import NetInfo from "@react-native-community/netinfo";
 import Mapbox from "@rnmapbox/maps";
 import { LocationProvider } from "./src/utils/context/LocationContext";
+import { NotificationProvider } from "./src/utils/context/NotificationContext.js";
+import Constants from "expo-constants";
+
+// AsyncStorage.clear();
 
 Mapbox.setAccessToken(
-	"pk.eyJ1Ijoic2FhZGFhbi1oYXNzYW4iLCJhIjoiY2x5MzFyZmg3MDMzZTJqczdhY2xydjc3eiJ9.tMsFRe3duBTeqeI8lwbugw"
+	Constants.expoConfig.extra.RN_MAPBOX_ACCESS_TOKEN ??
+		process.env.RN_MAPBOX_ACCESS_TOKEN
 );
 
 export default function App() {
@@ -51,14 +56,16 @@ export default function App() {
 
 	return (
 		<UserProvider>
-			<GestureHandlerRootView style={{ flex: 1 }}>
-				<PaperProvider theme={theme}>
-					<LocationProvider>
-						<StatusBar style='light' />
-						<AppNavigator />
-					</LocationProvider>
-				</PaperProvider>
-			</GestureHandlerRootView>
+			<NotificationProvider>
+				<LocationProvider>
+					<GestureHandlerRootView style={{ flex: 1 }}>
+						<PaperProvider theme={theme}>
+							<StatusBar style='light' />
+							<AppNavigator />
+						</PaperProvider>
+					</GestureHandlerRootView>
+				</LocationProvider>
+			</NotificationProvider>
 		</UserProvider>
 	);
 }

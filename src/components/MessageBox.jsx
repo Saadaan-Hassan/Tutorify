@@ -35,12 +35,12 @@ const styles = StyleSheet.create({
 		alignSelf: "flex-start",
 	},
 	text: {
-		fontSize: responsiveFontSize(7),
+		fontSize: responsiveFontSize(0.55),
 		color: commonStyles.colors.neutral,
 	},
 	time: {
 		color: commonStyles.colors.textSecondary,
-		fontSize: responsiveFontSize(5),
+		fontSize: responsiveFontSize(0.3),
 		textAlign: "right",
 		marginTop: 5 * scaleFactor,
 	},

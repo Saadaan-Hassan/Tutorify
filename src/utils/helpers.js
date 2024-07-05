@@ -1,3 +1,7 @@
+import { db } from "../services/firebase";
+import { doc, updateDoc } from "firebase/firestore";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 // Function to show time, e.g. the actual time, yesterday, or the actual date if the message was sent more than a 2 days ago and show time in 12-hour clock format
 export const getTimeString = (timestamp) => {
 	const date = timestamp.toDate();
@@ -264,6 +268,106 @@ const currencySymbols = {
 	Zimbabwe: "Z$",
 };
 
+// Function to get the currency symbol for a country
 export const getCurrencySymbol = (country) => {
 	return currencySymbols[country];
+};
+
+// Function to update the user's push token in the database and AsyncStorage
+export const updateUserPushToken = async (userId, pushToken) => {
+	try {
+		const userRef = doc(db, "users", userId);
+		await updateDoc(userRef, {
+			pushToken,
+		});
+
+		// Update AsyncStorage
+		const user = await AsyncStorage.getItem("user");
+		if (user) {
+			const userData = JSON.parse(user);
+			userData.pushToken = pushToken;
+			await AsyncStorage.setItem("user", JSON.stringify(userData));
+		}
+	} catch (error) {
+		console.error("Error updating push token: ", error);
+	}
+};
+
+// Function to remove the user's push token in the database and AsyncStorage
+export const removeUserPushToken = async (userId) => {
+	try {
+		const userRef = doc(db, "users", userId);
+		await updateDoc(userRef, {
+			pushToken: "",
+		});
+
+		// Update AsyncStorage
+		const user = await AsyncStorage.getItem("user");
+		if (user) {
+			const userData = JSON.parse(user);
+			userData.pushToken = "";
+			await AsyncStorage.setItem("user", JSON.stringify(userData));
+		}
+	} catch (error) {
+		console.error("Error removing push token: ", error);
+	}
+};
+
+const sendNotification = async (recipientToken, title, body) => {
+	try {
+		// Check if the recipient token is valid
+		if (!recipientToken) {
+			throw new Error("Recipient token is invalid");
+		}
+
+		// Set up the notification
+		const message = {
+			to: recipientToken,
+			sound: "default",
+			title: title,
+			body: body,
+			data: { data: "goes here" },
+			_displayInForeground: true,
+		};
+
+		// Send the notification
+		const response = await fetch("https://exp.host/--/api/v2/push/send", {
+			method: "POST",
+			headers: {
+				Accept: "application/json",
+				"Accept-encoding": "gzip, deflate",
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(message),
+		});
+
+		const data = await response.json();
+		if (data.error) {
+			throw new Error(`Error sending notification: ${data.error}`);
+		}
+	} catch (error) {
+		console.error("Error sending notification:", error);
+		throw error;
+	}
+};
+
+// Function to send a push notification to a user
+export const notifyOtherUsers = async (newUserId, newUserRole, otherUsers) => {
+	await Promise.all(
+		otherUsers.map(async (user) => {
+			if (
+				user?.role !== newUserRole &&
+				user?.pushToken &&
+				user.uid !== newUserId
+			) {
+				await sendNotification(
+					user.pushToken,
+					"New User Alert",
+					`A new ${
+						newUserRole === "Student" ? "student" : "tutor"
+					} has joined the app!`
+				);
+			}
+		})
+	);
 };

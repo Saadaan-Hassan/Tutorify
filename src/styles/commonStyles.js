@@ -6,12 +6,12 @@ const { width, height } = Dimensions.get("window");
 
 export const scaleFactor = width / 375;
 
-const baseFontSize = 16;
+const baseFontSize = 12;
 
 // Function to calculate responsive font size based on screen width
 export const responsiveFontSize = (size) => {
 	const screenWidth = width > height ? width : height;
-	return (size * screenWidth) / 375;
+	return Math.round((baseFontSize * size * screenWidth) / 375);
 };
 
 export const commonStyles = StyleSheet.create({
@@ -47,10 +47,11 @@ export const commonStyles = StyleSheet.create({
 	},
 
 	title: {
-		fontSize: baseFontSize * 1.25 * scaleFactor,
+		fontSize: baseFontSize * 1.5 * scaleFactor,
 		fontWeight: "bold",
 		marginBottom: 10 * scaleFactor,
 		textAlign: "center",
+		color: theme.colors.primary,
 	},
 
 	subtitle: {
@@ -61,7 +62,6 @@ export const commonStyles = StyleSheet.create({
 
 	orText: {
 		textAlign: "center",
-		marginBottom: 10 * scaleFactor,
 		fontWeight: "bold",
 		fontSize: baseFontSize * scaleFactor,
 	},
@@ -74,7 +74,7 @@ export const commonStyles = StyleSheet.create({
 	},
 
 	para: {
-		fontSize: baseFontSize * 0.725 * scaleFactor,
+		fontSize: baseFontSize * scaleFactor * 0.9,
 		color: theme.colors.neutral,
 	},
 

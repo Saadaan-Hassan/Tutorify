@@ -13,7 +13,6 @@ import {
 	Icon,
 	ActivityIndicator,
 	Menu,
-	Button,
 } from "react-native-paper";
 import {
 	commonStyles,
@@ -52,6 +51,7 @@ export default function AccountScreen() {
 	const [coordinates, setCoordinates] = useState(user?.location?.coordinates);
 	const [preferredMode, setPreferredMode] = useState(user?.preferredMode);
 
+	const [isDragging, setIsDragging] = useState(false);
 	const [infoNotEdited, setInfoNotEdited] = useState(true);
 	const [visible, setVisible] = useState(false);
 	const openMenu = () => setVisible(true);
@@ -198,7 +198,7 @@ export default function AccountScreen() {
 			return;
 		}
 
-		if (user?.role === "tutor" && (!experience || !rate)) {
+		if (user?.role === "Teacher" && (!experience || !rate)) {
 			alert("Please fill in all the fields");
 			return;
 		}
@@ -256,7 +256,9 @@ export default function AccountScreen() {
 	};
 
 	return (
-		<ScrollView contentContainerStyle={styles.container}>
+		<ScrollView
+			contentContainerStyle={styles.container}
+			scrollEnabled={!isDragging}>
 			{isLoading && (
 				<View style={commonStyles.loadingOverlay}>
 					<ActivityIndicator size='large' color={commonStyles.colors.primary} />
@@ -415,19 +417,19 @@ export default function AccountScreen() {
 
 				<LocationSelector
 					title={"Location:"}
-					subtitle={""}
 					titleStyle={[
 						styles.label,
 						{
 							alignSelf: "flex-start",
 						},
 					]}
-					coordinates={coordinates}
-					setCoordinates={setCoordinates}
 					selectedCity={selectedCity}
 					setSelectedCity={setSelectedCity}
 					selectedCountry={selectedCountry}
 					setSelectedCountry={setSelectedCountry}
+					setCoordinates={setCoordinates}
+					hasSwitch={false}
+					setIsDragging={setIsDragging}
 				/>
 
 				<Text style={styles.label}>Preferred Mode: </Text>
@@ -483,14 +485,14 @@ const styles = StyleSheet.create({
 		color: commonStyles.colors.textSecondary,
 		textAlign: "center",
 		marginTop: 20 * scaleFactor,
-		fontSize: responsiveFontSize(6),
+		fontSize: responsiveFontSize(0.5),
 	},
 	role: {
 		color: commonStyles.colors.primary,
 		textAlign: "center",
 		marginTop: 5 * scaleFactor,
 		marginBottom: 20 * scaleFactor,
-		fontSize: responsiveFontSize(6),
+		fontSize: responsiveFontSize(0.4),
 	},
 	avatarContainer: {
 		position: "relative",
@@ -506,7 +508,7 @@ const styles = StyleSheet.create({
 		padding: 5 * scaleFactor,
 	},
 	label: {
-		fontSize: responsiveFontSize(7),
+		fontSize: responsiveFontSize(0.5),
 		fontWeight: "bold",
 		marginBottom: 5 * scaleFactor,
 		color: commonStyles.colors.primary,
@@ -514,7 +516,6 @@ const styles = StyleSheet.create({
 	buttonsContainer: {
 		flexDirection: "row",
 		justifyContent: "space-around",
-		// width: "100%",
 		gap: 10 * scaleFactor,
 		marginTop: 30 * scaleFactor,
 	},

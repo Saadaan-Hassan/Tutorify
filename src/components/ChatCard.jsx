@@ -28,7 +28,7 @@ const RightContent = (props) => (
 					: { color: commonStyles.colors.textSecondary },
 				{
 					marginBottom: 20 * scaleFactor,
-					fontSize: responsiveFontSize(5),
+					fontSize: responsiveFontSize(0.4),
 					marginRight: 20 * scaleFactor,
 				},
 			]}>
@@ -88,12 +88,12 @@ const styles = StyleSheet.create({
 	},
 	title: {
 		color: commonStyles.colors.textPrimary,
-		fontSize: responsiveFontSize(9),
+		fontSize: responsiveFontSize(0.65),
 		minHeight: 25 * scaleFactor,
 		marginLeft: 5 * scaleFactor,
 	},
 	subtitle: {
-		fontSize: responsiveFontSize(7),
+		fontSize: responsiveFontSize(0.4),
 		marginLeft: 5 * scaleFactor,
 	},
 });

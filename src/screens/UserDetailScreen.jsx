@@ -64,7 +64,7 @@ export default function TutorDetailsScreen() {
 									<Icon
 										source='school-outline'
 										color={commonStyles.colors.primary}
-										size={responsiveFontSize(9)}
+										size={responsiveFontSize(0.7)}
 									/>
 								</View>
 								<Text style={styles.title}>
@@ -82,7 +82,7 @@ export default function TutorDetailsScreen() {
 									<Icon
 										source='access-point'
 										color={commonStyles.colors.primary}
-										size={responsiveFontSize(9)}
+										size={responsiveFontSize(0.7)}
 									/>
 								</View>
 								<Text style={styles.title}>Preferred Mode</Text>
@@ -92,7 +92,6 @@ export default function TutorDetailsScreen() {
 					</View>
 
 					{/* Subjects & Location Section */}
-
 					<View style={styles.row}>
 						<View style={styles.section}>
 							<View style={styles.titleWithIcon}>
@@ -100,19 +99,20 @@ export default function TutorDetailsScreen() {
 									<Icon
 										source='bookshelf'
 										color={commonStyles.colors.primary}
-										size={responsiveFontSize(9)}
+										size={responsiveFontSize(0.7)}
 									/>
 								</View>
 								<Text style={styles.title}>Subjects</Text>
 							</View>
 
+							{/* Subjects in a horizontal scroll view */}
 							<ScrollView horizontal showsHorizontalScrollIndicator={false}>
 								{user?.subjects.map((subject, index) => (
 									<Text
 										key={index}
 										style={{
 											margin: 2,
-											fontSize: responsiveFontSize(5),
+											fontSize: responsiveFontSize(0.3),
 											backgroundColor: commonStyles.colors.secondary,
 											borderRadius: 20,
 											paddingVertical: 5,
@@ -131,7 +131,7 @@ export default function TutorDetailsScreen() {
 									<Icon
 										source='map-marker'
 										color={commonStyles.colors.primary}
-										size={responsiveFontSize(9)}
+										size={responsiveFontSize(0.7)}
 									/>
 								</View>
 								<Text style={styles.title}>Location</Text>
@@ -153,7 +153,7 @@ export default function TutorDetailsScreen() {
 											<Icon
 												source='briefcase-outline'
 												color={commonStyles.colors.primary}
-												size={responsiveFontSize(9)}
+												size={responsiveFontSize(0.7)}
 											/>
 										</View>
 										<Text style={styles.title}>Experience</Text>
@@ -170,7 +170,7 @@ export default function TutorDetailsScreen() {
 											<Icon
 												source='cash-multiple'
 												color={commonStyles.colors.primary}
-												size={responsiveFontSize(9)}
+												size={responsiveFontSize(0.7)}
 											/>
 										</View>
 										<Text style={styles.title}>Fee</Text>
@@ -200,7 +200,7 @@ export default function TutorDetailsScreen() {
 				title='Chat with me'
 				style={styles.button}
 				onPress={handleChatbutton}
-				labelStyle={{ fontSize: responsiveFontSize(7), height: 40 }}
+				labelStyle={{ fontSize: responsiveFontSize(0.5), height: 40 }}
 			/>
 		</View>
 	);
@@ -249,7 +249,7 @@ const styles = StyleSheet.create({
 		width: "50%",
 	},
 	username: {
-		fontSize: responsiveFontSize(8),
+		fontSize: responsiveFontSize(0.5),
 		fontWeight: "600",
 		marginBottom: 5 * scaleFactor,
 		color: commonStyles.colors.primary,
@@ -261,8 +261,12 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 20 * scaleFactor,
 		maxWidth: 200 * scaleFactor,
 	},
+	title: {
+		fontSize: responsiveFontSize(0.4),
+		fontWeight: "bold",
+	},
 	para: {
-		fontSize: responsiveFontSize(6),
+		fontSize: responsiveFontSize(0.35),
 		color: commonStyles.colors.textSecondary,
 		textAlign: "justify",
 	},

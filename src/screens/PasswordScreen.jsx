@@ -1,11 +1,7 @@
 import React, { useState } from "react";
 import { View, StyleSheet, Image } from "react-native";
 import { Text, ActivityIndicator } from "react-native-paper";
-import {
-	commonStyles,
-	scaleFactor,
-	responsiveFontSize,
-} from "../styles/commonStyles";
+import { commonStyles, scaleFactor } from "../styles/commonStyles";
 import CustomButton from "../components/custom/CustomButton";
 import CustomInput from "../components/custom/CustomInput";
 import useAuth from "../utils/hooks/useAuth";
@@ -53,7 +49,7 @@ export default function ProfilePassword() {
 				resizeMode='contain'
 			/>
 			<View style={styles.centered}>
-				<Text style={styles.title}>Setup New Password</Text>
+				<Text style={commonStyles.title}>Setup New Password</Text>
 			</View>
 
 			<View>
@@ -101,12 +97,6 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		paddingTop: 50 * scaleFactor,
 		position: "relative",
-	},
-	title: {
-		fontSize: responsiveFontSize(10),
-		fontWeight: "bold",
-		marginBottom: 20 * scaleFactor,
-		color: commonStyles.colors.primary,
 	},
 	centered: {
 		marginVertical: 10 * scaleFactor,

@@ -24,7 +24,7 @@ export default function Header() {
 
 	const goBack = () => {
 		if (route.name === "Profile") {
-			navigation.navigate("Home");
+			navigation.navigate("TabNavigator");
 		} else {
 			navigation.goBack();
 		}
@@ -96,6 +96,8 @@ export default function Header() {
 				return renderHeaderContent("Profile");
 			case "Password":
 				return renderHeaderContent("Password");
+			case "Settings":
+				return renderHeaderContent("Settings");
 			case "PrivacyScreen":
 				return renderHeaderContent("Privacy Policy");
 			case "ChatDetail":
@@ -131,7 +133,7 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 	},
 	welcomeText: {
-		fontSize: responsiveFontSize(8.5),
+		fontSize: responsiveFontSize(0.65),
 		fontWeight: "500",
 		color: commonStyles.colors.textSecondary,
 	},

@@ -16,13 +16,15 @@ const LocationSelector = ({
 	selectedCountry,
 	setSelectedCity,
 	setSelectedCountry,
+	setCoordinates,
 	titleStyle,
 	hasSwitch = true,
+	setIsDragging,
 }) => {
 	const {
 		coordinates,
 		locationEnabled,
-		setCoordinates,
+		setCoordinates: setLocalCoordinates,
 		getCurrentLocation,
 		reverseGeocodeWithRetry,
 		handleLocationToggle,
@@ -33,7 +35,8 @@ const LocationSelector = ({
 			latitude: e.geometry.coordinates[1],
 			longitude: e.geometry.coordinates[0],
 		};
-		setCoordinates(newMarkerCoordinates);
+		setLocalCoordinates(newMarkerCoordinates);
+		setCoordinates(newMarkerCoordinates); // Update the coordinates in the RegistrationScreen
 		reverseGeocodeWithRetry(newMarkerCoordinates);
 	};
 
@@ -75,7 +78,11 @@ const LocationSelector = ({
 							title='Your Location'
 							coordinate={[coordinates.longitude, coordinates.latitude]}
 							draggable
-							onDragEnd={handleMarkerDragEnd}
+							onDragStart={() => setIsDragging(true)}
+							onDragEnd={(e) => {
+								handleMarkerDragEnd(e);
+								setIsDragging(false);
+							}}
 						/>
 					</Mapbox.MapView>
 				)}

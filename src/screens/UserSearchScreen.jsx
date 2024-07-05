@@ -35,7 +35,11 @@ const UserSearchScreen = () => {
 	useEffect(() => {
 		if (location) {
 			const updatedNearbyUsers = otherUsers
-				.filter((otherUser) => otherUser?.location?.coordinates)
+				.filter(
+					(otherUser) =>
+						otherUser?.location?.coordinates &&
+						otherUser.preferredMode == "In-person"
+				)
 				.map((otherUser) => ({
 					...otherUser,
 					distance: haversineDistance(
@@ -88,7 +92,7 @@ const UserSearchScreen = () => {
 	return (
 		<View style={styles.container}>
 			<Mapbox.MapView
-				key={nearbyUsers.length} // Force re-render on nearbyUsers change
+				key={nearbyUsers.length}
 				ref={mapRef}
 				style={styles.map}
 				styleURL={Mapbox.StyleURL.Street}

@@ -77,6 +77,10 @@ const RegistrationScreen = () => {
 	const currentQuestion = questions[currentQuestionIndex];
 	const [userDetails, setUserDetails] = useState({});
 	const [username, setUsername] = useState("");
+	const [coordinates, setCoordinates] = useState({
+		latitude: 0,
+		longitude: 0,
+	});
 	const [selectedCity, setSelectedCity] = useState("");
 	const [selectedCountry, setSelectedCountry] = useState("");
 
@@ -88,7 +92,11 @@ const RegistrationScreen = () => {
 		let isContinueDisabled = false;
 
 		if (isLocationQuestion) {
-			isContinueDisabled = selectedCountry === "" || selectedCity === "";
+			isContinueDisabled =
+				selectedCountry === "" ||
+				selectedCity === "" ||
+				coordinates.latitude === 0 ||
+				coordinates.longitude === 0;
 		} else if (isInputQuestion) {
 			isContinueDisabled = username === "";
 		} else if (isMultiSelectQuestion) {
@@ -155,7 +163,14 @@ const RegistrationScreen = () => {
 			} else if (currentQuestion.component) {
 				updatedUserDetails = {
 					...updatedUserDetails,
-					location: { country: selectedCountry, city: selectedCity },
+					location: {
+						country: selectedCountry,
+						city: selectedCity,
+						coordinates: {
+							latitude: coordinates.latitude,
+							longitude: coordinates.longitude,
+						},
+					},
 				};
 			} else {
 				const selectedOption = getSelectedOption();
@@ -257,6 +272,7 @@ const RegistrationScreen = () => {
 					setSelectedCity={setSelectedCity}
 					selectedCountry={selectedCountry}
 					setSelectedCountry={setSelectedCountry}
+					setCoordinates={setCoordinates}
 				/>
 			)}
 

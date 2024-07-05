@@ -51,6 +51,7 @@ export default function AccountScreen() {
 	const [coordinates, setCoordinates] = useState(user?.location?.coordinates);
 	const [preferredMode, setPreferredMode] = useState(user?.preferredMode);
 
+	const [isDragging, setIsDragging] = useState(false);
 	const [infoNotEdited, setInfoNotEdited] = useState(true);
 	const [visible, setVisible] = useState(false);
 	const openMenu = () => setVisible(true);
@@ -197,7 +198,7 @@ export default function AccountScreen() {
 			return;
 		}
 
-		if (user?.role === "tutor" && (!experience || !rate)) {
+		if (user?.role === "Teacher" && (!experience || !rate)) {
 			alert("Please fill in all the fields");
 			return;
 		}
@@ -255,7 +256,9 @@ export default function AccountScreen() {
 	};
 
 	return (
-		<ScrollView contentContainerStyle={styles.container}>
+		<ScrollView
+			contentContainerStyle={styles.container}
+			scrollEnabled={!isDragging}>
 			{isLoading && (
 				<View style={commonStyles.loadingOverlay}>
 					<ActivityIndicator size='large' color={commonStyles.colors.primary} />
@@ -414,20 +417,19 @@ export default function AccountScreen() {
 
 				<LocationSelector
 					title={"Location:"}
-					subtitle={""}
 					titleStyle={[
 						styles.label,
 						{
 							alignSelf: "flex-start",
 						},
 					]}
-					coordinates={coordinates}
-					setCoordinates={setCoordinates}
 					selectedCity={selectedCity}
 					setSelectedCity={setSelectedCity}
 					selectedCountry={selectedCountry}
 					setSelectedCountry={setSelectedCountry}
+					setCoordinates={setCoordinates}
 					hasSwitch={false}
+					setIsDragging={setIsDragging}
 				/>
 
 				<Text style={styles.label}>Preferred Mode: </Text>

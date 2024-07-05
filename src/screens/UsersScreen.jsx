@@ -63,8 +63,11 @@ export default function TutorsScreen() {
 		<View style={styles.container}>
 			<SearchBar users={otherUsers} setSearchedUsers={setSearchedUsers} />
 
+			{/* Filters Section */}
 			<View style={{ flexDirection: "row", flexWrap: "wrap" }}>
 				<Text style={styles.heading}>Filters:</Text>
+
+				{/* Display selected filters */}
 				{filters.map((filter, index) => (
 					<View key={index} style={styles.filter}>
 						<Text style={{ color: commonStyles.colors.neutral }}>
@@ -81,6 +84,7 @@ export default function TutorsScreen() {
 				))}
 			</View>
 
+			{/* Dropdowns for subjects and preferred mode */}
 			<View style={{ flexDirection: "row", flexWrap: "wrap" }}>
 				{/* Dropdown for subjects */}
 				<Picker
@@ -147,7 +151,6 @@ export default function TutorsScreen() {
 					/>
 				</Picker>
 			</View>
-			{/* Clear Filters button */}
 			<CustomButton
 				title='Clear Filters'
 				onPress={() => {
@@ -157,6 +160,8 @@ export default function TutorsScreen() {
 				}}
 				style={{ width: width - 20, marginVertical: 10 }}
 			/>
+
+			{/* Users Section */}
 			<View
 				style={{
 					flexDirection: "row",

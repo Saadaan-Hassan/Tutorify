@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
 	},
 	username: {
 		marginTop: 50 * scaleFactor,
-		fontSize: responsiveFontSize(0.5),
+		fontSize: responsiveFontSize(0.7),
 		fontWeight: "bold",
 	},
 	infoContainer: {

@@ -150,6 +150,7 @@ export default function ProfileScreen() {
 				/>
 			</View>
 
+			{/* Modal for confirming password */}
 			<Portal>
 				<Dialog visible={visible} onDismiss={hideDialog}>
 					<Dialog.Title

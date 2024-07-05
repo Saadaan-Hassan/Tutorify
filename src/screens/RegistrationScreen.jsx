@@ -133,6 +133,7 @@ const RegistrationScreen = () => {
 		return unsubscribe;
 	}, [navigation]);
 
+	// Function to handle selecting an option
 	const handleOptionSelect = (index) => {
 		if (currentQuestion.multiSelect) {
 			setSelectedOptions((prevSelectedOptions) => {
@@ -154,6 +155,7 @@ const RegistrationScreen = () => {
 		setUsername(text);
 	};
 
+	// Function to handle selecting a question
 	const handleQuestionSelect = async () => {
 		try {
 			let updatedUserDetails = { ...userDetails };
@@ -200,6 +202,7 @@ const RegistrationScreen = () => {
 				setSelectedOptionIndex(null);
 				setSelectedOptions([]);
 			} else {
+				// If all questions are answered, update user details in the database
 				const updatedUserDetails = {
 					...user,
 					...userDetails,

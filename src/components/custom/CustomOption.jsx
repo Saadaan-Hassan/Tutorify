@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
 		color: commonStyles.colors.primary,
 		textAlign: "center",
 		padding: 12 * scaleFactor,
-		fontSize: responsiveFontSize(6),
+		fontSize: responsiveFontSize(0.5),
 		fontWeight: "400",
 	},
 });

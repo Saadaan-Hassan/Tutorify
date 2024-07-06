@@ -25,16 +25,7 @@ export const UserProvider = ({ children }) => {
 
 	// Fetch role-based users and update AsyncStorage
 	useEffect(() => {
-		const fetchStoredUsers = async () => {
-			const storedUsers = await AsyncStorage.getItem("otherUsers");
-			if (storedUsers) {
-				setOtherUsers(JSON.parse(storedUsers));
-			}
-		};
-
 		if (user) {
-			fetchStoredUsers();
-
 			const unsubscribe = onSnapshot(
 				collection(db, "users"),
 				(snapshot) => {
@@ -49,7 +40,6 @@ export const UserProvider = ({ children }) => {
 						});
 
 					setOtherUsers(updatedUsers);
-					AsyncStorage.setItem("otherUsers", JSON.stringify(updatedUsers));
 				},
 				(error) => {
 					console.error("Error fetching users: ", error);

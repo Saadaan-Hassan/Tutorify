@@ -1,16 +1,12 @@
 import React, { useState } from "react";
-import {
-	View,
-	StyleSheet,
-	Text,
-	TouchableOpacity,
-	FlatList,
-	TextInput,
-} from "react-native";
+import { View, StyleSheet, Text, FlatList } from "react-native";
 import { IconButton, Chip } from "react-native-paper";
-import { commonStyles, scaleFactor } from "../styles/commonStyles";
+import {
+	commonStyles,
+	scaleFactor,
+	responsiveFontSize,
+} from "../styles/commonStyles";
 import CustomInput from "./custom/CustomInput";
-import CustomButton from "./custom/CustomButton";
 
 const SubjectSelector = ({ subjects, setSubjects }) => {
 	const [newSubject, setNewSubject] = useState("");
@@ -31,6 +27,7 @@ const SubjectSelector = ({ subjects, setSubjects }) => {
 			<Text style={styles.label}>Subjects:</Text>
 			<View style={styles.inputContainer}>
 				<CustomInput
+					containerStyle={{ marginTop: -15 * scaleFactor }}
 					inputStyle={styles.input}
 					placeholder='Add a subject'
 					value={newSubject}
@@ -48,7 +45,10 @@ const SubjectSelector = ({ subjects, setSubjects }) => {
 				data={subjects}
 				keyExtractor={(item) => item}
 				renderItem={({ item }) => (
-					<Chip style={styles.chip} onClose={() => removeSubject(item)}>
+					<Chip
+						style={styles.chip}
+						textStyle={{ fontSize: responsiveFontSize(0.4) }}
+						onClose={() => removeSubject(item)}>
 						{item}
 					</Chip>
 				)}
@@ -65,9 +65,9 @@ const styles = StyleSheet.create({
 		marginBottom: 20 * scaleFactor,
 	},
 	label: {
-		fontSize: 16 * scaleFactor,
+		fontSize: responsiveFontSize(0.5),
 		fontWeight: "bold",
-		marginBottom: 5 * scaleFactor,
+		marginBottom: 0 * scaleFactor,
 		color: commonStyles.colors.primary,
 	},
 	inputContainer: {

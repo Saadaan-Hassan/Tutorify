@@ -22,7 +22,7 @@ export default function ProfilePrivacy() {
 			/>
 			<View style={styles.container}>
 				<View style={styles.sectionHeader}>
-					<Text style={{ fontSize: responsiveFontSize(5) }}>
+					<Text style={{ fontSize: responsiveFontSize(0.3) }}>
 						Version {version} • © {new Date().getFullYear()} Tutorify
 					</Text>
 				</View>
@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
 	},
 
 	header: {
-		fontSize: responsiveFontSize(8),
+		fontSize: responsiveFontSize(0.5),
 		fontWeight: "bold",
 		marginVertical: 10 * scaleFactor,
 	},
@@ -130,14 +130,14 @@ const styles = StyleSheet.create({
 	},
 
 	title: {
-		fontSize: responsiveFontSize(7),
+		fontSize: responsiveFontSize(0.6),
 		fontWeight: "500",
 		marginBottom: 5 * scaleFactor,
 		color: commonStyles.colors.primary,
 	},
 
 	para: {
-		fontSize: responsiveFontSize(6),
+		fontSize: responsiveFontSize(0.5),
 		color: commonStyles.colors.textSecondary,
 	},
 });

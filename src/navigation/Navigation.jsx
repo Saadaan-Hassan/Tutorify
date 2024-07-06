@@ -20,6 +20,7 @@ import {
 	PrivacyScreen,
 	UserSearchScreen,
 	SettingsScreen,
+	NotificationsScreen,
 } from "../screens";
 import Header from "../components/Header";
 import { Icon } from "react-native-paper";
@@ -78,6 +79,16 @@ const TabNavigator = () => {
 					tabBarLabel: "Search",
 					tabBarIcon: ({ color }) => (
 						<Icon source='compass-outline' color={color} size={26} />
+					),
+				}}
+			/>
+			<Tab.Screen
+				name='Notifications'
+				component={NotificationsScreen}
+				options={{
+					tabBarLabel: "Notifications",
+					tabBarIcon: ({ color }) => (
+						<Icon source='bell' color={color} size={26} />
 					),
 				}}
 			/>

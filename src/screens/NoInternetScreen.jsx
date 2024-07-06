@@ -40,14 +40,14 @@ const styles = StyleSheet.create({
 		marginBottom: 20 * scaleFactor,
 	},
 	title: {
-		fontSize: responsiveFontSize(8),
+		fontSize: responsiveFontSize(0.75),
 		fontWeight: "bold",
 		color: commonStyles.colors.textPrimary,
 		textAlign: "center",
 		marginBottom: 10 * scaleFactor,
 	},
 	subtitle: {
-		fontSize: responsiveFontSize(6),
+		fontSize: responsiveFontSize(0.5),
 		color: commonStyles.colors.textSecondary,
 		textAlign: "center",
 		marginBottom: 20 * scaleFactor,

@@ -8,10 +8,11 @@ import {
 	responsiveFontSize,
 } from "../styles/commonStyles";
 import { useLocation } from "../utils/context/LocationContext";
+import { useNotification } from "../utils/context/NotificationContext";
 
 export default function SettingsScreen() {
 	const { locationEnabled, setLocationEnabled } = useLocation();
-	const [notificationsEnabled, setNotificationsEnabled] = useState(true);
+	const { notificationsEnabled, toggleNotifications } = useNotification();
 
 	const handleLocationToggle = async () => {
 		if (locationEnabled) {
@@ -49,7 +50,7 @@ export default function SettingsScreen() {
 	};
 
 	const handleNotificationsToggle = () => {
-		setNotificationsEnabled(!notificationsEnabled);
+		toggleNotifications(!notificationsEnabled);
 	};
 
 	return (
@@ -64,11 +65,14 @@ export default function SettingsScreen() {
 				}}
 				resizeMode='contain'
 			/>
-			<Text style={styles.title}>Settings</Text>
+			<Text style={commonStyles.title}>Settings</Text>
 			<List.Section>
 				<List.Item
 					title='Notifications'
-					titleStyle={{ color: commonStyles.colors.primary }}
+					titleStyle={{
+						color: commonStyles.colors.primary,
+						fontSize: responsiveFontSize(0.5),
+					}}
 					right={() => (
 						<Switch
 							value={notificationsEnabled}
@@ -78,7 +82,10 @@ export default function SettingsScreen() {
 				/>
 				<List.Item
 					title='Location Services'
-					titleStyle={{ color: commonStyles.colors.primary }}
+					titleStyle={{
+						color: commonStyles.colors.primary,
+						fontSize: responsiveFontSize(0.5),
+					}}
 					right={() => (
 						<Switch
 							value={locationEnabled}
@@ -109,7 +116,7 @@ const styles = StyleSheet.create({
 		position: "relative",
 	},
 	title: {
-		fontSize: responsiveFontSize(12),
+		fontSize: responsiveFontSize(0.1),
 		fontWeight: "700",
 		color: commonStyles.colors.primary,
 		marginBottom: scaleFactor * 20,

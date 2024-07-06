@@ -33,9 +33,14 @@ const UserSearchScreen = () => {
 	const snapPoints = useMemo(() => ["10%", "45%"], []);
 
 	useEffect(() => {
+		// Filter users based on location and preferred mode
 		if (location) {
 			const updatedNearbyUsers = otherUsers
-				.filter((otherUser) => otherUser?.location?.coordinates)
+				.filter(
+					(otherUser) =>
+						otherUser?.location?.coordinates &&
+						otherUser.preferredMode == "In-person"
+				)
 				.map((otherUser) => ({
 					...otherUser,
 					distance: haversineDistance(
@@ -49,6 +54,7 @@ const UserSearchScreen = () => {
 		}
 	}, [location, otherUsers]);
 
+	// Function to handle selecting a user from the list
 	const handleUserPress = (user) => {
 		setSelectedUser(user);
 		cameraRef.current.setCamera({
@@ -66,6 +72,7 @@ const UserSearchScreen = () => {
 		setModalVisible(true);
 	};
 
+	// Function to filter users based on distance
 	const filterUsers = (users, filter) => {
 		if (filter === "all") return users;
 		const distanceLimit = parseInt(filter);
@@ -80,15 +87,15 @@ const UserSearchScreen = () => {
 					color={commonStyles.colors.primary}
 					size='large'
 				/>
-				<Text>Loading...</Text>
 			</View>
 		);
 	}
 
 	return (
 		<View style={styles.container}>
+			{/* Map */}
 			<Mapbox.MapView
-				key={nearbyUsers.length} // Force re-render on nearbyUsers change
+				key={nearbyUsers.length}
 				ref={mapRef}
 				style={styles.map}
 				styleURL={Mapbox.StyleURL.Street}
@@ -135,6 +142,8 @@ const UserSearchScreen = () => {
 					</Mapbox.MarkerView>
 				))}
 			</Mapbox.MapView>
+
+			{/* Bottom Sheet */}
 			<BottomSheet
 				ref={bottomSheetRef}
 				index={1}
@@ -168,6 +177,8 @@ const UserSearchScreen = () => {
 					/>
 				</View>
 			</BottomSheet>
+
+			{/* User Detail Modal */}
 			<UserDetailModal
 				visible={modalVisible}
 				user={selectedUser}

@@ -21,6 +21,7 @@ import {
 	responsiveFontSize,
 } from "../styles/commonStyles";
 
+// Function to recommend users based on subjects
 const recommendedUsers = (users, user) => {
 	const recommended = users
 		.filter((u) =>
@@ -28,6 +29,17 @@ const recommendedUsers = (users, user) => {
 		)
 		.slice(0, 5)
 		.sort(() => Math.random() - 0.5);
+
+	if (recommended.length < 5) {
+		const remaining = 5 - recommended.length;
+		const otherUsers = users.filter(
+			(u) => !recommended.map((r) => r.id).includes(u.id)
+		);
+		const randomUsers = otherUsers
+			.slice(0, remaining)
+			.sort(() => Math.random() - 0.5);
+		recommended.push(...randomUsers);
+	}
 	return recommended;
 };
 
@@ -50,6 +62,7 @@ export default function HomeScreen() {
 					<ActivityIndicator size='large' color={commonStyles.colors.primary} />
 				</View>
 			)}
+
 			<View style={commonStyles.container}>
 				<SearchBar users={otherUsers} />
 				<View style={[styles.section, styles.flex, styles.bannerSection]}>
@@ -80,6 +93,7 @@ export default function HomeScreen() {
 								title={user.role === "Teacher" ? "Find Student" : "Find Tutor"}
 								styleReverse={true}
 								style={styles.bannerButton}
+								labelStyle={{ fontSize: responsiveFontSize(0.4) }}
 								onPress={() => navigation.navigate("UserSearchScreen")}
 							/>
 						</View>
@@ -88,6 +102,8 @@ export default function HomeScreen() {
 						<Image source={require("../../assets/img/home.png")} />
 					</View>
 				</View>
+
+				{/* Recommended for you section*/}
 				<View style={styles.section}>
 					<View style={styles.sectionHeader}>
 						<Text style={commonStyles.header}>Recommended for you</Text>
@@ -100,6 +116,7 @@ export default function HomeScreen() {
 						showsHorizontalScrollIndicator={false}
 					/>
 				</View>
+
 				{/* <View style={styles.section}>
 					<View style={styles.sectionHeader}>
 						<Text style={commonStyles.header}>Top tutors</Text>
@@ -121,6 +138,7 @@ export default function HomeScreen() {
 					/>
 				</View> */}
 
+				{/* Online users section */}
 				{onlineUsers.length > 0 && (
 					<View style={styles.section}>
 						<View style={styles.sectionHeader}>
@@ -145,6 +163,8 @@ export default function HomeScreen() {
 						/>
 					</View>
 				)}
+
+				{/* In-person users section */}
 				{inPersonUsers.length > 0 && (
 					<View style={styles.section}>
 						<View style={styles.sectionHeader}>
@@ -209,11 +229,12 @@ const styles = StyleSheet.create({
 	},
 	bannerText: {
 		color: commonStyles.colors.neutral,
-		fontSize: responsiveFontSize(8),
+		fontSize: responsiveFontSize(0.65),
 	},
 	bannerButton: {
 		width: 150 * scaleFactor,
 		borderRadius: 20 * scaleFactor,
 		marginTop: 20 * scaleFactor,
+		fontSize: responsiveFontSize(0.5),
 	},
 });

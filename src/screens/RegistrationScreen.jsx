@@ -276,6 +276,7 @@ const RegistrationScreen = () => {
 					selectedCountry={selectedCountry}
 					setSelectedCountry={setSelectedCountry}
 					setCoordinates={setCoordinates}
+					setIsDragging={(isDragging) => setIsDisabled(isDragging)}
 				/>
 			)}
 

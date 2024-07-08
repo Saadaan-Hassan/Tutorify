@@ -17,7 +17,7 @@ export default {
 			supportsTablet: true,
 		},
 		android: {
-			package: "com.codingnerd.tutorify",
+			package: process.env.ANDROID_PACKAGE,
 			googleServicesFile: process.env.GOOGLE_SERVICES_JSON,
 			adaptiveIcon: {
 				foregroundImage: "./assets/beta-adaptive-icon.png",
@@ -42,12 +42,9 @@ export default {
 			RN_MAPBOX_MAPS_DOWNLOAD_TOKEN: process.env.RN_MAPBOX_MAPS_DOWNLOAD_TOKEN,
 			RN_MAPBOX_ACCESS_TOKEN: process.env.RN_MAPBOX_ACCESS_TOKEN,
 		},
-		owner: "coding-nerd",
+		owner: process.env.EXPO_OWNER,
 		runtimeVersion: {
 			policy: "appVersion",
-		},
-		updates: {
-			url: process.env.EXPO_UPDATES_URL,
 		},
 		plugins: [
 			[

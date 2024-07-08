@@ -1,6 +1,6 @@
 # Tutorify
 
-Tutorify is a mobile application designed to connect students and tutors. This app allows students to find tutors based on their subjects of interest and facilitates communication between students and tutors.
+Tutorify is a mobile application designed to connect students and tutors. This app allows students to find tutors based on their subjects of interest and facilitates communication between students and tutors. The app also includes a map feature that allows users to view each other's locations.
 
 ## Features
 
@@ -9,6 +9,10 @@ Tutorify is a mobile application designed to connect students and tutors. This a
 - **Map Integration:** Tutors and students can view each other's locations on a map.
 - **Push Notifications:** Get notified about new messages and user activities.
 - **Onboarding Experience:** Users get a guided tour of the app features on their first visit.
+
+<p align="center">
+  <img src="./github-social-preview.png"/>
+</p>
 
 ## Table of Contents
 
@@ -42,7 +46,17 @@ To get started with Tutorify, follow these steps:
 
 2. **Install Dependencies**
 
-   Make sure you have [Node.js](https://nodejs.org/) and [Yarn](https://yarnpkg.com/) installed. Then, run:
+   Make sure you have Node.js and Yarn installed. If not installed, you can download them from the following links:
+
+   - [Node.js](https://nodejs.org/)
+
+   After installing Node.js, you can install Yarn using the following command:
+
+   ```bash
+   npm install --global yarn
+   ```
+
+   Now, install the project dependencies:
 
    ```bash
    yarn install
@@ -73,7 +87,7 @@ Create a Firebase project and obtain the configuration details from the Firebase
 Create a Mapbox account and obtain your Mapbox API access token:
 
 1. Go to the [Mapbox website](https://www.mapbox.com/).
-2. Sign up for an account or log in to your existing account.
+2. Sign up for an account or log in to your existing account. If you are new to Mapbox, you can create a free account. It asks for your credit card details, but you won't be charged unless you exceed the free tier limits.
 3. Go to the "Tokens" section and create a new access token.
 4. Copy the access token and add it to your `.env` file:
 
@@ -98,18 +112,57 @@ Create a Mapbox account and obtain your Mapbox API access token:
    EAS_PROJECT_ID=your-eas-project-id
    ```
 
-5. Run the following commands in your project root directory:
+5. Write your Expo username in the `.env` file:
+
+   ```env
+   EXPO_OWNER=your-expo-username
+   ```
+
+6. Run the following commands in your project root directory:
 
    ```bash
    npm install --global eas-cli
    eas login
-   eas init --id your-eas-project-id
+   eas build:configure
    ```
 
-6. Run the following command to upload the .env file to EAS:
+7. The above command will create an `eas.json` file in your project root directory. In the development profile section of the `eas.json` file, add the following configuration:
+
+   ```json
+   "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "env": {
+        "ANDROID_PACKAGE": "YOUR_ANDROID_PACKAGE_NAME",
+      }
+    },
+   ```
+
+8. The `ANDROID_PACKAGE_NAME` should be the package name of your Android app. Typically, it is in the format `com.example.app`. You can write it like `com.expo-username.appname` e.g. `com.saadaanhassan.tutorify`. Also, add the `ANDROID_PACKAGE_NAME` in the `.env` file:
+
+   ```env
+   ANDROID_PACKAGE_NAME=your-android-package-name
+   ```
+
+9. Run the following command to upload the .env file to EAS:
 
    ```bash
    eas secret:push --scope project --env-file ./.env
+   ```
+
+10. Now create a development build:
+
+    ```bash
+    eas build --profile development --platform android
+    ```
+
+### 4. Set Up Expo Notifications
+
+1. To set up expo-notifications, you need the `google-services.json` file for the project. Follow the instructions [here](https://docs.expo.dev/push-notifications/fcm-credentials/) to add the `google-services.json` file to the project.
+2. Run the following command to upload the `google-services.json` file to EAS:
+
+   ```bash
+   eas secret:create --scope project --name GOOGLE_SERVICES_JSON --type file --value ./path/to/google-services.json
    ```
 
 ## Running the App
@@ -120,7 +173,6 @@ Before running the app, you need to create a development build. Follow these ste
 
    ```bash
    eas build --profile development --platform android
-   eas build --profile development --platform ios
    ```
 
    Install the resulting development build on your device or emulator.
@@ -129,18 +181,6 @@ Before running the app, you need to create a development build. Follow these ste
 
    ```bash
    yarn start
-   ```
-
-3. **Run on Android Emulator**
-
-   ```bash
-   yarn android
-   ```
-
-4. **Run on iOS Simulator**
-
-   ```bash
-   yarn ios
    ```
 
 ## Building the App

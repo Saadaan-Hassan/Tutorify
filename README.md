@@ -99,6 +99,12 @@ FIREBASE_APP_ID=your-firebase-app-id
 
 Create a Mapbox account and obtain your Mapbox API access token:
 
+[WATCH THE VIDEO](https://youtu.be/nQueIo4Rvek)
+
+[![Watch the video](https://img.youtube.com/vi/nQueIo4Rvek/maxresdefault.jpg)](https://youtu.be/nQueIo4Rvek)
+
+Or follow these steps:
+
 1. Go to the [Mapbox website](https://www.mapbox.com/).
 2. Sign up for an account or log in to your existing account.
 3. Go to the "Tokens" section and create a new access token.
@@ -115,6 +121,12 @@ RN_MAPBOX_MAPS_DOWNLOAD_TOKEN=your-mapbox-public-token
 ```
 
 ### 3. Set Up EAS (Expo Application Services)
+
+[WATCH THE VIDEO](https://youtu.be/OftUidMky2o)
+
+[![Watch the video](https://img.youtube.com/vi/OftUidMky2o/maxresdefault.jpg)](https://youtu.be/OftUidMky2o)
+
+Or follow these steps:
 
 1. Go to the [Expo website](https://expo.dev/).
 2. Log in to your Expo account, click the Profile icon, and go to the "Projects" section.
@@ -170,6 +182,12 @@ eas build --profile development --platform android
 ```
 
 ### 4. Set Up Expo Notifications
+
+[WATCH THE VIDEO](https://youtu.be/QsBSGWa0MPw)
+
+[![Watch the video](https://img.youtube.com/vi/QsBSGWa0MPw/maxresdefault.jpg)](https://youtu.be/QsBSGWa0MPw)
+
+Or follow these steps:
 
 1. To set up expo-notifications, you need the `google-services.json` file for the project. Follow the instructions [here](https://docs.expo.dev/push-notifications/fcm-credentials/) to add the `google-services.json` file to the project.
 2. Run the following command to upload the `google-services.json` file to EAS:

@@ -105,7 +105,13 @@ Create a Mapbox account and obtain your Mapbox API access token:
 4. Copy the access token and add it to your `.env` file:
 
 ```env
-RN_MAPBOX_ACCESS_TOKEN=your-rn-mapbox-access-token
+RN_MAPBOX_ACCESS_TOKEN=your-mapbox-access-token
+```
+
+5. Copy the public access token and add it to your `.env` file:
+
+```env
+RN_MAPBOX_MAPS_DOWNLOAD_TOKEN=your-mapbox-public-token
 ```
 
 ### 3. Set Up EAS (Expo Application Services)

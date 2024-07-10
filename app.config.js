@@ -5,7 +5,7 @@ export default {
 		slug: "tutorify",
 		version: "1.0.0",
 		orientation: "portrait",
-		icon: "./assets/beta-icon.png",
+		icon: "./assets/img/icons/beta-icon.png",
 		userInterfaceStyle: "light",
 		splash: {
 			image: "./assets/beta-splash.png",
@@ -20,12 +20,12 @@ export default {
 			package: process.env.ANDROID_PACKAGE,
 			googleServicesFile: process.env.GOOGLE_SERVICES_JSON,
 			adaptiveIcon: {
-				foregroundImage: "./assets/beta-adaptive-icon.png",
+				foregroundImage: "./assets/img/icons/beta-adaptive-icon.png",
 				backgroundColor: "#ffffff",
 			},
 		},
 		web: {
-			favicon: "./assets/beta-favicon.png",
+			favicon: "./assets/img/icons/beta-favicon.png",
 		},
 		extra: {
 			eas: {
